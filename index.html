@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>APTRYK — AI & Automation Consulting</title>
+<meta name="description" content="APTRYK delivers custom AI tools and automation workflows built for businesses that need real results — without the enterprise complexity."/>
+<meta name="theme-color" content="#0d0d14"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f5f6f8;
+  --white:#ffffff;
+  --ink:#0d0d14;
+  --navy:#0d0d14;
+  --lime:#3ecf6e;
+  --lime-dim:#2db85c;
+  --lime-glow:rgba(62,207,110,0.18);
+  --mid:#3c3c50;
+  --soft:#787890;
+  --faint:#b0b0c4;
+  --border:#e4e5ec;
+  --border-lime:rgba(45,184,92,0.28);
+  --card:#ffffff;
+  --shadow-sm:0 1px 4px rgba(13,13,20,0.07);
+  --shadow-md:0 4px 22px rgba(13,13,20,0.09),0 2px 8px rgba(13,13,20,0.05);
+  --shadow-lime:0 8px 32px rgba(62,207,110,0.2);
+  --r:12px;--r-lg:16px;
+  --display:'Syne',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --ease-out:cubic-bezier(0.2,0.8,0.2,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:300;line-height:1.7;overflow-x:hidden}
+::selection{background:var(--lime);color:var(--ink)}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--lime);border-radius:4px}
+
+/* Focus rings */
+:focus-visible{outline:2px solid var(--lime-dim);outline-offset:3px;border-radius:4px}
+button:focus-visible,a:focus-visible{outline-offset:4px}
+
+/* Skip link (a11y) */
+.skip-link{
+  position:absolute;top:-100px;left:0;z-index:1000;
+  background:var(--ink);color:var(--lime);
+  font-family:var(--display);font-size:0.78rem;font-weight:700;
+  padding:0.7rem 1.2rem;text-decoration:none;letter-spacing:0.04em;
+  border-radius:0 0 8px 0;
+}
+.skip-link:focus{top:0}
+
+/* Scroll progress */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2px;width:0;
+  background:linear-gradient(90deg,var(--lime-dim),var(--lime));
+  z-index:400;transition:width 0.05s linear;
+  box-shadow:0 0 8px var(--lime-glow);
+}
+
+.icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;height:60px;
+  background:rgba(245,246,248,0.93);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:box-shadow 0.3s,height 0.3s;
+}
+nav.scrolled{box-shadow:var(--shadow-sm)}
+.nav-logo{
+  font-family:var(--display);font-weight:800;font-size:1.2rem;
+  letter-spacing:0.07em;color:var(--ink);text-decoration:none;
+  display:flex;align-items:center;gap:0.45rem;
+  transition:opacity 0.2s;
+}
+.nav-logo:hover{opacity:0.75}
+.logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--lime);
+  box-shadow:0 0 0 2px rgba(62,207,110,0.25);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.65)}}
+
+.nav-links{display:flex;gap:1.5rem;list-style:none;align-items:center}
+.nav-links a{
+  font-family:var(--display);font-size:0.82rem;font-weight:600;
+  color:var(--mid);text-decoration:none;letter-spacing:0.03em;transition:color 0.2s;
+  position:relative;padding:0.3rem 0;
+}
+.nav-links a:not(.btn-nav)::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1.5px;background:var(--lime-dim);
+  transition:width 0.25s var(--ease-out);
+}
+.nav-links a:not(.btn-nav):hover::after,
+.nav-links a:not(.btn-nav).active::after{width:100%}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.active{color:var(--ink)}
+.btn-nav{
+  color:var(--lime)!important;background:var(--ink)!important;
+  padding:0.42rem 1.1rem;border-radius:8px;
+  box-shadow:0 2px 10px rgba(10,10,15,0.18);transition:all 0.2s!important;
+}
+.btn-nav::after{display:none!important}
+.btn-nav:hover{background:var(--mid)!important;transform:translateY(-1px)!important}
+
+/* hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all 0.3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.mobile-menu{
+  position:fixed;top:60px;left:0;right:0;z-index:299;
+  background:var(--white);border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow-md);padding:1rem 1.5rem 1.5rem;
+  display:flex;flex-direction:column;gap:0.25rem;
+  transform:translateY(-110%);opacity:0;pointer-events:none;
+  transition:transform 0.3s var(--ease-out),opacity 0.25s ease;
+  visibility:hidden;
+}
+.mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:auto;visibility:visible}
+.mobile-menu a{
+  font-family:var(--display);font-size:0.95rem;font-weight:600;
+  color:var(--mid);text-decoration:none;padding:0.7rem 0;
+  border-bottom:1px solid var(--border);transition:color 0.2s,padding-left 0.2s;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.mobile-menu a:hover{padding-left:0.4rem;color:var(--ink)}
+.mobile-menu a:last-child{border-bottom:none}
+.mobile-menu a.mobile-cta{
+  margin-top:0.5rem;justify-content:center;background:var(--ink);
+  color:var(--lime);border-radius:10px;border:none;font-weight:700;
+  padding:0.85rem;
+}
+.mobile-menu a.mobile-cta:hover{padding-left:0.85rem;background:var(--mid)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:8rem 1.5rem 5rem;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 0%,rgba(62,207,110,0.10) 0%,transparent 65%),
+    radial-gradient(ellipse 45% 40% at 88% 55%,rgba(62,207,110,0.05) 0%,transparent 55%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(10,10,15,0.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(10,10,15,0.055) 1px,transparent 1px);
+  background-size:44px 44px;opacity:1;
+  mask-image:radial-gradient(ellipse 72% 58% at 50% 38%,black 25%,transparent 80%);
+  -webkit-mask-image:radial-gradient(ellipse 72% 58% at 50% 38%,black 25%,transparent 80%);
+  pointer-events:none;
+}
+.hero-inner{position:relative;z-index:1;max-width:680px;width:100%}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:var(--ink);color:var(--lime);
+  font-family:var(--display);font-size:0.7rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.32rem 1rem;border-radius:100px;margin-bottom:1.75rem;
+  animation:fadeUp 0.6s var(--ease-out) both;
+  box-shadow:0 4px 14px rgba(13,13,20,0.12);
+}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--lime);opacity:0.8;animation:pulse 2s ease-in-out infinite}
+.hero h1{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,7vw,4.2rem);
+  line-height:1.06;letter-spacing:-0.025em;color:var(--ink);
+  margin-bottom:1.25rem;animation:fadeUp 0.6s 0.08s var(--ease-out) both;
+}
+.hero h1 span{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-weight:700;
+  color:var(--lime);
+  -webkit-text-fill-color:var(--lime);
+  position:relative;display:inline-block;
+}
+.hero h1 span::after{
+  content:'';position:absolute;left:0;right:0;bottom:0.08em;
+  height:0.08em;background:var(--lime);opacity:0.25;
+  transform:scaleX(0);transform-origin:left;
+  animation:underline 0.7s 0.85s var(--ease-out) forwards;
+}
+@keyframes underline{to{transform:scaleX(1)}}
+.hero-sub{
+  font-size:clamp(0.95rem,2.5vw,1.05rem);font-weight:400;
+  color:var(--mid);max-width:500px;margin:0 auto 2rem;
+  animation:fadeUp 0.6s 0.16s var(--ease-out) both;line-height:1.75;
+}
+.hero-actions{
+  display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 0.6s 0.24s var(--ease-out) both;
+}
+.btn-primary{
+  font-family:var(--display);font-weight:700;font-size:0.88rem;
+  color:var(--lime);background:var(--ink);
+  padding:0.8rem 1.75rem;border-radius:10px;text-decoration:none;
+  box-shadow:0 4px 20px rgba(10,10,15,0.18);transition:all 0.25s var(--ease-out);
+  display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.03em;
+  position:relative;overflow:hidden;cursor:pointer;border:none;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent,rgba(62,207,110,0.15),transparent);
+  transform:translateX(-100%);transition:transform 0.5s ease;
+}
+.btn-primary:hover{background:var(--mid);transform:translateY(-2px);box-shadow:0 10px 28px rgba(10,10,15,0.22)}
+.btn-primary:hover::before{transform:translateX(100%)}
+.btn-primary:active{transform:translateY(0);transition-duration:0.1s}
+.btn-primary svg{transition:transform 0.25s var(--ease-out)}
+.btn-primary:hover svg{transform:translateX(3px)}
+.btn-secondary{
+  font-family:var(--display);font-weight:700;font-size:0.88rem;
+  color:var(--ink);background:transparent;
+  border:1.5px solid rgba(10,10,15,0.18);padding:0.8rem 1.75rem;
+  border-radius:10px;text-decoration:none;
+  box-shadow:var(--shadow-sm);transition:all 0.2s;letter-spacing:0.03em;
+  cursor:pointer;
+}
+.btn-secondary:hover{background:rgba(10,10,15,0.04);border-color:var(--ink);transform:translateY(-2px)}
+.btn-secondary:active{transform:translateY(0)}
+
+/* hero stats */
+.hero-stats{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;margin-top:2.75rem;
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-sm);
+  overflow:hidden;animation:fadeUp 0.6s 0.35s var(--ease-out) both;
+  width:100%;max-width:480px;margin-left:auto;margin-right:auto;
+}
+.stat{
+  flex:1;padding:1rem 0.5rem;text-align:center;
+  border-right:1px solid var(--border);
+  transition:background 0.2s;cursor:default;
+}
+.stat:last-child{border-right:none}
+.stat:hover{background:rgba(62,207,110,0.04)}
+.stat-num{font-family:var(--display);font-weight:800;font-size:1.35rem;color:var(--ink);letter-spacing:-0.02em;display:block}
+.stat-label{font-family:var(--display);font-size:0.6rem;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:0.07em;display:block;margin-top:0.15rem}
+
+/* ── CONTENT AREA ── */
+.content-area{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem}
+
+/* ── TABS WRAPPER ── */
+.tabs-wrapper{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-md);overflow:hidden;
+}
+.tab-nav{
+  display:flex;overflow-x:auto;border-bottom:1px solid var(--border);
+  scrollbar-width:none;-ms-overflow-style:none;background:var(--bg);
+  position:relative;
+}
+.tab-nav::-webkit-scrollbar{display:none}
+
+/* sliding indicator */
+.tab-indicator{
+  position:absolute;bottom:0;left:0;
+  height:2.5px;background:var(--lime-dim);
+  transition:transform 0.35s var(--ease-out),width 0.35s var(--ease-out);
+  pointer-events:none;border-radius:2px 2px 0 0;
+  box-shadow:0 -2px 8px rgba(45,184,92,0.25);
+}
+
+.tab-btn{
+  flex-shrink:0;font-family:var(--display);font-size:0.8rem;font-weight:700;
+  color:var(--soft);background:none;border:none;cursor:pointer;
+  padding:0.9rem 1.3rem;border-bottom:2.5px solid transparent;
+  transition:color 0.2s,background 0.2s;white-space:nowrap;
+  display:flex;align-items:center;gap:0.45rem;letter-spacing:0.03em;
+}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn[aria-selected="true"]{color:var(--ink);background:var(--white)}
+.tab-icon{width:16px;height:16px;display:flex;align-items:center;justify-content:center;transition:transform 0.25s var(--ease-out)}
+.tab-btn:hover .tab-icon{transform:scale(1.12)}
+.tab-icon svg{width:15px;height:15px}
+
+/* tab panels */
+.tab-panel{display:none;padding:2rem 1.75rem}
+.tab-panel.active{display:block;animation:tabIn 0.35s var(--ease-out)}
+@keyframes tabIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PROCESS PANEL ── */
+.process-steps{display:flex;flex-direction:column;gap:0}
+.process-step{
+  display:flex;gap:1.25rem;padding:1.35rem 0;
+  border-bottom:1px solid var(--border);
+  transition:padding-left 0.3s var(--ease-out);
+}
+.process-step:last-child{border-bottom:none}
+.process-step:hover{padding-left:0.5rem}
+.process-step:hover .step-num{
+  transform:scale(1.08);
+  box-shadow:0 4px 14px rgba(62,207,110,0.35);
+}
+.step-left{display:flex;flex-direction:column;align-items:center;gap:0}
+.step-num{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:0.72rem;font-weight:800;
+  color:var(--lime);flex-shrink:0;
+  transition:transform 0.25s var(--ease-spring),box-shadow 0.25s ease;
+}
+.step-line{
+  flex:1;width:1.5px;background:var(--border);margin-top:6px;
+  position:relative;overflow:hidden;
+}
+.step-line::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,var(--lime-dim),transparent);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform 0.7s var(--ease-out);
+}
+.process-step.in-view .step-line::after{transform:scaleY(1)}
+.process-step:last-child .step-line{display:none}
+.step-body{padding-top:0.15rem;flex:1}
+.step-label{
+  font-family:var(--display);font-size:0.63rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--lime-dim);margin-bottom:0.3rem;
+  display:flex;align-items:center;gap:0.4rem;
+}
+.step-label svg{width:12px;height:12px;opacity:0.8}
+.step-body h3{font-family:var(--display);font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:0.4rem}
+.step-body p{font-size:0.88rem;color:var(--mid);line-height:1.68}
+
+/* ── FRAMEWORK PANEL ── */
+.framework-header{margin-bottom:1.5rem}
+.framework-header h2{font-family:var(--display);font-weight:800;font-size:1.4rem;color:var(--ink);margin-bottom:0.5rem}
+.framework-header p{font-size:0.9rem;color:var(--mid);line-height:1.72;max-width:560px}
+.pillars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.85rem;margin-bottom:1.75rem}
+.pillar{
+  display:flex;align-items:flex-start;gap:0.9rem;
+  padding:1rem;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--bg);transition:all 0.25s var(--ease-out);cursor:default;
+  position:relative;overflow:hidden;
+}
+.pillar::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:var(--lime-dim);transform:scaleY(0);transform-origin:top;
+  transition:transform 0.3s var(--ease-out);
+}
+.pillar:hover{border-color:var(--lime-dim);background:rgba(62,207,110,0.05);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+.pillar:hover::before{transform:scaleY(1)}
+.pillar:hover .p-icon{transform:rotate(-6deg) scale(1.05)}
+.p-icon{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform 0.3s var(--ease-spring);
+}
+.p-icon svg{width:17px;height:17px;color:var(--lime)}
+.p-text h4{font-family:var(--display);font-weight:700;font-size:0.9rem;color:var(--ink);margin-bottom:0.2rem}
+.p-text p{font-size:0.8rem;color:var(--mid);line-height:1.62}
+.tags{display:flex;flex-wrap:wrap;gap:0.5rem}
+.tag{
+  font-family:var(--display);font-size:0.72rem;font-weight:600;
+  color:var(--ink);background:rgba(62,207,110,0.12);
+  border:1px solid rgba(45,184,92,0.25);
+  padding:0.25rem 0.75rem;border-radius:100px;
+  transition:all 0.2s;cursor:default;
+}
+.tag:hover{background:rgba(62,207,110,0.22);border-color:var(--lime-dim);transform:translateY(-1px)}
+
+/* ── SERVICES PANEL ── */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.service-card{
+  padding:1.35rem;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--bg);transition:all 0.25s var(--ease-out);
+  position:relative;overflow:hidden;cursor:pointer;
+}
+.service-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2.5px;
+  background:linear-gradient(90deg,var(--lime-dim),var(--lime));
+  transform:scaleX(0);transform-origin:left;transition:transform 0.3s ease;
+}
+.service-card:hover{border-color:var(--lime-dim);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.service-card:hover::after{transform:scaleX(1)}
+.service-card:hover .svc-icon{transform:scale(1.08) rotate(-4deg);box-shadow:0 6px 18px rgba(13,13,20,0.18)}
+.svc-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;margin-bottom:1rem;
+  transition:transform 0.3s var(--ease-spring),box-shadow 0.3s ease;
+}
+.svc-icon svg{width:20px;height:20px;color:var(--lime)}
+.service-card h3{font-family:var(--display);font-weight:700;font-size:0.95rem;color:var(--ink);margin-bottom:0.45rem}
+.service-card p{font-size:0.83rem;color:var(--mid);line-height:1.68;margin-bottom:1rem}
+.svc-link{
+  font-family:var(--display);font-size:0.78rem;font-weight:700;
+  color:var(--ink);text-decoration:none;
+  display:inline-flex;align-items:center;gap:0.3rem;transition:gap 0.2s,color 0.2s;
+  border-bottom:1.5px solid var(--lime-dim);padding-bottom:1px;
+}
+.svc-link:hover{gap:0.55rem;color:var(--lime-dim)}
+
+/* ── WHY PANEL ── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:0.85rem}
+.why-item{
+  display:flex;flex-direction:column;gap:0.5rem;padding:1.25rem;
+  border-radius:var(--r);border:1px solid var(--border);background:var(--bg);
+  transition:all 0.25s var(--ease-out);
+}
+.why-item:hover{box-shadow:var(--shadow-md);border-color:var(--lime-dim);transform:translateY(-2px)}
+.why-item:hover .why-icon{transform:scale(1.08) rotate(6deg)}
+.why-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform 0.3s var(--ease-spring);
+}
+.why-icon svg{width:18px;height:18px;color:var(--lime)}
+.why-item h4{font-family:var(--display);font-weight:700;font-size:0.9rem;color:var(--ink)}
+.why-item p{font-size:0.82rem;color:var(--mid);line-height:1.65}
+
+/* ── CONTACT PANEL ── */
+.contact-inner{max-width:540px;margin:0 auto;text-align:center}
+.contact-inner h2{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--ink);margin-bottom:0.75rem}
+.contact-inner>p{font-size:0.93rem;color:var(--mid);line-height:1.78;margin-bottom:2rem}
+.contact-options{display:flex;flex-direction:column;gap:1rem;text-align:left}
+.contact-opt{
+  display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;
+  border-radius:var(--r);border:1.5px solid var(--border);background:var(--bg);
+  text-decoration:none;transition:all 0.25s var(--ease-out);
+}
+.contact-opt:hover{border-color:var(--lime-dim);background:rgba(62,207,110,0.05);box-shadow:var(--shadow-sm);transform:translateX(4px)}
+.contact-opt:hover .co-icon{transform:rotate(-6deg) scale(1.05)}
+.contact-opt:hover .co-arrow{transform:translateX(4px);color:var(--lime)}
+.co-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform 0.3s var(--ease-spring);
+}
+.co-icon svg{width:19px;height:19px;color:var(--lime)}
+.co-text strong{font-family:var(--display);font-weight:700;font-size:0.9rem;color:var(--ink);display:block}
+.co-text span{font-size:0.8rem;color:var(--soft)}
+.co-arrow{margin-left:auto;color:var(--lime-dim);font-size:1.1rem;font-family:var(--display);font-weight:700;transition:transform 0.25s var(--ease-out),color 0.2s}
+.contact-note{margin-top:1.75rem;font-size:0.8rem;color:var(--faint);line-height:1.6}
+
+/* ── CTA STRIP ── */
+.cta-strip{
+  background:var(--ink);
+  border-radius:var(--r-lg);padding:2.75rem 1.75rem;text-align:center;
+  position:relative;overflow:hidden;margin-top:1.5rem;
+}
+.cta-strip::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(200,240,74,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,240,74,0.04) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+.cta-strip::after{
+  content:'';position:absolute;
+  top:-120px;right:-80px;
+  width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(62,207,110,0.12) 0%,transparent 70%);
+  pointer-events:none;
+  animation:floatGlow 8s ease-in-out infinite;
+}
+@keyframes floatGlow{
+  0%,100%{transform:translate(0,0)}
+  50%{transform:translate(-20px,15px)}
+}
+.cta-strip h2{font-family:var(--display);font-weight:800;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--white);margin-bottom:0.75rem;position:relative;z-index:1}
+.cta-strip p{color:rgba(244,241,235,0.65);font-size:0.9rem;margin-bottom:1.75rem;position:relative;z-index:1;max-width:440px;margin-left:auto;margin-right:auto}
+.cta-actions{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.btn-lime{
+  font-family:var(--display);font-weight:800;font-size:0.88rem;
+  color:var(--ink);background:var(--lime);
+  padding:0.78rem 1.75rem;border-radius:10px;text-decoration:none;
+  box-shadow:0 4px 18px rgba(62,207,110,0.3);transition:all 0.25s var(--ease-out);
+  display:inline-flex;align-items:center;gap:0.4rem;letter-spacing:0.03em;
+  cursor:pointer;border:none;position:relative;overflow:hidden;
+}
+.btn-lime::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,0.3),transparent);
+  transform:translateX(-100%);transition:transform 0.5s ease;
+}
+.btn-lime:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(62,207,110,0.4)}
+.btn-lime:hover::before{transform:translateX(100%)}
+.btn-lime svg{transition:transform 0.25s var(--ease-out)}
+.btn-lime:hover svg{transform:translateX(3px)}
+.btn-ghost-ink{
+  font-family:var(--display);font-weight:700;font-size:0.88rem;
+  color:rgba(244,241,235,0.8);background:rgba(244,241,235,0.07);
+  border:1.5px solid rgba(244,241,235,0.2);
+  padding:0.78rem 1.75rem;border-radius:10px;text-decoration:none;
+  transition:all 0.2s;backdrop-filter:blur(4px);letter-spacing:0.03em;
+  cursor:pointer;
+}
+.btn-ghost-ink:hover{background:rgba(244,241,235,0.13);border-color:rgba(244,241,235,0.4);transform:translateY(-2px)}
+
+/* ── BACK TO TOP ── */
+.back-top{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:200;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--ink);color:var(--lime);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 20px rgba(13,13,20,0.25);
+  opacity:0;transform:translateY(20px) scale(0.85);
+  pointer-events:none;
+  transition:opacity 0.3s var(--ease-out),transform 0.3s var(--ease-out),background 0.2s;
+}
+.back-top.visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.back-top:hover{background:var(--mid);transform:translateY(-3px) scale(1.05)}
+.back-top:active{transform:translateY(0) scale(1)}
+.back-top svg{width:18px;height:18px}
+
+/* ── FOOTER ── */
+footer{background:var(--white);border-top:1px solid var(--border);padding:2rem 1.5rem}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{
+  font-family:var(--display);font-weight:800;font-size:1rem;
+  letter-spacing:0.07em;color:var(--ink);text-decoration:none;
+  display:flex;align-items:center;gap:0.4rem;
+  transition:opacity 0.2s;
+}
+.footer-logo:hover{opacity:0.7}
+.footer-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--lime-dim)}
+.footer-tagline{font-size:0.73rem;color:var(--faint);margin-top:0.15rem;font-family:var(--body)}
+.footer-links{display:flex;gap:1.5rem;list-style:none;flex-wrap:wrap}
+.footer-links a{font-family:var(--display);font-size:0.78rem;font-weight:600;color:var(--mid);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--lime-dim)}
+.footer-copy{font-size:0.73rem;color:var(--faint)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.65s var(--ease-out),transform 0.65s var(--ease-out)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:0.01ms!important;
+    scroll-behavior:auto!important;
+  }
+  .reveal{opacity:1;transform:none}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  nav{padding:0 1.1rem;height:56px}
+  .mobile-menu{top:56px}
+
+  .hero{
+    min-height:100svh;
+    padding:5rem 1.25rem 3rem;
+    justify-content:center;
+  }
+  .hero-inner{max-width:100%}
+  .hero h1{
+    font-size:clamp(2.4rem,11vw,3.4rem);
+    line-height:1.05;
+    margin-bottom:1rem;
+  }
+  .hero-badge{font-size:0.64rem;padding:0.28rem 0.85rem;margin-bottom:1.4rem}
+  .hero-sub{font-size:0.95rem;margin-bottom:1.6rem;max-width:100%}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:0.6rem}
+  .btn-primary,.btn-secondary{
+    width:100%;justify-content:center;
+    padding:0.88rem 1rem;font-size:0.87rem;
+  }
+  .hero-stats{
+    max-width:100%;margin-top:2.25rem;
+    border-radius:12px;
+  }
+  .stat{padding:0.9rem 0.25rem}
+  .stat-num{font-size:1.1rem}
+  .stat-label{font-size:0.52rem;letter-spacing:0.05em}
+
+  .content-area{padding:1.5rem 1rem 3rem}
+  .tab-btn{padding:0.8rem 0.85rem;font-size:0.73rem;gap:0.3rem}
+  .tab-icon svg{width:12px;height:12px}
+  .tab-panel{padding:1.25rem 1rem}
+
+  .pillars-grid{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+
+  .process-step{gap:1rem;padding:1.1rem 0}
+  .step-num{width:32px;height:32px;font-size:0.68rem}
+
+  .cta-strip{padding:2rem 1.25rem;border-radius:12px}
+  .cta-strip h2{font-size:1.35rem}
+  .cta-actions{flex-direction:column;align-items:stretch}
+  .btn-lime,.btn-ghost-ink{width:100%;justify-content:center}
+
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:1rem}
+  .footer-links{gap:1rem;flex-wrap:wrap}
+
+  .back-top{bottom:1rem;right:1rem;width:38px;height:38px}
+}
+
+@media(max-width:375px){
+  .hero h1{font-size:2.2rem}
+  .tab-btn{padding:0.75rem 0.65rem;font-size:0.68rem}
+  .tab-icon{display:none}
+  .stat-num{font-size:1rem}
+  .stat-label{font-size:0.48rem}
+}
+
+@media(min-width:641px) and (max-width:900px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  nav{padding:0 1.5rem}
+  .hero{padding:6rem 2rem 3rem}
+  .hero h1{font-size:clamp(2.8rem,6vw,3.6rem)}
+  .hero-stats{max-width:580px}
+  .tab-btn{padding:0.85rem 1.05rem;font-size:0.77rem}
+  .tab-panel{padding:1.5rem 1.25rem}
+  .pillars-grid{grid-template-columns:1fr 1fr}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .why-grid{grid-template-columns:1fr 1fr}
+  .content-area{padding:2rem 1.5rem 3.5rem}
+}
+
+@media(min-width:901px) and (max-width:1100px){
+  .hero{padding:8rem 2rem 5rem}
+  .hero h1{font-size:clamp(3.2rem,4.5vw,4rem)}
+  .hero-stats{max-width:520px}
+}
+
+@media(min-width:1101px){
+  .hero{padding:9rem 2rem 6rem}
+  .hero h1{font-size:4.2rem}
+  .hero-stats{max-width:540px}
+  .content-area{padding:3rem 2rem 5rem}
+}
+
+/* Print */
+@media print{
+  nav,.mobile-menu,.back-top,.scroll-progress,.hamburger{display:none!important}
+  .hero{min-height:auto;padding:2rem}
+  .tab-panel{display:block!important;page-break-inside:avoid}
+  .tab-nav{display:none}
+  body{background:white}
+  *{box-shadow:none!important;animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" aria-label="APTRYK home">APTRYK <span class="logo-dot" aria-hidden="true"></span></a>
+  <ul class="nav-links">
+    <li><a href="#process" data-tab="process">How It Works</a></li>
+    <li><a href="#framework" data-tab="framework">Framework</a></li>
+    <li><a href="#services" data-tab="services">Services</a></li>
+    <li><a href="#why" data-tab="why">Why APTRYK</a></li>
+    <li><a href="#contact" data-tab="contact" class="btn-nav">Get Started</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" role="menu">
+  <a href="#process" data-tab="process" role="menuitem">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    How It Works
+  </a>
+  <a href="#framework" data-tab="framework" role="menuitem">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    Framework
+  </a>
+  <a href="#services" data-tab="services" role="menuitem">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    Services
+  </a>
+  <a href="#why" data-tab="why" role="menuitem">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    Why APTRYK
+  </a>
+  <a href="#contact" data-tab="contact" class="mobile-cta" role="menuitem">Get Started</a>
+</div>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero" aria-label="Introduction">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="badge-dot" aria-hidden="true"></span>AI · Automation · Software Consulting</div>
+    <h1>Build Smarter.<br/><span>Work Lighter.</span></h1>
+    <p class="hero-sub">APTRYK delivers custom AI tools and automation workflows built for businesses that need real results — without the enterprise complexity.</p>
+    <div class="hero-actions">
+      <button type="button" data-tab="contact" class="btn-primary">
+        Start a Project
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button type="button" data-tab="framework" class="btn-secondary">See the Framework</button>
+    </div>
+    <div class="hero-stats" role="list" aria-label="Key metrics">
+      <div class="stat" role="listitem"><span class="stat-num">3–5×</span><span class="stat-label">Faster Workflows</span></div>
+      <div class="stat" role="listitem"><span class="stat-num">SMB</span><span class="stat-label">Right-Sized Scale</span></div>
+      <div class="stat" role="listitem"><span class="stat-num" data-count="100" data-suffix="%">100%</span><span class="stat-label">Custom-Built</span></div>
+      <div class="stat" role="listitem"><span class="stat-num">Weeks</span><span class="stat-label">Not Months</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT TABS -->
+<div class="content-area" id="tabs-anchor">
+  <div class="tabs-wrapper reveal" id="tabsWrapper">
+
+    <!-- Tab Nav -->
+    <div class="tab-nav" role="tablist" aria-label="Section navigation">
+      <button class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-process" id="tab-process" tabindex="0" data-tab="process">
+        <span class="tab-icon" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        How It Works
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-framework" id="tab-framework" tabindex="-1" data-tab="framework">
+        <span class="tab-icon" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </span>
+        Framework
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-services" id="tab-services" tabindex="-1" data-tab="services">
+        <span class="tab-icon" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </span>
+        Services
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-why" id="tab-why" tabindex="-1" data-tab="why">
+        <span class="tab-icon" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </span>
+        Why APTRYK
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-contact" id="tab-contact" tabindex="-1" data-tab="contact">
+        <span class="tab-icon" aria-hidden="true">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        Get Started
+      </button>
+      <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
+    </div>
+
+    <!-- PROCESS PANEL -->
+    <div class="tab-panel active" id="panel-process" role="tabpanel" aria-labelledby="tab-process" tabindex="0">
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-left">
+            <div class="step-num">01</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              Discover &amp; Map
+            </div>
+            <h3>Audit Your Operations</h3>
+            <p>We audit your current processes, tools, and friction points. No fluff — just a clear picture of where automation creates the most value for your operation.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-left">
+            <div class="step-num">02</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Design with APTRYK
+            </div>
+            <h3>Scope the Right Solution</h3>
+            <p>Using our proprietary framework, we design a lightweight solution scoped precisely to your scale — nothing over-engineered, nothing wasted.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-left">
+            <div class="step-num">03</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+              Build &amp; Integrate
+            </div>
+            <h3>Deliver Into Your Stack</h3>
+            <p>Custom tools and workflows are built and integrated directly into how your team already works. Minimal disruption, maximum lift from week one.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-left">
+            <div class="step-num">04</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-body">
+            <div class="step-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              Launch &amp; Iterate
+            </div>
+            <h3>Ship, Train, and Scale</h3>
+            <p>We launch, train your team, and stay close. As your business grows, APTRYK scales with you — no re-platforming, no starting over.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRAMEWORK PANEL -->
+    <div class="tab-panel" id="panel-framework" role="tabpanel" aria-labelledby="tab-framework" tabindex="0">
+      <div class="framework-header">
+        <h2>The APTRYK Framework</h2>
+        <p>A methodology built for the real world. Most AI consultants hand you a generic stack and walk away. APTRYK is a structured methodology — purpose-built for small and mid-sized businesses — that ensures every solution is scoped right, implemented clean, and handed off with zero dependency on us.</p>
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar">
+          <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="p-text"><h4>Validate</h4><p>Identify the right problem before writing a single line of code</p></div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="p-text"><h4>Eliminate</h4><p>Strip out complexity — only build what moves the needle</p></div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+          <div class="p-text"><h4>Route</h4><p>Map data and decisions through clean, reliable automated flows</p></div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg></div>
+          <div class="p-text"><h4>Iterate</h4><p>Ship fast, gather real feedback, improve continuously</p></div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <div class="p-text"><h4>Track</h4><p>Every tool we build has measurable outcomes baked in from day one</p></div>
+        </div>
+        <div class="pillar">
+          <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div>
+          <div class="p-text"><h4>You Own It</h4><p>Full handoff — code, docs, and control stay with you always</p></div>
+        </div>
+      </div>
+      <div class="tags">
+        <span class="tag">No Vendor Lock-in</span>
+        <span class="tag">Rapid Deployment</span>
+        <span class="tag">SMB-First Design</span>
+        <span class="tag">Measurable ROI</span>
+        <span class="tag">AI-Native</span>
+        <span class="tag">Human-in-the-Loop</span>
+        <span class="tag">Full Ownership</span>
+      </div>
+    </div>
+
+    <!-- SERVICES PANEL -->
+    <div class="tab-panel" id="panel-services" role="tabpanel" aria-labelledby="tab-services" tabindex="0">
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h1v6H9zM14 9h1v6h-1zM9 12h6"/></svg></div>
+          <h3>Custom AI Assistants</h3>
+          <p>AI tools trained on your data, your terminology, and your workflows. Not generic chatbots — purpose-built assistants for how your team actually operates.</p>
+          <a href="#" class="svc-link">Learn more →</a>
+        </div>
+        <div class="service-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg></div>
+          <h3>Process Automation</h3>
+          <p>We identify repetitive, manual tasks and replace them with reliable automated flows — from reporting to CRM updates to client notifications and beyond.</p>
+          <a href="#" class="svc-link">Learn more →</a>
+        </div>
+        <div class="service-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+          <h3>Dashboards &amp; Reporting</h3>
+          <p>Real-time visibility into your business metrics without wrestling with spreadsheets. Built to surface exactly what you need to make faster decisions.</p>
+          <a href="#" class="svc-link">Learn more →</a>
+        </div>
+        <div class="service-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+          <h3>Systems Integration</h3>
+          <p>Connect your existing tools — CRM, inventory, scheduling, communication — into a unified workflow that keeps data clean and teams aligned.</p>
+          <a href="#" class="svc-link">Learn more →</a>
+        </div>
+        <div class="service-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+          <h3>Internal Tools &amp; Portals</h3>
+          <p>Purpose-built web apps for your team: intake forms, approval flows, client portals, and operational tools designed around how you actually work.</p>
+          <a href="#" class="svc-link">Learn more →</a>
+        </div>
+        <div class="service-card">
+          <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+          <h3>AI Strategy Consulting</h3>
+          <p>Not sure where to start? We'll audit your operations, identify your highest-ROI automation opportunities, and deliver a clear, actionable roadmap.</p>
+          <a href="#" class="svc-link">Learn more →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY PANEL -->
+    <div class="tab-panel" id="panel-why" role="tabpanel" aria-labelledby="tab-why" tabindex="0">
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <h4>Right-Sized Solutions</h4>
+          <p>No enterprise bloat. Every engagement is scoped for your scale so implementation is fast and adoption actually happens.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <h4>Fast Time to Value</h4>
+          <p>Most clients see working tools in 2–4 weeks. We believe speed builds trust — not 6-month roadmaps and quarterly check-ins.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div>
+          <h4>You Own Everything</h4>
+          <p>Full code ownership, full documentation, full handoff. Zero ongoing dependency on us unless you choose it.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <h4>Operator Mindset</h4>
+          <p>We've worked in field operations and understand how businesses actually run — and we build with that reality in mind.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+          <h4>Measurable Outcomes</h4>
+          <p>Every engagement defines success upfront. We're not done until you can see the difference in your actual numbers.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg></div>
+          <h4>Built to Scale</h4>
+          <p>What we build today won't break tomorrow. The APTRYK framework grows with your business without starting from scratch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT PANEL -->
+    <div class="tab-panel" id="panel-contact" role="tabpanel" aria-labelledby="tab-contact" tabindex="0">
+      <div class="contact-inner">
+        <h2>Ready to Build Something That Actually Works?</h2>
+        <p>Tell us what's slowing you down. We'll map out a solution and show you exactly what APTRYK can do for your operation — no commitment required.</p>
+        <div class="contact-options">
+          <a href="mailto:hello@aptryk.com" class="contact-opt">
+            <div class="co-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="co-text"><strong>Send us an Email</strong><span>hello@aptryk.com</span></div>
+            <span class="co-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#" class="contact-opt">
+            <div class="co-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div class="co-text"><strong>Book a Discovery Call</strong><span>30 minutes — no commitment required</span></div>
+            <span class="co-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="#" class="contact-opt">
+            <div class="co-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="co-text"><strong>Start a Project Brief</strong><span>Tell us what you need — we'll respond within 24 hours</span></div>
+            <span class="co-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="contact-note">No sales pressure. No long-term contracts required. We'll give you a straight answer on whether we're the right fit.</p>
+      </div>
+    </div>
+
+  </div><!-- /tabs-wrapper -->
+
+  <!-- CTA STRIP -->
+  <div class="cta-strip reveal">
+    <h2>We're Different By Design</h2>
+    <p>We built APTRYK specifically for businesses who've been burned by over-promised, under-delivered tech projects. Real solutions. Real ownership. Real results.</p>
+    <div class="cta-actions">
+      <button type="button" data-tab="contact" class="btn-lime">
+        Get in Touch
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <button type="button" data-tab="framework" class="btn-ghost-ink">See the Framework</button>
+    </div>
+  </div>
+
+</div><!-- /content-area -->
+
+</main>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <a href="#" class="footer-logo">APTRYK <span class="footer-logo-dot" aria-hidden="true"></span></a>
+      <div class="footer-tagline">AI &amp; Automation Consulting — Built for the Real World</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#process" data-tab="process">How It Works</a></li>
+      <li><a href="#framework" data-tab="framework">Framework</a></li>
+      <li><a href="#services" data-tab="services">Services</a></li>
+      <li><a href="#contact" data-tab="contact">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 APTRYK. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  const TABS = ['process','framework','services','why','contact'];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Nav scroll shadow ──
+  const navbar = document.getElementById('navbar');
+  const scrollProgress = document.getElementById('scrollProgress');
+  const backTop = document.getElementById('backTop');
+
+  function onScroll(){
+    const y = window.scrollY;
+    navbar.classList.toggle('scrolled', y > 10);
+    backTop.classList.toggle('visible', y > 400);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress.style.width = h > 0 ? ((y / h) * 100) + '%' : '0%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  // ── Tab switching ──
+  const indicator = document.getElementById('tabIndicator');
+  function moveIndicator(activeBtn){
+    if(!activeBtn || !indicator) return;
+    const left = activeBtn.offsetLeft;
+    const width = activeBtn.offsetWidth;
+    indicator.style.transform = `translateX(${left}px)`;
+    indicator.style.width = width + 'px';
+  }
+
+  function switchTab(id, opts){
+    if(!TABS.includes(id)) return;
+    const opts2 = opts || {};
+    const tabs = document.querySelectorAll('.tab-btn');
+    let activeBtn = null;
+
+    tabs.forEach(b=>{
+      const isActive = b.dataset.tab === id;
+      b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      b.tabIndex = isActive ? 0 : -1;
+      if(isActive) activeBtn = b;
+    });
+    document.querySelectorAll('.tab-panel').forEach(p=>{
+      p.classList.toggle('active', p.id === 'panel-' + id);
+    });
+
+    // Sync nav link active state
+    document.querySelectorAll('.nav-links a[data-tab]').forEach(a=>{
+      a.classList.toggle('active', a.dataset.tab === id);
+    });
+
+    moveIndicator(activeBtn);
+
+    // Update URL hash without jumping
+    if(!opts2.skipHash){
+      const newHash = '#' + id;
+      if(window.location.hash !== newHash){
+        history.replaceState(null, '', newHash);
+      }
+    }
+
+    // Animate process step lines if process tab
+    if(id === 'process'){
+      requestAnimationFrame(()=>{
+        document.querySelectorAll('#panel-process .process-step').forEach((el,i)=>{
+          setTimeout(()=>el.classList.add('in-view'), reduceMotion ? 0 : i * 120);
+        });
+      });
+    }
+  }
+
+  function scrollToTabs(){
+    document.getElementById('tabs-anchor').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block: 'start'});
+  }
+
+  // Wire up everything with data-tab
+  document.addEventListener('click', e=>{
+    const trigger = e.target.closest('[data-tab]');
+    if(!trigger) return;
+    e.preventDefault();
+    const id = trigger.dataset.tab;
+    switchTab(id);
+    // Scroll to tabs unless it's a tab button itself
+    if(!trigger.classList.contains('tab-btn')){
+      scrollToTabs();
+    }
+    // Close mobile menu if it's open
+    if(trigger.closest('.mobile-menu')) closeMenu();
+  });
+
+  // ── Keyboard nav for tabs ──
+  document.querySelector('.tab-nav').addEventListener('keydown', e=>{
+    const current = TABS.indexOf(document.activeElement.dataset?.tab);
+    if(current === -1) return;
+    let next = -1;
+    if(e.key === 'ArrowRight') next = (current + 1) % TABS.length;
+    else if(e.key === 'ArrowLeft') next = (current - 1 + TABS.length) % TABS.length;
+    else if(e.key === 'Home') next = 0;
+    else if(e.key === 'End') next = TABS.length - 1;
+    if(next > -1){
+      e.preventDefault();
+      const btn = document.querySelector(`.tab-btn[data-tab="${TABS[next]}"]`);
+      btn.focus();
+      switchTab(TABS[next]);
+    }
+  });
+
+  // Number key shortcuts (1-5)
+  document.addEventListener('keydown', e=>{
+    if(e.target.matches('input,textarea,select')) return;
+    if(e.altKey || e.ctrlKey || e.metaKey) return;
+    const n = parseInt(e.key, 10);
+    if(n >= 1 && n <= 5){
+      switchTab(TABS[n-1]);
+    }
+  });
+
+  // ── Hash routing ──
+  function initFromHash(){
+    const h = window.location.hash.replace('#','');
+    if(TABS.includes(h)){
+      switchTab(h, {skipHash:true});
+    } else {
+      // Initialize indicator on default tab
+      const activeBtn = document.querySelector('.tab-btn[aria-selected="true"]');
+      moveIndicator(activeBtn);
+      // Trigger process animation
+      switchTab('process', {skipHash:true});
+    }
+  }
+  window.addEventListener('hashchange', ()=>{
+    const h = window.location.hash.replace('#','');
+    if(TABS.includes(h)) switchTab(h, {skipHash:true});
+  });
+
+  // ── Hamburger ──
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  function toggleMenu(){
+    const open = !hamburger.classList.contains('open');
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function closeMenu(){
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    hamburger.setAttribute('aria-expanded','false');
+  }
+  hamburger.addEventListener('click', toggleMenu);
+
+  // Close menu on outside click
+  document.addEventListener('click', e=>{
+    if(!mobileMenu.classList.contains('open')) return;
+    if(e.target.closest('#hamburger') || e.target.closest('#mobileMenu')) return;
+    closeMenu();
+  });
+
+  // Close menu on escape
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
+  });
+
+  // ── Back to top ──
+  backTop.addEventListener('click', ()=>{
+    window.scrollTo({top:0, behavior: reduceMotion ? 'auto' : 'smooth'});
+  });
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+  // ── Recalc indicator on resize ──
+  let resizeTimer;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=>{
+      const activeBtn = document.querySelector('.tab-btn[aria-selected="true"]');
+      moveIndicator(activeBtn);
+    }, 100);
+  });
+
+  // ── Init ──
+  initFromHash();
+  onScroll();
+})();
+</script>
+</body>
+</html>
