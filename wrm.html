@@ -2645,13 +2645,10 @@ applyTheme();
 switchView('home');
 console.log('%cAPTRYK W/R/M Platform','font:700 14px/1 monospace;color:#3ecf6e','%c'+BUILD,'font:400 12px/1 monospace;color:#9d9db0');
 })();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const SUPABASE_URL = 'https://cighroyoedffgndydiqs.supabase.co/rest/v1/'
-const SUPABASE_KEY = 'sb_publishable_EYG1ZtrB6aS8fc3pSASCAg_aFzspgGg'
+const SUPABASE_KEY = 'sb_publishable_EYG1ZtrB6aS8fc3pSASCAg_aFzspGg'
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 async function cloudSave() {
   const data = {}
@@ -2668,7 +2665,6 @@ async function cloudLoad() {
 cloudLoad()
 setInterval(cloudSave, 30000)
 window.addEventListener('beforeunload', cloudSave)
-</script>
 </script>
 </body>
 </html>
