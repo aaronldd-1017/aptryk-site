@@ -873,7 +873,7 @@ a{color:inherit;text-decoration:none}
 ============================================================ */
 const STORAGE_KEY='aptryk:wrm:state:v1';
 const PREFS_KEY='aptryk:wrm:prefs:v1';
-const BUILD='2026.05.03 \u00b7 v1.9 \u00b7 W/R/M Platform';
+const BUILD='2026.05.03 \u00b7 v2.0 \u00b7 W/R/M Platform';
 
 const defaultState={
   engagements:[],
@@ -1941,11 +1941,22 @@ function openMoneyForm(kind,id){
         '<div class="field"><label class="field-label">Amount</label><div class="field-prefix"><span class="field-prefix-mark">$</span><input type="number" data-mf="amount" value="'+(v('amount')||'')+'" placeholder="0" min="0" step="100" required/></div></div>'+
         '<div class="field"><label class="field-label">Status</label><select data-mf="status">'+statusOpts.map(o=>'<option value="'+o[0]+'" '+(v('status','sent')===o[0]?'selected':'')+'>'+o[1]+'</option>').join('')+'</select></div>'+
       '</div>'+
-      '<div class="field"><label class="field-label">Title</label><input type="text" data-mf="title" value="'+escapeHtml(v('title'))+'" placeholder="'+(isP?'Sprint: AI intake automation':'Phase 1 \u2014 Discovery & design')+'"/></div>',
+      '<div class="field"><label class="field-label">Title</label><input type="text" data-mf="title" value="'+escapeHtml(v('title'))+'" placeholder="'+(isP?'Sprint: AI intake automation':'Phase 1 \u2014 Discovery & design')+'"/></div>'+
+      (id?'<div class="field"><button type="button" class="btn btn-danger" id="moneyDelBtn" style="width:100%;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Delete '+kind+'</button></div>':''),
     onMount:function(){
       $$('[data-client-pick]').forEach(b=>b.addEventListener('click',()=>{
         const inp=document.querySelector('[data-mf="client"]');inp.value=b.dataset.clientPick;inp.focus();
       }));
+      const db=$('#moneyDelBtn');
+      if(db)db.addEventListener('click',()=>{
+        if(confirm('Delete this '+kind+'? This cannot be undone.')){
+          if(isP)state.money.proposals=state.money.proposals.filter(x=>x.id!==id);
+          else state.money.invoices=state.money.invoices.filter(x=>x.id!==id);
+          logActivity('money.deleted',(isP?'Proposal':'Invoice')+' deleted: <strong>'+escapeHtml(it.client)+'</strong>');
+          saveState();closeModal();renderMoney();renderHome();renderActivity();
+          toast((isP?'Proposal':'Invoice')+' removed');
+        }
+      });
     },
     save:function(d){
       const client=(d.client||'').trim();
@@ -1973,47 +1984,61 @@ function openMoneyForm(kind,id){
 /* ============================================================
    CAPTURES
 ============================================================ */
+/* ============================================================
+   CAPTURES — quick drops with full edit/delete
+============================================================ */
+const CAP_KINDS={
+  idea:{label:'Idea',color:'var(--accent)',bg:'var(--accent-soft)',fg:'var(--accent)'},
+  note:{label:'Note',color:'var(--info)',bg:'var(--info-soft)',fg:'var(--info)'},
+  todo:{label:'To-do',color:'var(--warn)',bg:'rgba(251,191,36,0.12)',fg:'var(--warn)'},
+  link:{label:'Link',color:'var(--purple)',bg:'var(--purple-soft)',fg:'var(--purple)'}
+};
+
 function renderCaptures(){
   const wrap=$('#capturesView');
   if(state.captures.length===0){
     wrap.innerHTML='<div class="eng-empty">'+
       '<div class="eng-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18l7-5 7 5V3z"/></svg></div>'+
       '<h3>Nothing <em>captured</em> yet.</h3>'+
-      '<p>Press <kbd style="font-family:var(--mono);background:var(--surface-2);padding:.1rem .4rem;border-radius:4px;border:1px solid var(--line)">Q</kbd> from anywhere to drop an idea before it slips. Promote the keepers later.</p>'+
+      '<p>Press <kbd style="font-family:var(--mono);background:var(--surface-2);padding:.1rem .4rem;border-radius:4px;border:1px solid var(--line)">Q</kbd> from anywhere to drop an idea, note, to-do, or link before it slips. Promote the keepers later.</p>'+
     '</div>';
     return;
   }
   wrap.innerHTML='<div class="eng-list">'+state.captures.slice().sort((a,b)=>b.createdAt-a.createdAt).map(c=>{
-    const sideColor=c.kind==='idea'?'var(--accent)':'var(--info)';
-    const tagColor=c.kind==='idea'?'color:var(--accent);background:var(--accent-soft)':'color:var(--info);background:var(--info-soft)';
-    return '<div style="display:grid;grid-template-columns:auto 1fr auto;align-items:flex-start;gap:.85rem;padding:1rem 1.1rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);border-left:3px solid '+sideColor+'">'+
-      '<span style="font-family:var(--mono);font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:100px;'+tagColor+';margin-top:.1rem">'+c.kind+'</span>'+
+    const meta=CAP_KINDS[c.kind]||CAP_KINDS.idea;
+    return '<div class="cap-row" data-cap-row="'+c.id+'" style="display:grid;grid-template-columns:auto 1fr auto;align-items:flex-start;gap:.85rem;padding:1rem 1.1rem;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);border-left:3px solid '+meta.color+'">'+
+      '<span style="font-family:var(--mono);font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .5rem;border-radius:100px;color:'+meta.fg+';background:'+meta.bg+';margin-top:.1rem">'+meta.label+'</span>'+
       '<div style="min-width:0"><div style="font-family:var(--body);font-size:.92rem;color:var(--ink);line-height:1.55;white-space:pre-wrap;word-break:break-word">'+escapeHtml(c.text)+'</div><div style="font-family:var(--mono);font-size:.6rem;color:var(--faint);letter-spacing:.05em;margin-top:.5rem">'+ageText(c.createdAt)+' \u00b7 '+new Date(c.createdAt).toLocaleDateString()+'</div></div>'+
-      '<button data-cap-del="'+c.id+'" style="width:30px;height:30px;border-radius:6px;background:transparent;border:none;color:var(--soft);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>'+
+      '<button data-cap-edit="'+c.id+'" aria-label="Edit capture" style="width:30px;height:30px;border-radius:6px;background:transparent;border:none;color:var(--soft);display:flex;align-items:center;justify-content:center;cursor:pointer" title="Edit"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></button>'+
     '</div>';
   }).join('')+'</div>';
-  $$('[data-cap-del]').forEach(b=>b.addEventListener('click',()=>{
-    if(confirm('Delete this capture?')){
-      state.captures=state.captures.filter(x=>x.id!==b.dataset.capDel);
-      saveState();renderCaptures();renderHome();toast('Capture removed');
-    }
+  $$('[data-cap-edit]').forEach(b=>b.addEventListener('click',ev=>{
+    ev.stopPropagation();
+    openCaptureForm(b.dataset.capEdit);
   }));
 }
 
-function quickCapture(){
+function openCaptureForm(id){
+  const c=id?state.captures.find(x=>x.id===id):null;
+  const currentKind=c?c.kind:'idea';
   openModal({
-    title:'<em>Quick</em> capture',
-    saveLabel:'Drop it',
+    title:'<em>'+(id?'Edit':'Quick')+'</em> capture',
+    saveLabel:id?'Save':'Drop it',
     body:
       '<div class="field"><label class="field-label">Type</label>'+
       '<div class="cap-types">'+
-        '<button type="button" class="cap-type active" data-cap-type="idea"><span class="cap-type-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></span><span>Idea</span></button>'+
-        '<button type="button" class="cap-type" data-cap-type="note"><span class="cap-type-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span><span>Note</span></button>'+
-        '<button type="button" class="cap-type" data-cap-type="todo"><span class="cap-type-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span>To-do</span></button>'+
-        '<button type="button" class="cap-type" data-cap-type="link"><span class="cap-type-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span><span>Link</span></button>'+
+        Object.keys(CAP_KINDS).map(k=>{
+          const m=CAP_KINDS[k];
+          const icon=k==='idea'?'<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>'
+            :k==='note'?'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'
+            :k==='todo'?'<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'
+            :'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';
+          return '<button type="button" class="cap-type'+(k===currentKind?' active':'')+'" data-cap-type="'+k+'"><span class="cap-type-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+icon+'</svg></span><span>'+m.label+'</span></button>';
+        }).join('')+
       '</div>'+
-      '<input type="hidden" data-mf="kind" value="idea"/></div>'+
-      '<div class="field"><label class="field-label">What\u2019s on your mind</label><textarea data-mf="text" placeholder="The half-formed thought\u2026" required></textarea></div>',
+      '<input type="hidden" data-mf="kind" value="'+currentKind+'"/></div>'+
+      '<div class="field"><label class="field-label">What\u2019s on your mind</label><textarea data-mf="text" placeholder="The half-formed thought\u2026" required>'+(c?escapeHtml(c.text):'')+'</textarea></div>'+
+      (id?'<div class="field"><button type="button" class="btn btn-danger" id="capDelBtn" style="width:100%;justify-content:center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Delete capture</button></div>':''),
     onMount:function(){
       const typeBtns=$$('[data-cap-type]');
       const hidden=document.querySelector('[data-mf="kind"]');
@@ -2022,15 +2047,32 @@ function quickCapture(){
         b.classList.add('active');
         hidden.value=b.dataset.capType;
       }));
+      const db=$('#capDelBtn');
+      if(db)db.addEventListener('click',()=>{
+        if(confirm('Delete this capture? This cannot be undone.')){
+          state.captures=state.captures.filter(x=>x.id!==id);
+          saveState();closeModal();renderCaptures();renderHome();renderRailCounts();toast('Capture removed');
+        }
+      });
     },
     save:function(d){
       const text=(d.text||'').trim();if(!text){toast('Need some text');return false}
-      state.captures.unshift({id:uid(),kind:d.kind||'idea',text:text,createdAt:Date.now()});
-      logActivity('capture.created','Captured: '+escapeHtml(text.slice(0,80)));
-      saveState();renderCaptures();renderHome();renderActivity();renderRailCounts();toast('Captured');
+      const kind=d.kind||'idea';
+      if(id){
+        Object.assign(c,{kind:kind,text:text});
+        toast('Capture updated');
+      } else {
+        state.captures.unshift({id:uid(),kind:kind,text:text,createdAt:Date.now()});
+        logActivity('capture.created','Captured: '+escapeHtml(text.slice(0,80)));
+      }
+      saveState();renderCaptures();renderHome();renderActivity();renderRailCounts();
+      if(!id)toast('Captured');
     }
   });
 }
+
+// quickCapture is just a shortcut to openCaptureForm() with no id
+function quickCapture(){openCaptureForm()}
 
 /* ============================================================
    DECISIONS — the choices that shaped the work
@@ -2539,36 +2581,61 @@ $('#drawerEditBtn').addEventListener('click',()=>{if(drawerEngId){const id=drawe
 })();
 
 /* === KEYBOARD SHORTCUTS === */
+function anyOverlayOpen(){
+  return $('#cmdOverlay').classList.contains('open')
+    ||$('#sheetOverlay').classList.contains('open')
+    ||$('#modalOverlay').classList.contains('open')
+    ||$('#drawer').classList.contains('open')
+    ||$('#mnav').classList.contains('open');
+}
+function closeAnyOverlay(){
+  if($('#cmdOverlay').classList.contains('open')){closeCmd();return true}
+  if($('#sheetOverlay').classList.contains('open')){closeSheet();return true}
+  if($('#modalOverlay').classList.contains('open')){closeModal();return true}
+  if($('#drawer').classList.contains('open')){closeDrawer();return true}
+  if($('#mnav').classList.contains('open')){closeMobileNav();return true}
+  return false;
+}
 document.addEventListener('keydown',ev=>{
   const tag=document.activeElement&&document.activeElement.tagName;
   const isTyping=tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||(document.activeElement&&document.activeElement.isContentEditable);
+  const overlayOpen=anyOverlayOpen();
 
-  // Cmd/Ctrl+K — palette (works anywhere)
+  // Cmd/Ctrl+K — palette toggle (works anywhere, even when typing)
   if((ev.metaKey||ev.ctrlKey)&&(ev.key==='k'||ev.key==='K')){
     ev.preventDefault();
-    if($('#cmdOverlay').classList.contains('open'))closeCmd();else openCmd();
+    if($('#cmdOverlay').classList.contains('open'))closeCmd();
+    else{closeAnyOverlay();openCmd()}
     return;
   }
 
-  // ESC — close any overlay
+  // ESC — close any overlay (works while typing)
   if(ev.key==='Escape'){
-    if($('#cmdOverlay').classList.contains('open')){closeCmd();return}
-    if($('#sheetOverlay').classList.contains('open')){closeSheet();return}
-    if($('#modalOverlay').classList.contains('open')){closeModal();return}
-    if($('#drawer').classList.contains('open')){closeDrawer();return}
-    if($('#mnav').classList.contains('open')){closeMobileNav();return}
+    if(closeAnyOverlay())return;
+  }
+
+  // When an overlay is open, Q closes it (don't pile or duplicate)
+  // This works even while typing, since it's a meta-action
+  if(overlayOpen&&(ev.key==='q'||ev.key==='Q')&&!ev.metaKey&&!ev.ctrlKey&&!ev.altKey){
+    // Only intercept Q when NOT typing — when typing, Q is a regular character
+    if(!isTyping){
+      ev.preventDefault();
+      closeAnyOverlay();
+      return;
+    }
   }
 
   // Skip single-key shortcuts while typing
   if(isTyping)return;
-  // Skip if any modifier (other than shift for ?) — prevents browser shortcut conflicts
+  // Skip if any modifier — prevents browser shortcut conflicts
   if(ev.metaKey||ev.ctrlKey||ev.altKey)return;
 
-  // Single-key shortcuts (operator-style)
+  // Single-key shortcuts (only fire when nothing is open)
+  if(overlayOpen)return;
+
   if(ev.key==='q'||ev.key==='Q'){ev.preventDefault();quickCapture()}
   else if(ev.key==='/'||ev.key==='?'){ev.preventDefault();openCmd()}
   else if(ev.key==='N'&&ev.shiftKey){ev.preventDefault();openEngForm()}
-  // T removed from single-key — too easy to fire accidentally; theme is in topbar/settings only
 });
 
 /* ============================================================
@@ -2579,14 +2646,19 @@ switchView('home');
 console.log('%cAPTRYK W/R/M Platform','font:700 14px/1 monospace;color:#3ecf6e','%c'+BUILD,'font:400 12px/1 monospace;color:#9d9db0');
 })();
 </script>
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = https://cighroyoedffgndydiqs.supabase.co/rest/v1/
+const SUPABASE_URL = cighroyoedffgndydiqs
 const SUPABASE_KEY = sb_publishable_EYG1ZtrB6aS8fc3pSASCAg_aFzspgGg
+
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
 
 async function cloudSave() {
-  const data = JSON.parse(localStorage.getItem('wrm-data') || '{}')
+  const data = {}
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    data[key] = localStorage.getItem(key)
+  }
   await db.from('workspaces')
     .update({ data, updated_at: new Date().toISOString() })
     .eq('name', 'aptryk')
@@ -2598,14 +2670,12 @@ async function cloudLoad() {
     .eq('name', 'aptryk')
     .single()
   if (data?.data) {
-    localStorage.setItem('wrm-data', JSON.stringify(data.data))
+    Object.entries(data.data).forEach(([k, v]) => localStorage.setItem(k, v))
+    window.location.reload()
   }
 }
 
-cloudLoad().then(() => {
-  console.log('WRM loaded from cloud')
-})
-
+cloudLoad()
 setInterval(cloudSave, 30000)
 window.addEventListener('beforeunload', cloudSave)
 </script>
