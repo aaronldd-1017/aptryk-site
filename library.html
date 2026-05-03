@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>APTRYK Library — Everything we've built</title>
+<meta name="theme-color" content="#0a0a10"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --display:'Syne',-apple-system,sans-serif;
+  --body:'DM Sans',-apple-system,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --bg:#0a0a10;
+  --surface:#11111a;
+  --surface-2:#171723;
+  --surface-3:#1f1f2e;
+  --line:rgba(255,255,255,0.06);
+  --line-2:rgba(255,255,255,0.10);
+  --ink:#f4f4f7;
+  --ink-2:#d8d8e0;
+  --mid:#9d9db0;
+  --soft:#6b6b80;
+  --faint:#444454;
+  --accent:#3ecf6e;
+  --accent-h:#5edd86;
+  --accent-fg:#0a0a10;
+  --accent-soft:rgba(62,207,110,0.12);
+  --accent-soft-2:rgba(62,207,110,0.18);
+  --accent-glow:rgba(62,207,110,0.35);
+  --warn:#fbbf24;
+  --info:#60a5fa;
+  --info-soft:rgba(96,165,250,0.12);
+  --purple:#a78bfa;
+  --purple-soft:rgba(167,139,250,0.12);
+  --shadow:0 4px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+  --shadow-lg:0 16px 40px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  font-weight:400;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  min-height:100svh;
+  background-image:
+    radial-gradient(circle at 15% 10%,rgba(62,207,110,0.04) 0%,transparent 40%),
+    radial-gradient(circle at 85% 90%,rgba(96,165,250,0.03) 0%,transparent 40%);
+  background-attachment:fixed;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+::selection{background:var(--accent-soft-2);color:var(--ink)}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}
+
+.wrap{max-width:1200px;margin:0 auto;padding:2rem 1.5rem 5rem}
+
+/* ── HEADER ── */
+.head{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:1.5rem;flex-wrap:wrap;
+  padding-bottom:2rem;
+  margin-bottom:2.5rem;
+  border-bottom:1px solid var(--line);
+}
+.brand-stack{display:flex;flex-direction:column;gap:.65rem}
+.brand-mark{
+  display:inline-flex;align-items:center;gap:.7rem;
+}
+.brand-logo{
+  width:44px;height:44px;border-radius:11px;
+  background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:800;font-size:1.15rem;
+  color:var(--accent);
+  position:relative;
+}
+.brand-logo::after{
+  content:'';position:absolute;top:8px;right:8px;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 7px var(--accent-glow);
+}
+.brand-text{
+  font-family:var(--display);font-weight:800;font-size:1.45rem;
+  letter-spacing:-.015em;color:var(--ink);
+  display:flex;align-items:baseline;gap:.55rem;
+}
+.brand-pill{
+  font-family:var(--mono);font-weight:700;font-size:.6rem;
+  color:var(--accent);letter-spacing:.1em;text-transform:uppercase;
+  padding:.2rem .5rem;
+  background:var(--accent-soft);border-radius:5px;
+  line-height:1;
+}
+.lib-eyebrow{
+  font-family:var(--mono);font-size:.62rem;font-weight:700;
+  color:var(--soft);letter-spacing:.16em;text-transform:uppercase;
+  margin-top:.4rem;
+}
+.lib-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,5vw,2.85rem);
+  letter-spacing:-.03em;line-height:1.05;
+  margin-top:.45rem;
+  max-width:18ch;
+}
+.lib-title em{
+  font-family:var(--serif);font-style:italic;
+  color:var(--accent);font-weight:700;
+}
+.lib-sub{
+  font-family:var(--display);font-weight:400;
+  font-size:1rem;color:var(--mid);
+  line-height:1.5;max-width:55ch;
+  margin-top:.85rem;
+}
+
+.head-meta{
+  display:flex;flex-direction:column;gap:.55rem;align-items:flex-end;
+  font-family:var(--mono);font-size:.65rem;font-weight:600;
+  color:var(--soft);letter-spacing:.06em;
+  text-align:right;
+}
+.head-meta strong{color:var(--ink-2)}
+.head-meta-row{display:flex;gap:.4rem;align-items:center}
+.head-meta-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 5px var(--accent-glow);
+  animation:pulse 3s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── SECTION ── */
+.sec{margin-bottom:3rem}
+.sec-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;
+  margin-bottom:1.4rem;
+  padding-bottom:.85rem;
+  border-bottom:1px solid var(--line);
+}
+.sec-title-block{flex:1;min-width:0}
+.sec-eyebrow{
+  font-family:var(--mono);font-size:.6rem;font-weight:700;
+  color:var(--soft);letter-spacing:.16em;text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+.sec-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(1.35rem,3vw,1.65rem);
+  letter-spacing:-.02em;line-height:1.15;
+  color:var(--ink);
+}
+.sec-title em{
+  font-family:var(--serif);font-style:italic;
+  color:var(--accent);font-weight:700;
+}
+.sec-sub{
+  font-family:var(--display);font-size:.88rem;color:var(--mid);
+  line-height:1.5;max-width:62ch;
+  margin-top:.4rem;
+}
+.sec-count{
+  font-family:var(--mono);font-size:.6rem;font-weight:700;
+  color:var(--soft);letter-spacing:.08em;text-transform:uppercase;
+  background:var(--surface-2);border:1px solid var(--line);
+  padding:.3rem .55rem;border-radius:5px;
+  flex-shrink:0;
+}
+.sec-count strong{color:var(--accent);font-weight:800}
+
+/* ── HERO CARD (WRM Platform) ── */
+.hero{
+  display:grid;grid-template-columns:1.4fr 1fr;
+  gap:0;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  margin-bottom:1rem;
+}
+.hero::before{
+  content:'';position:absolute;
+  top:0;right:0;bottom:0;
+  width:40%;
+  background:radial-gradient(ellipse at 70% 50%,var(--accent-soft) 0%,transparent 70%);
+  pointer-events:none;opacity:.7;
+}
+.hero-body{
+  padding:2rem 2.25rem;
+  display:flex;flex-direction:column;
+  position:relative;z-index:1;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:var(--mono);font-size:.6rem;font-weight:700;
+  color:var(--accent);letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:.85rem;
+  width:fit-content;
+}
+.hero-tag::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
+  animation:pulse 3s cubic-bezier(.4,0,.2,1) infinite;
+}
+.hero-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(1.6rem,3.5vw,2rem);
+  letter-spacing:-.025em;line-height:1.1;
+  color:var(--ink);
+  margin-bottom:.55rem;
+}
+.hero-title em{
+  font-family:var(--serif);font-style:italic;
+  color:var(--accent);font-weight:700;
+}
+.hero-sub{
+  font-family:var(--display);font-weight:400;
+  font-size:.95rem;color:var(--mid);
+  line-height:1.55;
+  margin-bottom:1.5rem;
+  max-width:45ch;
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:.75rem;
+  margin-bottom:1.75rem;
+}
+.hero-stat{
+  padding:.7rem .85rem;
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;
+}
+.hero-stat-label{
+  font-family:var(--mono);font-size:.55rem;font-weight:700;
+  color:var(--soft);letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:.2rem;
+}
+.hero-stat-value{
+  font-family:var(--display);font-weight:700;font-size:.92rem;
+  color:var(--ink);letter-spacing:-.005em;
+}
+.hero-stat-value em{
+  font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700;
+}
+.hero-actions{display:flex;gap:.65rem;flex-wrap:wrap;margin-top:auto}
+.hero-side{
+  background:var(--surface-2);
+  border-left:1px solid var(--line);
+  padding:1.5rem 1.5rem;
+  display:flex;flex-direction:column;gap:1rem;
+  position:relative;z-index:1;
+}
+.hero-side-title{
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--soft);letter-spacing:.14em;text-transform:uppercase;
+}
+.hero-feat{
+  display:flex;align-items:flex-start;gap:.6rem;
+}
+.hero-feat-icon{
+  width:24px;height:24px;flex-shrink:0;
+  border-radius:6px;
+  background:var(--accent-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  margin-top:.1rem;
+}
+.hero-feat-icon svg{width:12px;height:12px;stroke-width:2.5}
+.hero-feat-text{
+  font-family:var(--display);font-size:.78rem;font-weight:500;
+  color:var(--ink-2);line-height:1.45;letter-spacing:-.005em;
+}
+.hero-feat-text strong{color:var(--ink);font-weight:700}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+  padding:.7rem 1.15rem;
+  border-radius:8px;
+  font-family:var(--display);font-size:.85rem;font-weight:700;
+  letter-spacing:-.005em;
+  cursor:pointer;
+  transition:all .15s cubic-bezier(.4,0,.2,1);
+  white-space:nowrap;
+}
+.btn svg{width:14px;height:14px;flex-shrink:0;stroke-width:2.5}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--accent);color:var(--accent-fg)}
+.btn-primary:hover{background:var(--accent-h);box-shadow:0 4px 14px var(--accent-glow)}
+.btn-secondary{background:var(--surface-2);color:var(--ink);border:1px solid var(--line-2)}
+.btn-secondary:hover{background:var(--surface-3);border-color:var(--mid)}
+.btn-sm{padding:.5rem .85rem;font-size:.75rem}
+
+/* ── ASSET GRID ── */
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:.85rem;
+}
+.card{
+  display:flex;flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:1.15rem 1.2rem;
+  transition:all .15s cubic-bezier(.4,0,.2,1);
+  position:relative;
+}
+.card:hover{border-color:var(--line-2);background:var(--surface-2);transform:translateY(-1px);box-shadow:var(--shadow)}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.7rem}
+.card-tag-row{display:flex;flex-wrap:wrap;gap:.3rem;align-items:center}
+.tag{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-family:var(--mono);font-size:.55rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.2rem .5rem;
+  border-radius:100px;
+  white-space:nowrap;
+}
+.tag-canonical{color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-soft-2)}
+.tag-canonical::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 4px var(--accent-glow)}
+.tag-archive{color:var(--soft);background:var(--surface-2);border:1px solid var(--line)}
+.tag-public{color:var(--info);background:var(--info-soft);border:1px solid rgba(96,165,250,0.18)}
+.tag-internal{color:var(--purple);background:var(--purple-soft);border:1px solid rgba(167,139,250,0.18)}
+.tag-sellable{color:var(--warn);background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.18)}
+
+.card-version{
+  font-family:var(--mono);font-size:.6rem;font-weight:700;
+  color:var(--mid);letter-spacing:.04em;
+  flex-shrink:0;
+}
+.card-name{
+  font-family:var(--display);font-weight:700;font-size:1.02rem;
+  letter-spacing:-.012em;color:var(--ink);
+  margin-bottom:.35rem;line-height:1.25;
+}
+.card-name em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.card-desc{
+  font-family:var(--body);font-size:.83rem;font-weight:400;
+  color:var(--mid);line-height:1.5;
+  margin-bottom:.85rem;
+  flex:1;
+}
+.card-meta{
+  display:flex;flex-wrap:wrap;gap:.4rem .85rem;
+  font-family:var(--mono);font-size:.6rem;font-weight:600;
+  color:var(--soft);letter-spacing:.04em;
+  margin-bottom:.95rem;padding-top:.65rem;
+  border-top:1px solid var(--line);
+}
+.card-meta span{display:inline-flex;align-items:center;gap:.25rem}
+.card-meta strong{color:var(--ink-2);font-weight:700;font-family:var(--mono)}
+
+.card-actions{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:auto}
+.card-actions .btn{flex:1;min-width:0;justify-content:center}
+
+.card-note{
+  font-family:var(--serif);font-style:italic;font-size:.78rem;
+  color:var(--ink-2);line-height:1.5;
+  padding:.65rem .85rem;
+  background:var(--surface-2);border-left:2px solid var(--accent);
+  border-radius:0 6px 6px 0;
+  margin-bottom:.95rem;
+}
+.card-note strong{font-style:normal;font-family:var(--display);font-weight:700;color:var(--accent)}
+
+/* ── BRAND KIT INLINE BLOCK ── */
+.brand-kit{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:1.5rem 1.75rem;
+}
+.bk-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+  margin-bottom:1.25rem;
+}
+.bk-block{
+  padding:1rem 1.1rem;
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  border-radius:9px;
+}
+.bk-label{
+  font-family:var(--mono);font-size:.55rem;font-weight:700;
+  color:var(--soft);letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:.55rem;
+}
+.bk-list{display:flex;flex-direction:column;gap:.4rem}
+.bk-row{
+  display:flex;align-items:center;gap:.55rem;
+  font-family:var(--display);font-size:.82rem;font-weight:500;
+  color:var(--ink-2);letter-spacing:-.005em;
+}
+.bk-swatch{
+  width:18px;height:18px;border-radius:5px;flex-shrink:0;
+  border:1px solid var(--line-2);
+}
+.bk-mono{font-family:var(--mono);font-size:.7rem;color:var(--soft)}
+.bk-font-syne{font-family:var(--display);font-weight:800}
+.bk-font-dm{font-family:var(--body);font-weight:500}
+.bk-font-playfair{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.bk-font-mono{font-family:var(--mono);font-weight:700}
+.bk-voice{
+  font-family:var(--serif);font-style:italic;font-size:.92rem;
+  color:var(--ink-2);line-height:1.5;
+  margin-top:.5rem;
+}
+.bk-voice strong{font-style:normal;font-family:var(--display);font-weight:700;color:var(--accent)}
+
+/* ── ARCHIVE (collapsed details) ── */
+details.archive{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:13px;
+  margin-top:1rem;
+}
+details.archive[open]{padding-bottom:.5rem}
+details.archive summary{
+  list-style:none;cursor:pointer;
+  padding:1rem 1.25rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;
+  font-family:var(--display);font-weight:700;font-size:.95rem;
+  color:var(--ink-2);letter-spacing:-.005em;
+}
+details.archive summary::-webkit-details-marker{display:none}
+details.archive summary:hover{background:var(--surface-2)}
+details.archive[open] summary{border-bottom:1px solid var(--line)}
+.summ-left{display:flex;align-items:center;gap:.75rem}
+.summ-chev{
+  width:18px;height:18px;
+  transition:transform .2s cubic-bezier(.4,0,.2,1);
+  color:var(--soft);
+}
+details.archive[open] .summ-chev{transform:rotate(90deg)}
+.summ-meta{font-family:var(--mono);font-size:.6rem;font-weight:600;color:var(--soft);letter-spacing:.08em}
+details.archive .grid{padding:1rem 1.25rem 1.25rem}
+
+/* ── FOOTER ── */
+.foot{
+  margin-top:4rem;padding-top:1.5rem;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.62rem;font-weight:600;
+  color:var(--soft);letter-spacing:.08em;text-transform:uppercase;
+}
+.foot em{font-family:var(--serif);font-style:italic;color:var(--accent);text-transform:none;letter-spacing:0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:840px){
+  .wrap{padding:1.5rem 1.1rem 4rem}
+  .head{flex-direction:column;gap:1rem}
+  .head-meta{align-items:flex-start;text-align:left}
+  .hero{grid-template-columns:1fr}
+  .hero-body{padding:1.5rem 1.4rem}
+  .hero-side{border-left:none;border-top:1px solid var(--line);padding:1.25rem 1.4rem}
+  .hero-stats{grid-template-columns:1fr 1fr 1fr}
+  .grid{grid-template-columns:1fr}
+  .brand-kit{padding:1.15rem 1.2rem}
+  .bk-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .hero-stats .hero-stat:last-child{grid-column:1/-1}
+  .bk-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+<header class="head">
+  <div class="brand-stack">
+    <div class="brand-mark">
+      <div class="brand-logo">A</div>
+      <div class="brand-text">APTRYK <span class="brand-pill">Library</span></div>
+    </div>
+    <div class="lib-eyebrow">Internal · Living Index</div>
+    <h1 class="lib-title">Everything <em>we've built</em>, in one place.</h1>
+    <p class="lib-sub">The catalog. What's live, what's internal, what's sellable, what's archived. So you always know what APTRYK has, where it lives, and what it's for.</p>
+  </div>
+  <div class="head-meta">
+    <div class="head-meta-row"><span class="head-meta-dot"></span><strong>Living index</strong></div>
+    <div>Updated · 2026.05.02</div>
+    <div>Version · v1.0</div>
+  </div>
+</header>
+
+<!-- ============================================================
+     SECTION 1 — THE DAILY DRIVER
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">01 · The Daily Driver</div>
+      <h2 class="sec-title">The <em>operating system</em> we run on.</h2>
+      <p class="sec-sub">The single tool we use every day to manage engagements, track money, log decisions, and capture ideas. This is the one. Everything else is in service of this.</p>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-body">
+      <div class="hero-tag">CANONICAL · v1.6</div>
+      <h2 class="hero-title">APTRYK <em>W/R/M Platform</em></h2>
+      <p class="hero-sub">"What Really Matters" — a single-file operating system for an AI consulting business. Engagements, pipeline, money, captures, decisions, activity, all in one calm dark-first interface. Built for thumb on mobile, cockpit on desktop.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-label">Surface</div>
+          <div class="hero-stat-value"><em>8</em> views</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Themes</div>
+          <div class="hero-stat-value"><em>3</em> palettes</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-label">Footprint</div>
+          <div class="hero-stat-value">~165 <em>KB</em></div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="wrm.html" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          Open Platform
+        </a>
+        <a href="wrm.html" download class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download
+        </a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="hero-side-title">Why It Matters</div>
+      <div class="hero-feat">
+        <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="hero-feat-text"><strong>Internal:</strong> Manages every APTRYK client engagement</div>
+      </div>
+      <div class="hero-feat">
+        <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="hero-feat-text"><strong>Sellable:</strong> White-label to clients as their ops platform</div>
+      </div>
+      <div class="hero-feat">
+        <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="hero-feat-text"><strong>Demonstrable:</strong> Prospect demos see capability live</div>
+      </div>
+      <div class="hero-feat">
+        <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="hero-feat-text"><strong>Single file:</strong> Drop into any host, no install, no DB</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — SELLABLE & WHITE-LABELABLE
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">02 · Sellable & White-Labelable</div>
+      <h2 class="sec-title">Things we can <em>turn into client deliverables</em>.</h2>
+      <p class="sec-sub">These are products and systems we built for ourselves that translate directly into client work — either as white-label installs, customized adaptations, or templates we can hand off.</p>
+    </div>
+    <div class="sec-count"><strong>3</strong> assets</div>
+  </div>
+
+  <div class="grid">
+
+    <!-- W/R/M Platform (cross-listed) -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-sellable">Sellable</span>
+        </div>
+        <span class="card-version">v1.6</span>
+      </div>
+      <h3 class="card-name">W/R/M <em>Platform</em></h3>
+      <p class="card-desc">Operating system for AI consulting. Workspace name is editable in Settings — change it to "Acme Operations" and the entire app rebrands. Lime accent can be retoken-ed via CSS vars.</p>
+      <div class="card-note"><strong>How to sell:</strong> $5–15K install, customize tokens for client brand, train them for 1 hour. Recurring "platform refresh" retainer.</div>
+      <div class="card-meta">
+        <span><strong>165</strong> KB</span>
+        <span>Single <strong>HTML</strong></span>
+        <span>Zero <strong>deps</strong></span>
+      </div>
+      <div class="card-actions">
+        <a href="wrm.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="wrm.html" download class="btn btn-secondary btn-sm">DL</a>
+      </div>
+    </article>
+
+    <!-- The Brief -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-sellable">Sellable</span>
+        </div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">The APTRYK <em>Brief</em></h3>
+      <p class="card-desc">Engagement tracker template — markdown-based, dual-view (internal blocks strip for client view). Document every project in a consistent way that becomes part of the deliverable.</p>
+      <div class="card-note"><strong>How to sell:</strong> Bundled with engagements as part of "the APTRYK way." Becomes a project artifact clients keep.</div>
+      <div class="card-meta">
+        <span><strong>4</strong> files</span>
+        <span>Markdown</span>
+        <span>Template</span>
+      </div>
+      <div class="card-actions">
+        <a href="aptryk-brief-system.zip" download class="btn btn-primary btn-sm">Download Zip</a>
+        <a href="aptryk-brief-README.md" class="btn btn-secondary btn-sm">README</a>
+      </div>
+    </article>
+
+    <!-- Consult Intake -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-sellable">Adaptable</span>
+        </div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">The <em>Consult</em> Intake</h3>
+      <p class="card-desc">8-question branded intake at <span class="bk-mono">aptryk.com/consult</span>. Web3Forms backend, no signup, mobile-first. Pattern can be adapted for client lead-gen or onboarding intake.</p>
+      <div class="card-note"><strong>How to sell:</strong> $1.5–3K to clone, rebrand, swap form action, add questions. Quick turnaround project.</div>
+      <div class="card-meta">
+        <span><strong>40</strong> KB</span>
+        <span>Single <strong>HTML</strong></span>
+        <span>Web3Forms</span>
+      </div>
+      <div class="card-actions">
+        <a href="consult.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="consult.html" download class="btn btn-secondary btn-sm">DL</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — INTERNAL OPERATIONS
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">03 · Internal Operations</div>
+      <h2 class="sec-title">How <em>we</em> work.</h2>
+      <p class="sec-sub">Systems and documents we use to run APTRYK. These aren't products — they're the operating manual. Some have sellable adaptations (see above).</p>
+    </div>
+    <div class="sec-count"><strong>2</strong> systems</div>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-internal">Internal</span></div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">The APTRYK <em>Stack</em></h3>
+      <p class="card-desc">Internal ops directory. The map of every tool, account, integration, and credential we use. The thing we update first when something changes.</p>
+      <div class="card-meta">
+        <span>Markdown</span>
+        <span>Living doc</span>
+      </div>
+      <div class="card-actions">
+        <a href="aptryk-stack-system.zip" download class="btn btn-primary btn-sm">Download Zip</a>
+        <a href="aptryk-stack-overview.md" class="btn btn-secondary btn-sm">Overview</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-internal">Internal</span></div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">The APTRYK <em>Brief</em> (internal)</h3>
+      <p class="card-desc">Same template as the sellable version, but used internally for our own engagements. Source of truth for project state, client comms, decisions made.</p>
+      <div class="card-meta">
+        <span>Template</span>
+        <span>Markdown</span>
+      </div>
+      <div class="card-actions">
+        <a href="aptryk-brief-template.md" class="btn btn-primary btn-sm">Open Template</a>
+        <a href="aptryk-brief-example.md" class="btn btn-secondary btn-sm">Example</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 4 — PUBLIC-FACING
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">04 · Public-Facing</div>
+      <h2 class="sec-title">What <em>the world</em> sees.</h2>
+      <p class="sec-sub">Live sites at aptryk.com — the front door for prospects, clients, and partners.</p>
+    </div>
+    <div class="sec-count"><strong>2</strong> sites</div>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-public">Public</span>
+        </div>
+        <span class="card-version">v2.0</span>
+      </div>
+      <h3 class="card-name">aptryk.com <em>Landing</em></h3>
+      <p class="card-desc">The marketing front door. Hero, services, the brief promise, the case for hiring us. Single HTML, deep-linked, mobile-tuned, accessible.</p>
+      <div class="card-meta">
+        <span><strong>56</strong> KB</span>
+        <span>Cloudflare Pages</span>
+      </div>
+      <div class="card-actions">
+        <a href="aptryk-landing-v2.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="https://aptryk.com" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Live ↗</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-public">Public</span>
+        </div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">Editorial <em>Page</em></h3>
+      <p class="card-desc">Long-form editorial alternate to the landing — for posts, manifestos, or single-page write-ups. Same brand language, different rhythm.</p>
+      <div class="card-meta">
+        <span><strong>30</strong> KB</span>
+        <span>Standalone</span>
+      </div>
+      <div class="card-actions">
+        <a href="aptryk-editorial.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="aptryk-editorial.html" download class="btn btn-secondary btn-sm">DL</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 5 — BRAND KIT
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">05 · Brand Kit</div>
+      <h2 class="sec-title">The <em>signature</em> — locked.</h2>
+      <p class="sec-sub">Type, color, voice. The brand stays consistent because every product references the same tokens. White-label clients only need to swap workspace name + accent color.</p>
+    </div>
+  </div>
+
+  <div class="brand-kit">
+    <div class="bk-grid">
+
+      <div class="bk-block">
+        <div class="bk-label">Typography</div>
+        <div class="bk-list">
+          <div class="bk-row"><span class="bk-font-syne" style="font-size:.95rem">Syne 800</span><span class="bk-mono">display</span></div>
+          <div class="bk-row"><span class="bk-font-dm" style="font-size:.9rem">DM Sans 400</span><span class="bk-mono">body</span></div>
+          <div class="bk-row"><span class="bk-font-playfair" style="font-size:.95rem">Playfair italic</span><span class="bk-mono">accent</span></div>
+          <div class="bk-row"><span class="bk-font-mono" style="font-size:.78rem">JetBrains Mono</span><span class="bk-mono">labels</span></div>
+        </div>
+      </div>
+
+      <div class="bk-block">
+        <div class="bk-label">Color · Midnight</div>
+        <div class="bk-list">
+          <div class="bk-row"><span class="bk-swatch" style="background:#0a0a10"></span>Ink<span class="bk-mono" style="margin-left:auto">#0a0a10</span></div>
+          <div class="bk-row"><span class="bk-swatch" style="background:#3ecf6e"></span>Accent<span class="bk-mono" style="margin-left:auto">#3ecf6e</span></div>
+          <div class="bk-row"><span class="bk-swatch" style="background:#f4f4f7"></span>Text<span class="bk-mono" style="margin-left:auto">#f4f4f7</span></div>
+          <div class="bk-row"><span class="bk-swatch" style="background:#11111a"></span>Surface<span class="bk-mono" style="margin-left:auto">#11111a</span></div>
+        </div>
+      </div>
+
+      <div class="bk-block">
+        <div class="bk-label">Themes</div>
+        <div class="bk-list">
+          <div class="bk-row"><span class="bk-swatch" style="background:linear-gradient(135deg,#0a0a10 50%,#3ecf6e 50%)"></span>Midnight<span class="bk-mono" style="margin-left:auto">default</span></div>
+          <div class="bk-row"><span class="bk-swatch" style="background:linear-gradient(135deg,#0a1322 50%,#60a5fa 50%)"></span>Ocean<span class="bk-mono" style="margin-left:auto">focus</span></div>
+          <div class="bk-row"><span class="bk-swatch" style="background:linear-gradient(135deg,#fafaf7 50%,#16a34a 50%)"></span>Daylight<span class="bk-mono" style="margin-left:auto">light</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="bk-block" style="background:transparent;border:1px dashed var(--line-2)">
+      <div class="bk-label">Voice</div>
+      <p class="bk-voice"><strong>Built for the real world.</strong> Operator-direct. No fluff. Specific numbers over buzzwords. Italic emphasis sparingly. Personality lives in small places — empty states, confirmations, transitions. Never in chrome.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — ARCHIVE (collapsed)
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">06 · Archive</div>
+      <h2 class="sec-title">The <em>previous</em> generations.</h2>
+      <p class="sec-sub">Tucked away but not deleted. Each was a step toward W/R/M. Reference them when you need to remember why we made a decision.</p>
+    </div>
+  </div>
+
+  <details class="archive">
+    <summary>
+      <div class="summ-left">
+        <svg class="summ-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Show legacy builds</span>
+      </div>
+      <div class="summ-meta">3 archived</div>
+    </summary>
+
+    <div class="grid">
+
+      <article class="card">
+        <div class="card-top">
+          <div class="card-tag-row"><span class="tag tag-archive">Archived</span></div>
+          <span class="card-version">v9.3</span>
+        </div>
+        <h3 class="card-name">KlearPath</h3>
+        <p class="card-desc">Cockpit-style dashboard with 15 views. Source of the Decisions log idea (now in W/R/M). Got too sprawling — the lesson that drove W/R/M's "8 views, every one earns it" philosophy.</p>
+        <div class="card-meta">
+          <span><strong>310</strong> KB</span>
+          <span>Apr 2026</span>
+        </div>
+        <div class="card-actions">
+          <a href="legacy/klearpath.html" class="btn btn-secondary btn-sm">Open archive</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="card-tag-row"><span class="tag tag-archive">Archived</span></div>
+          <span class="card-version">v8.x</span>
+        </div>
+        <h3 class="card-name">High Ground</h3>
+        <p class="card-desc">Widget-grid dashboard. The "operating console" experiment. Taught us mobile-first matters more than density.</p>
+        <div class="card-meta">
+          <span><strong>216</strong> KB</span>
+          <span>Apr 2026</span>
+        </div>
+        <div class="card-actions">
+          <a href="legacy/highground.html" class="btn btn-secondary btn-sm">Open archive</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <div class="card-tag-row"><span class="tag tag-archive">Archived</span></div>
+          <span class="card-version">v7</span>
+        </div>
+        <h3 class="card-name">Kastle</h3>
+        <p class="card-desc">First-generation dashboard. Static editorial poster style. Origin of the Syne+Playfair+lime visual language that survives in every product today.</p>
+        <div class="card-meta">
+          <span><strong>100</strong> KB</span>
+          <span>Apr 2026</span>
+        </div>
+        <div class="card-actions">
+          <a href="legacy/kastle.html" class="btn btn-secondary btn-sm">Open archive</a>
+        </div>
+      </article>
+
+    </div>
+  </details>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="foot">
+  <div>APTRYK Library · <em>Built for the real world.</em></div>
+  <div>v1.0 · 2026.05.02</div>
+</footer>
+
+</div>
+</body>
+</html>
