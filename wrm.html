@@ -2648,36 +2648,27 @@ console.log('%cAPTRYK W/R/M Platform','font:700 14px/1 monospace;color:#3ecf6e',
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = cighroyoedffgndydiqs
-const SUPABASE_KEY = sb_publishable_EYG1ZtrB6aS8fc3pSASCAg_aFzspgGg
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://cighroyoedffgndydiqs.supabase.co/rest/v1/'
+const SUPABASE_KEY = 'sb_publishable_EYG1ZtrB6aS8fc3pSASCAg_aFzspgGg'
 const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-
 async function cloudSave() {
   const data = {}
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i)
     data[key] = localStorage.getItem(key)
   }
-  await db.from('workspaces')
-    .update({ data, updated_at: new Date().toISOString() })
-    .eq('name', 'aptryk')
+  await db.from('workspaces').update({ data, updated_at: new Date().toISOString() }).eq('name', 'aptryk')
 }
-
 async function cloudLoad() {
-  const { data } = await db.from('workspaces')
-    .select('data')
-    .eq('name', 'aptryk')
-    .single()
-  if (data?.data) {
-    Object.entries(data.data).forEach(([k, v]) => localStorage.setItem(k, v))
-    window.location.reload()
-  }
+  const { data } = await db.from('workspaces').select('data').eq('name', 'aptryk').single()
+  if (data?.data) { Object.entries(data.data).forEach(([k, v]) => localStorage.setItem(k, v)) }
 }
-
 cloudLoad()
 setInterval(cloudSave, 30000)
 window.addEventListener('beforeunload', cloudSave)
+</script>
 </script>
 </body>
 </html>
