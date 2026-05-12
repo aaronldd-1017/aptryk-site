@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Book a discovery call · APTRYK</title>
+<meta name="theme-color" content="#0a0a10"/>
+<meta name="description" content="30-minute discovery call with APTRYK. Bring a problem. Leave with a path."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  --display:'Syne',-apple-system,sans-serif;
+  --body:'DM Sans',-apple-system,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --bg:#0a0a10;--surface:#11111a;--surface-2:#171723;--surface-3:#1f1f2e;
+  --line:rgba(255,255,255,0.06);--line-2:rgba(255,255,255,0.10);
+  --ink:#f4f4f7;--ink-2:#d8d8e0;--mid:#9d9db0;--soft:#6b6b80;--faint:#444454;
+  --accent:#3ecf6e;--accent-h:#5edd86;--accent-fg:#0a0a10;
+  --accent-soft:rgba(62,207,110,0.12);--accent-soft-2:rgba(62,207,110,0.18);
+  --accent-glow:rgba(62,207,110,0.35);
+  --err:#f87171;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-weight:400;line-height:1.55;
+  -webkit-font-smoothing:antialiased;min-height:100svh;
+  background-image:
+    radial-gradient(circle at 15% 10%,rgba(62,207,110,0.04) 0%,transparent 40%),
+    radial-gradient(circle at 85% 90%,rgba(96,165,250,0.03) 0%,transparent 40%);
+  background-attachment:fixed;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input,textarea{font:inherit;color:inherit;background:none;border:none;-webkit-tap-highlight-color:transparent;width:100%;outline:none}
+::selection{background:var(--accent-soft-2);color:var(--ink)}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}
+
+.wrap{max-width:1140px;margin:0 auto;padding:1.25rem 1.5rem 3rem}
+
+/* ── TOPBAR (compact) ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding-bottom:1rem;margin-bottom:1.5rem;
+  border-bottom:1px solid var(--line);
+}
+.brand-mark{display:inline-flex;align-items:center;gap:.65rem}
+.brand-logo{
+  width:34px;height:34px;border-radius:9px;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:800;font-size:.95rem;
+  color:var(--accent);position:relative;
+}
+.brand-logo::after{
+  content:'';position:absolute;top:6px;right:6px;width:4px;height:4px;
+  border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
+}
+.brand-text{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-.015em}
+.back-link{
+  font-family:var(--mono);font-size:.62rem;font-weight:700;
+  color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.4rem;transition:color .15s;
+}
+.back-link:hover{color:var(--ink-2)}
+.back-link svg{width:11px;height:11px;stroke-width:2.5}
+
+/* ── HERO (tightened) ── */
+.hero{margin-bottom:1.4rem}
+.eyebrow{
+  font-family:var(--mono);font-size:.62rem;font-weight:700;
+  color:var(--accent);letter-spacing:.16em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.5rem;margin-bottom:.75rem;
+}
+.eyebrow::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
+  animation:pulse 3s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,5vw,2.85rem);
+  letter-spacing:-.03em;line-height:1.05;
+  max-width:14ch;margin-bottom:.65rem;
+}
+.hero-title em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.hero-sub{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(.95rem,1.6vw,1.02rem);
+  color:var(--mid);line-height:1.5;max-width:60ch;
+}
+
+/* ── PROGRESS RAIL ── */
+.rail{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--soft);letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:1.1rem;flex-wrap:wrap;
+}
+.rail-step{display:inline-flex;align-items:center;gap:.4rem;transition:color .2s}
+.rail-step.active{color:var(--accent)}
+.rail-step.done{color:var(--ink-2)}
+.rail-num{
+  width:18px;height:18px;border-radius:5px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--surface-2);border:1px solid var(--line);
+  font-family:var(--mono);font-weight:700;font-size:.6rem;
+  transition:all .2s;
+}
+.rail-step.active .rail-num{background:var(--accent-soft);border-color:var(--accent-soft-2);color:var(--accent)}
+.rail-step.done .rail-num{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.rail-step.done .rail-num svg{width:10px;height:10px;stroke-width:3.5}
+.rail-sep{width:14px;height:1px;background:var(--line-2)}
+
+/* ── MAIN GRID ── */
+.main{display:grid;grid-template-columns:1.7fr 1fr;gap:1.1rem}
+
+/* ── PRIMARY PANEL ── */
+.panel{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.panel-head{
+  padding:.85rem 1.25rem;border-bottom:1px solid var(--line);
+  background:var(--surface-2);
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+}
+.panel-head-left{display:inline-flex;align-items:center;gap:.65rem;min-width:0}
+.panel-head-pill{
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--accent);letter-spacing:.12em;text-transform:uppercase;
+  padding:.22rem .5rem;background:var(--accent-soft);
+  border:1px solid var(--accent-soft-2);border-radius:5px;line-height:1;
+  display:inline-flex;align-items:center;gap:.32rem;
+}
+.panel-head-pill::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 5px var(--accent-glow);
+  animation:pulse 3s cubic-bezier(.4,0,.2,1) infinite;
+}
+.panel-head-title{
+  font-family:var(--display);font-weight:700;font-size:.88rem;
+  color:var(--ink);letter-spacing:-.005em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.panel-tz{
+  font-family:var(--mono);font-size:.58rem;font-weight:600;
+  color:var(--soft);letter-spacing:.06em;
+  white-space:nowrap;flex-shrink:0;
+}
+
+/* ── CALENDAR ── */
+.cal-wrap{padding:1.1rem 1.25rem 1.25rem;flex:1;display:flex;flex-direction:column}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem}
+.cal-month{
+  font-family:var(--display);font-weight:700;font-size:1.05rem;
+  letter-spacing:-.015em;color:var(--ink);
+}
+.cal-month em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700;margin-left:.2rem}
+.cal-nav-btns{display:flex;gap:.35rem}
+.cal-nav-btn{
+  width:30px;height:30px;border-radius:7px;
+  background:var(--surface-2);border:1px solid var(--line);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--ink-2);transition:all .15s;
+}
+.cal-nav-btn:hover:not(:disabled){background:var(--surface-3);border-color:var(--mid);color:var(--ink)}
+.cal-nav-btn:disabled{opacity:.3;cursor:not-allowed}
+.cal-nav-btn svg{width:13px;height:13px;stroke-width:2.5}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.28rem;position:relative}
+.cal-grid.loading::before{
+  content:'';position:absolute;inset:-4px;
+  background:linear-gradient(90deg,transparent 0%,var(--accent-soft) 50%,transparent 100%);
+  background-size:200% 100%;animation:shimmer 1.4s infinite;
+  border-radius:8px;pointer-events:none;opacity:.4;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.cal-dh{
+  font-family:var(--mono);font-size:.55rem;font-weight:700;
+  color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
+  text-align:center;padding:.35rem 0 .5rem;
+}
+.cal-cell{
+  aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:600;font-size:.9rem;
+  color:var(--ink-2);letter-spacing:-.005em;
+  border-radius:8px;background:transparent;border:1px solid transparent;
+  position:relative;transition:all .15s cubic-bezier(.4,0,.2,1);cursor:pointer;
+}
+.cal-cell.empty{cursor:default;color:var(--faint)}
+.cal-cell.unavail{color:var(--faint);cursor:not-allowed;text-decoration:line-through;text-decoration-color:var(--line-2)}
+.cal-cell.avail{background:var(--surface-2);border-color:var(--line);color:var(--ink)}
+.cal-cell.avail:hover{background:var(--surface-3);border-color:var(--accent-soft-2);transform:translateY(-1px)}
+.cal-cell.avail::after{
+  content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 4px var(--accent-glow);
+}
+.cal-cell.today{font-weight:800;color:var(--accent)}
+.cal-cell.today.avail{border-color:var(--accent-soft-2)}
+.cal-cell.selected{
+  background:var(--accent)!important;color:var(--accent-fg)!important;
+  border-color:var(--accent)!important;box-shadow:0 0 0 3px var(--accent-soft);
+}
+.cal-cell.selected::after{display:none}
+
+.cal-legend{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  margin-top:.95rem;padding-top:.85rem;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.55rem;font-weight:600;
+  color:var(--soft);letter-spacing:.08em;text-transform:uppercase;
+}
+.cal-legend-item{display:inline-flex;align-items:center;gap:.4rem}
+.cal-legend-dot{width:6px;height:6px;border-radius:50%}
+.cal-legend-dot.avail{background:var(--accent);box-shadow:0 0 4px var(--accent-glow)}
+.cal-legend-dot.unavail{background:var(--faint)}
+.cal-legend-dot.selected{background:var(--accent);outline:2px solid var(--accent-soft)}
+
+/* ── TIMES ── */
+.times{padding:1.1rem 1.25rem 1.25rem;display:flex;flex-direction:column;flex:1}
+.times-head{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.85rem}
+.times-date{font-family:var(--display);font-weight:700;font-size:1rem;letter-spacing:-.015em;color:var(--ink)}
+.times-back{
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--soft);letter-spacing:.12em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.38rem .6rem;border-radius:6px;
+  border:1px solid var(--line);transition:all .15s;
+}
+.times-back:hover{background:var(--surface-2);color:var(--ink-2);border-color:var(--line-2)}
+.times-back svg{width:11px;height:11px;stroke-width:2.5}
+
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:.5rem}
+.slot{
+  padding:.78rem .85rem;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:8px;
+  font-family:var(--display);font-weight:700;font-size:.88rem;
+  color:var(--ink);letter-spacing:-.005em;
+  text-align:center;cursor:pointer;
+  transition:all .15s cubic-bezier(.4,0,.2,1);
+  animation:slotIn .3s cubic-bezier(.16,1,.3,1) backwards;
+}
+.slot:hover{background:var(--surface-3);border-color:var(--accent-soft-2);transform:translateY(-1px)}
+.slot:active{transform:scale(.97)}
+.slot-meridiem{font-family:var(--mono);font-size:.58rem;color:var(--soft);font-weight:600;margin-left:.2rem}
+@keyframes slotIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.slots-empty{
+  text-align:center;padding:1.5rem 1rem;
+  color:var(--mid);font-family:var(--display);font-size:.88rem;
+}
+.slots-empty em{font-family:var(--serif);font-style:italic;color:var(--accent)}
+
+/* ── FORM ── */
+.form{padding:1.1rem 1.25rem 1.25rem;display:flex;flex-direction:column;flex:1;gap:.85rem}
+.form-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.1rem}
+.form-when{font-family:var(--display);font-weight:700;font-size:.95rem;letter-spacing:-.01em;color:var(--ink);line-height:1.3}
+.form-when em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.form-when-sub{font-family:var(--mono);font-size:.58rem;font-weight:600;color:var(--soft);letter-spacing:.08em;margin-top:.28rem}
+
+/* Format toggle */
+.fmt{display:flex;flex-direction:column;gap:.45rem}
+.fmt-toggle{
+  display:grid;grid-template-columns:1fr 1fr;gap:.4rem;
+  padding:.3rem;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;
+}
+.fmt-opt{
+  padding:.55rem .6rem;border-radius:6px;
+  font-family:var(--display);font-weight:700;font-size:.82rem;
+  color:var(--mid);letter-spacing:-.005em;
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+  transition:all .15s cubic-bezier(.4,0,.2,1);border:1px solid transparent;
+}
+.fmt-opt svg{width:13px;height:13px;stroke-width:2.2}
+.fmt-opt:hover{color:var(--ink-2)}
+.fmt-opt.active{
+  background:var(--surface);color:var(--accent);
+  border-color:var(--accent-soft-2);
+  box-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.fmt-note{
+  font-family:var(--body);font-size:.74rem;color:var(--soft);
+  padding:.1rem .15rem;
+}
+
+.fld{display:flex;flex-direction:column;gap:.35rem}
+.fld-row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.fld-label{font-family:var(--mono);font-size:.56rem;font-weight:700;color:var(--soft);letter-spacing:.12em;text-transform:uppercase}
+.fld-label .req{color:var(--accent);margin-left:.25rem}
+.fld-input{
+  padding:.65rem .8rem;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:8px;font-family:var(--body);font-size:.86rem;color:var(--ink);
+  transition:border-color .15s,background .15s;
+}
+.fld-input::placeholder{color:var(--soft)}
+.fld-input:focus{border-color:var(--accent-soft-2);background:var(--surface-3)}
+.fld-input.err{border-color:var(--err)}
+textarea.fld-input{min-height:64px;resize:vertical}
+.fld-help{font-family:var(--mono);font-size:.54rem;font-weight:500;color:var(--soft);letter-spacing:.06em}
+
+.form-foot{display:flex;gap:.55rem;margin-top:auto;padding-top:.4rem}
+.form-error{
+  font-family:var(--body);font-size:.78rem;color:var(--err);
+  padding:.55rem .75rem;background:rgba(248,113,113,0.08);
+  border:1px solid rgba(248,113,113,0.2);border-radius:7px;
+}
+
+/* ── CONFIRM ── */
+.confirm{padding:1.75rem 1.5rem;display:flex;flex-direction:column;align-items:flex-start;gap:.95rem;flex:1}
+.confirm-mark{
+  width:48px;height:48px;border-radius:12px;
+  background:var(--accent-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:.2rem;animation:confirmPop .5s cubic-bezier(.16,1,.3,1) backwards;
+}
+.confirm-mark svg{width:22px;height:22px;stroke-width:3}
+@keyframes confirmPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.confirm-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(1.4rem,3.5vw,1.85rem);
+  letter-spacing:-.025em;line-height:1.05;color:var(--ink);max-width:18ch;
+}
+.confirm-title em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.confirm-when{
+  font-family:var(--display);font-weight:600;font-size:.96rem;
+  color:var(--ink-2);letter-spacing:-.005em;line-height:1.45;
+  padding:.8rem 1rem;background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;width:100%;
+}
+.confirm-when em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.confirm-when-sub{
+  font-family:var(--mono);font-size:.6rem;font-weight:600;
+  color:var(--soft);letter-spacing:.08em;margin-top:.32rem;
+}
+.confirm-next{
+  font-family:var(--serif);font-style:italic;font-size:.88rem;
+  color:var(--ink-2);line-height:1.55;
+  padding:.75rem .9rem;background:var(--surface-2);
+  border-left:2px solid var(--accent);border-radius:0 6px 6px 0;
+}
+.confirm-next strong{font-style:normal;font-family:var(--display);font-weight:700;color:var(--accent)}
+.confirm-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.15rem}
+
+/* ── SIDE PANEL (compressed to single card) ── */
+.side{display:flex;flex-direction:column;gap:.85rem}
+.side-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:13px;padding:1.1rem 1.2rem;
+}
+.side-eyebrow{
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--soft);letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:.75rem;
+}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.85rem}
+.fact{padding:.6rem .7rem;background:var(--surface-2);border:1px solid var(--line);border-radius:7px}
+.fact-label{
+  font-family:var(--mono);font-size:.54rem;font-weight:700;
+  color:var(--soft);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.18rem;
+}
+.fact-value{
+  font-family:var(--display);font-weight:700;font-size:.83rem;
+  color:var(--ink);letter-spacing:-.005em;
+}
+.fact-value em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.note{
+  font-family:var(--serif);font-style:italic;font-size:.83rem;
+  color:var(--ink-2);line-height:1.5;
+  padding:.7rem .85rem;background:var(--surface-2);
+  border-left:2px solid var(--accent);border-radius:0 6px 6px 0;
+}
+.note strong{font-style:normal;font-family:var(--display);font-weight:700;color:var(--accent)}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+  padding:.65rem 1.1rem;border-radius:8px;
+  font-family:var(--display);font-size:.83rem;font-weight:700;
+  letter-spacing:-.005em;cursor:pointer;
+  transition:all .15s cubic-bezier(.4,0,.2,1);white-space:nowrap;
+}
+.btn svg{width:14px;height:14px;flex-shrink:0;stroke-width:2.5}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-primary{background:var(--accent);color:var(--accent-fg)}
+.btn-primary:hover:not(:disabled){background:var(--accent-h);box-shadow:0 4px 14px var(--accent-glow)}
+.btn-secondary{background:var(--surface-2);color:var(--ink);border:1px solid var(--line-2)}
+.btn-secondary:hover:not(:disabled){background:var(--surface-3);border-color:var(--mid)}
+.btn-grow{flex:1;min-width:0}
+
+/* ── FOOTER ── */
+.foot{
+  margin-top:2rem;padding-top:1.1rem;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.6rem;font-weight:600;
+  color:var(--soft);letter-spacing:.08em;text-transform:uppercase;
+}
+.foot em{font-family:var(--serif);font-style:italic;color:var(--accent);text-transform:none;letter-spacing:0}
+
+/* ── STEP TRANSITIONS ── */
+.step{animation:stepIn .3s cubic-bezier(.16,1,.3,1)}
+@keyframes stepIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:880px){
+  .wrap{padding:1rem 1rem 3rem}
+  .main{grid-template-columns:1fr}
+  .hero-title{font-size:clamp(1.85rem,7vw,2.4rem)}
+}
+@media(max-width:480px){
+  .facts{grid-template-columns:1fr 1fr}
+  .brand-text{font-size:1rem}
+  .fld-row{grid-template-columns:1fr}
+  .slots{grid-template-columns:repeat(2,1fr)}
+  .cal-cell{font-size:.84rem}
+  .rail{font-size:.54rem;gap:.35rem}
+  .rail-sep{width:8px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a href="/" class="brand-mark" aria-label="APTRYK home">
+      <div class="brand-logo">A</div>
+      <div class="brand-text">APTRYK</div>
+    </a>
+    <a href="/" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">30 min · Discovery · Free</div>
+    <h1 class="hero-title">Calm before <em>the build</em>.</h1>
+    <p class="hero-sub">A real conversation. No deck, no script. We'll either be a fit or we won't — and you'll know inside thirty minutes.</p>
+  </div>
+
+  <div class="rail" id="rail">
+    <span class="rail-step active" data-step="1"><span class="rail-num">1</span>Date</span>
+    <span class="rail-sep"></span>
+    <span class="rail-step" data-step="2"><span class="rail-num">2</span>Time</span>
+    <span class="rail-sep"></span>
+    <span class="rail-step" data-step="3"><span class="rail-num">3</span>Brief</span>
+    <span class="rail-sep"></span>
+    <span class="rail-step" data-step="4"><span class="rail-num">4</span>Booked</span>
+  </div>
+
+  <div class="main">
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-head-left">
+          <span class="panel-head-pill">Live</span>
+          <span class="panel-head-title" id="panelTitle">Pick a date</span>
+        </div>
+        <span class="panel-tz" id="panelTz">—</span>
+      </div>
+
+      <!-- Step 1 -->
+      <div class="cal-wrap step" id="step1">
+        <div class="cal-nav">
+          <div class="cal-month" id="calMonth">—</div>
+          <div class="cal-nav-btns">
+            <button class="cal-nav-btn" id="prevMonth" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+            <button class="cal-nav-btn" id="nextMonth" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span class="cal-legend-item"><span class="cal-legend-dot avail"></span>Available</span>
+          <span class="cal-legend-item"><span class="cal-legend-dot unavail"></span>Unavailable</span>
+          <span class="cal-legend-item"><span class="cal-legend-dot selected"></span>Selected</span>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="times step" id="step2" style="display:none">
+        <div class="times-head">
+          <div class="times-date" id="timesDate">—</div>
+          <button class="times-back" id="timesBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Change date</button>
+        </div>
+        <div class="slots" id="slots"></div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="form step" id="step3" style="display:none">
+        <div class="form-head">
+          <div>
+            <div class="form-when" id="formWhen">—</div>
+            <div class="form-when-sub" id="formWhenSub">—</div>
+          </div>
+          <button class="times-back" id="formBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>Change time</button>
+        </div>
+
+        <!-- Format toggle -->
+        <div class="fmt">
+          <label class="fld-label">How should we connect?<span class="req">*</span></label>
+          <div class="fmt-toggle" id="fmtToggle">
+            <button type="button" class="fmt-opt active" data-format="video">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              Video call
+            </button>
+            <button type="button" class="fmt-opt" data-format="phone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Phone call
+            </button>
+          </div>
+          <div class="fmt-note" id="fmtNote">Google Meet link arrives with your confirmation.</div>
+        </div>
+
+        <div class="fld-row">
+          <div class="fld">
+            <label class="fld-label" for="fName">Name<span class="req">*</span></label>
+            <input class="fld-input" id="fName" type="text" placeholder="First and last" autocomplete="name" required/>
+          </div>
+          <div class="fld">
+            <label class="fld-label" for="fEmail">Email<span class="req">*</span></label>
+            <input class="fld-input" id="fEmail" type="email" placeholder="you@company.com" autocomplete="email" required/>
+          </div>
+        </div>
+
+        <div class="fld" id="phoneField" style="display:none">
+          <label class="fld-label" for="fPhone">Phone number<span class="req">*</span></label>
+          <input class="fld-input" id="fPhone" type="tel" placeholder="+1 555 123 4567" autocomplete="tel"/>
+          <div class="fld-help">We'll call you. Include country code if outside the US.</div>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fProblem">The problem in one sentence<span class="req">*</span></label>
+          <textarea class="fld-input" id="fProblem" placeholder="The thing that's broken or stuck. Plain language." required></textarea>
+          <div class="fld-help">This is what we'll actually talk about. Skip the setup.</div>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fStack">Your stack (optional)</label>
+          <input class="fld-input" id="fStack" type="text" placeholder="e.g. Postgres, Vercel, Linear, GPT-4o"/>
+        </div>
+
+        <div class="form-error" id="formError" style="display:none"></div>
+
+        <div class="form-foot">
+          <button class="btn btn-secondary" id="formCancel">Back</button>
+          <button class="btn btn-primary btn-grow" id="formSubmit">
+            Confirm booking
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="confirm step" id="step4" style="display:none">
+        <div class="confirm-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h2 class="confirm-title">You're <em>booked</em>.</h2>
+        <div class="confirm-when">
+          <div id="confirmWhen">—</div>
+          <div class="confirm-when-sub" id="confirmWhenSub">Confirmation sent to your inbox</div>
+        </div>
+        <div class="confirm-next">
+          <strong>What happens next.</strong> I'll review your brief before we talk so we don't waste the first ten minutes on context. The invite has the connection details. To reschedule, just reply to the email.
+        </div>
+        <div class="confirm-actions">
+          <button class="btn btn-primary" id="downloadIcs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .ics
+          </button>
+          <button class="btn btn-secondary" id="bookAnother">Book another</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SIDE: single compact card -->
+    <div class="side">
+      <div class="side-card">
+        <div class="side-eyebrow">The shape</div>
+        <div class="facts">
+          <div class="fact"><div class="fact-label">Length</div><div class="fact-value"><em>30</em> min</div></div>
+          <div class="fact"><div class="fact-label">Cost</div><div class="fact-value">Free</div></div>
+          <div class="fact"><div class="fact-label">Format</div><div class="fact-value">Video or phone</div></div>
+          <div class="fact"><div class="fact-label">Sales</div><div class="fact-value">None</div></div>
+        </div>
+        <div class="note"><strong>Bring a problem.</strong> Leave with a path. Even if we don't end up working together, you'll walk away with one concrete next step.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div>APTRYK · <em>Built for the real world.</em></div>
+    <div>aptryk.com/book</div>
+  </footer>
+
+</div>
+
+<script>
+'use strict';
+
+// ── CONFIG ────────────────────────────────────────────────
+// Empty string = same-origin (production). Set to your worker URL during dev.
+// e.g. const API_BASE = 'https://aptryk-bookings.youraccount.workers.dev';
+const API_BASE = '';
+const DURATION_MIN = 30;
+
+// ── STATE ─────────────────────────────────────────────────
+const state = {
+  step: 1,
+  monthOffset: 0,
+  selectedDate: null,
+  selectedTime: null,        // local "HH:MM" string for display
+  selectedSlotIso: null,     // UTC ISO string sent to server
+  format: 'video',
+  form: {},
+  bookingId: null,
+  availability: {},          // { "YYYY-MM-DD" (user-local): [{iso, time}] }
+  apiAvailable: null,
+};
+
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAY_HEADERS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// ── API LAYER (with mock fallback) ────────────────────────
+async function fetchAvailability(fromDate, toDate) {
+  const from = isoDate(fromDate);
+  const to = isoDate(toDate);
+  if (state.apiAvailable === false) return mockAvailability(fromDate, toDate);
+  try {
+    const res = await fetch(`${API_BASE}/api/availability?from=${from}&to=${to}`, { method:'GET' });
+    if (!res.ok) throw new Error('api_failed');
+    const data = await res.json();
+    state.apiAvailable = true;
+    return groupByLocalDate(data.slots || []);
+  } catch (err) {
+    if (state.apiAvailable === null) {
+      console.warn('[APTRYK] Booking API not reachable — using local mock for preview.');
+      state.apiAvailable = false;
+    }
+    return mockAvailability(fromDate, toDate);
+  }
+}
+
+async function postBooking(payload) {
+  if (state.apiAvailable === false) {
+    await new Promise(r => setTimeout(r, 600));
+    return { ok:true, id:'BK-' + Math.random().toString(36).slice(2,8).toUpperCase(), mock:true };
+  }
+  const res = await fetch(`${API_BASE}/api/bookings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json().catch(()=>({}));
+  if (!res.ok) {
+    const err = new Error(data.error || 'booking_failed');
+    err.code = data.code;
+    throw err;
+  }
+  return data;
+}
+
+// ── MOCK (for previewing without backend) ─────────────────
+function mockAvailability(fromDate, toDate) {
+  const out = {};
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let d = new Date(fromDate); d <= toDate; d.setDate(d.getDate()+1)) {
+    const day = d.getDay();
+    if (day === 0 || day === 6) continue;
+    if (d < today) continue;
+    const seed = d.getDate() + d.getMonth() * 31;
+    if (seed % 11 === 0) continue;
+    const all = ['09:00','10:00','11:00','13:00','14:00','15:00','16:00'];
+    const pick = all.filter((_, i) => ((seed + i) % 7) !== 0);
+    const dateKey = isoDate(d);
+    out[dateKey] = pick.map(t => {
+      const [h,m] = t.split(':').map(Number);
+      const dt = new Date(d); dt.setHours(h,m,0,0);
+      return { iso: dt.toISOString(), time: t };
+    });
+  }
+  return out;
+}
+
+function groupByLocalDate(slotIsoArray) {
+  const out = {};
+  for (const iso of slotIsoArray) {
+    const dt = new Date(iso);
+    const key = isoDate(dt);
+    const time = String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0');
+    if (!out[key]) out[key] = [];
+    out[key].push({ iso, time });
+  }
+  return out;
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function isoDate(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function fmtDateLong(d) {
+  return d.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+}
+function fmtTime(t) {
+  const [h,m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return { main: `${h12}:${String(m).padStart(2,'0')}`, ampm };
+}
+function fmtTimeRange(t) {
+  const [h,m] = t.split(':').map(Number);
+  const start = new Date(); start.setHours(h,m,0,0);
+  const end = new Date(start.getTime() + DURATION_MIN*60000);
+  const opts = { hour:'numeric', minute:'2-digit' };
+  return start.toLocaleTimeString(undefined, opts) + ' – ' + end.toLocaleTimeString(undefined, opts);
+}
+function getTzLabel() {
+  try { return new Intl.DateTimeFormat(undefined,{timeZoneName:'short'}).formatToParts(new Date()).find(p=>p.type==='timeZoneName')?.value || ''; }
+  catch { return ''; }
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderRail() {
+  document.querySelectorAll('.rail-step').forEach(el => {
+    const s = +el.dataset.step;
+    el.classList.toggle('active', s === state.step);
+    el.classList.toggle('done', s < state.step);
+    const num = el.querySelector('.rail-num');
+    if (s < state.step) num.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    else num.textContent = s;
+  });
+}
+function renderPanelHead() {
+  const titles = { 1:'Pick a date', 2:'Pick a time', 3:'Tell us about it', 4:"You're booked" };
+  document.getElementById('panelTitle').textContent = titles[state.step];
+  document.getElementById('panelTz').textContent = getTzLabel();
+}
+
+async function renderCalendar() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const view = new Date(today.getFullYear(), today.getMonth() + state.monthOffset, 1);
+  document.getElementById('calMonth').innerHTML = `${MONTHS[view.getMonth()]} <em>${view.getFullYear()}</em>`;
+  document.getElementById('prevMonth').disabled = state.monthOffset <= 0;
+  document.getElementById('nextMonth').disabled = state.monthOffset >= 5;
+
+  const grid = document.getElementById('calGrid');
+  grid.classList.add('loading');
+  grid.innerHTML = '';
+  DAY_HEADERS.forEach(d => { const el=document.createElement('div'); el.className='cal-dh'; el.textContent=d; grid.appendChild(el); });
+
+  // Fetch availability for visible month (with 1-day pad on each side for TZ)
+  const rangeStart = new Date(view.getFullYear(), view.getMonth(), 0);
+  const rangeEnd   = new Date(view.getFullYear(), view.getMonth()+1, 1);
+  state.availability = await fetchAvailability(rangeStart, rangeEnd);
+  grid.classList.remove('loading');
+
+  const firstDay = view.getDay();
+  const daysInMonth = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+  for (let i=0; i<firstDay; i++){ const el=document.createElement('div'); el.className='cal-cell empty'; grid.appendChild(el); }
+  for (let day=1; day<=daysInMonth; day++) {
+    const d = new Date(view.getFullYear(), view.getMonth(), day);
+    const key = isoDate(d);
+    const slots = state.availability[key] || [];
+    const isPast = d < today;
+    const isToday = d.getTime() === today.getTime();
+    const isSelected = state.selectedDate && isoDate(d) === isoDate(state.selectedDate);
+    const el = document.createElement('button');
+    el.type = 'button'; el.className = 'cal-cell'; el.textContent = day;
+    if (isToday) el.classList.add('today');
+    if (isPast || slots.length === 0) { el.classList.add('unavail'); el.disabled = true; }
+    else { el.classList.add('avail'); el.addEventListener('click', () => selectDate(d)); }
+    if (isSelected) el.classList.add('selected');
+    grid.appendChild(el);
+  }
+}
+
+function renderTimes() {
+  const slots = state.availability[isoDate(state.selectedDate)] || [];
+  document.getElementById('timesDate').textContent = fmtDateLong(state.selectedDate);
+  const wrap = document.getElementById('slots');
+  wrap.innerHTML = '';
+  if (slots.length === 0) {
+    wrap.innerHTML = '<div class="slots-empty"><em>Quiet on the western front.</em><br/>No times left this day. Try another.</div>';
+    return;
+  }
+  slots.forEach((s, i) => {
+    const { main, ampm } = fmtTime(s.time);
+    const el = document.createElement('button');
+    el.type = 'button'; el.className = 'slot';
+    el.style.animationDelay = (i * 30) + 'ms';
+    el.innerHTML = `${main}<span class="slot-meridiem">${ampm}</span>`;
+    el.addEventListener('click', () => selectTime(s));
+    wrap.appendChild(el);
+  });
+}
+
+function renderForm() {
+  document.getElementById('formWhen').innerHTML = `${fmtDateLong(state.selectedDate)} · <em>${fmtTimeRange(state.selectedTime)}</em>`;
+  document.getElementById('formWhenSub').textContent = '30 minutes · ' + getTzLabel();
+}
+
+function renderConfirm() {
+  document.getElementById('confirmWhen').innerHTML = `<div style="font-family:var(--display);font-weight:700">${fmtDateLong(state.selectedDate)}</div><div><em>${fmtTimeRange(state.selectedTime)}</em></div>`;
+  const channel = state.format === 'phone' ? 'Phone' : 'Video';
+  document.getElementById('confirmWhenSub').textContent = `${channel} · ${getTzLabel()}` + (state.form.email ? ' · ' + state.form.email : '');
+}
+
+function showStep(n) {
+  state.step = n;
+  ['step1','step2','step3','step4'].forEach((id, i) => { document.getElementById(id).style.display = (i+1 === n) ? '' : 'none'; });
+  renderRail(); renderPanelHead();
+  if (n === 1) renderCalendar();
+  if (n === 2) renderTimes();
+  if (n === 3) renderForm();
+  if (n === 4) renderConfirm();
+  const el = document.getElementById('step'+n);
+  el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+  // Scroll panel into view on small screens
+  if (n > 1 && window.innerWidth <= 880) {
+    setTimeout(() => document.querySelector('.panel').scrollIntoView({behavior:'smooth', block:'start'}), 50);
+  }
+}
+
+// ── ACTIONS ───────────────────────────────────────────────
+function selectDate(d) { state.selectedDate = d; showStep(2); }
+function selectTime(s) { state.selectedTime = s.time; state.selectedSlotIso = s.iso; showStep(3); }
+
+document.getElementById('prevMonth').addEventListener('click', () => { state.monthOffset--; renderCalendar(); });
+document.getElementById('nextMonth').addEventListener('click', () => { state.monthOffset++; renderCalendar(); });
+document.getElementById('timesBack').addEventListener('click', () => showStep(1));
+document.getElementById('formBack').addEventListener('click', () => showStep(2));
+document.getElementById('formCancel').addEventListener('click', () => showStep(2));
+
+// Format toggle
+document.querySelectorAll('.fmt-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fmt-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.format = btn.dataset.format;
+    document.getElementById('phoneField').style.display = state.format === 'phone' ? '' : 'none';
+    document.getElementById('fmtNote').textContent = state.format === 'phone'
+      ? "We'll call the number you provide at the booked time."
+      : 'Google Meet link arrives with your confirmation.';
+  });
+});
+
+// Submit
+document.getElementById('formSubmit').addEventListener('click', async (e) => {
+  const btn = e.currentTarget;
+  const errBox = document.getElementById('formError');
+  errBox.style.display = 'none';
+
+  const name = document.getElementById('fName').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const phone = document.getElementById('fPhone').value.trim();
+  const problem = document.getElementById('fProblem').value.trim();
+  const stack = document.getElementById('fStack').value.trim();
+
+  let bad = false;
+  const checks = [
+    ['fName', !!name],
+    ['fEmail', !!(email && /\S+@\S+\.\S+/.test(email))],
+    ['fProblem', !!problem],
+  ];
+  if (state.format === 'phone') checks.push(['fPhone', !!phone && phone.replace(/\D/g,'').length >= 7]);
+  checks.forEach(([id, ok]) => {
+    document.getElementById(id).classList.toggle('err', !ok);
+    if (!ok) bad = true;
+  });
+  if (bad) { document.querySelector('.fld-input.err')?.focus(); return; }
+
+  state.form = { name, email, phone, problem, stack };
+  btn.disabled = true; btn.textContent = 'Booking…';
+
+  try {
+    const res = await postBooking({
+      name, email, problem, stack,
+      format: state.format,
+      phone: state.format === 'phone' ? phone : null,
+      startsAt: state.selectedSlotIso,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    });
+    state.bookingId = res.id;
+    showStep(4);
+  } catch (err) {
+    btn.disabled = false; btn.textContent = 'Try again';
+    let msg = "Couldn't confirm that booking. Try again, or pick a different time.";
+    if (err.code === 'slot_taken') msg = 'That slot was just taken. Please pick another time.';
+    if (err.code === 'invalid_slot') msg = 'That time is no longer available.';
+    errBox.textContent = msg;
+    errBox.style.display = '';
+  }
+});
+
+// ICS download
+function buildIcs() {
+  const start = new Date(state.selectedSlotIso);
+  const end = new Date(start.getTime() + DURATION_MIN*60000);
+  const fmt = d => d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const uid = (state.bookingId || 'aptryk-' + Date.now()) + '@aptryk.com';
+  const desc = (state.form.problem || '').replace(/\n/g,'\\n');
+  const loc = state.format === 'phone' ? 'Phone call (we will call you)' : 'Video link in confirmation email';
+  return [
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//APTRYK//Booking//EN','METHOD:REQUEST',
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${fmt(new Date())}`,
+    `DTSTART:${fmt(start)}`,
+    `DTEND:${fmt(end)}`,
+    'SUMMARY:APTRYK Discovery Call',
+    `DESCRIPTION:${desc}`,
+    `LOCATION:${loc}`,
+    'END:VEVENT','END:VCALENDAR'
+  ].join('\r\n');
+}
+
+document.getElementById('downloadIcs').addEventListener('click', () => {
+  const blob = new Blob([buildIcs()], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'aptryk-discovery.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('bookAnother').addEventListener('click', () => {
+  state.selectedDate = null; state.selectedTime = null; state.selectedSlotIso = null;
+  state.format = 'video'; state.form = {}; state.bookingId = null;
+  ['fName','fEmail','fPhone','fProblem','fStack'].forEach(id => document.getElementById(id).value = '');
+  document.querySelectorAll('.fmt-opt').forEach(b => b.classList.toggle('active', b.dataset.format === 'video'));
+  document.getElementById('phoneField').style.display = 'none';
+  state.monthOffset = 0;
+  showStep(1);
+});
+
+// ── INIT ──────────────────────────────────────────────────
+showStep(1);
+</script>
+
+</body>
+</html>
