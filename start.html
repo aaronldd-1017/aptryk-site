@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Start a project · APTRYK</title>
+<meta name="theme-color" content="#0a0a10"/>
+<meta name="description" content="The shortcut for operators who've done the homework. Drop your project brief — we'll come back inside two business days with scope, price, and a path."/>
+
+<meta property="og:title" content="Start a project · APTRYK"/>
+<meta property="og:description" content="You already know what to build. Drop the brief."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://aptryk.com/start"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  --display:'Syne',-apple-system,sans-serif;
+  --body:'DM Sans',-apple-system,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --bg:#0a0a10;--surface:#11111a;--surface-2:#171723;--surface-3:#1f1f2e;
+  --line:rgba(255,255,255,0.06);--line-2:rgba(255,255,255,0.10);
+  --ink:#f4f4f7;--ink-2:#d8d8e0;--mid:#9d9db0;--soft:#6b6b80;--faint:#444454;
+  --accent:#3ecf6e;--accent-h:#5edd86;--accent-fg:#0a0a10;
+  --accent-soft:rgba(62,207,110,0.12);--accent-soft-2:rgba(62,207,110,0.18);
+  --accent-glow:rgba(62,207,110,0.35);
+  --err:#f87171;--err-soft:rgba(248,113,113,0.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-weight:400;line-height:1.55;
+  -webkit-font-smoothing:antialiased;min-height:100svh;
+  background-image:
+    radial-gradient(circle at 15% 10%,rgba(62,207,110,0.04) 0%,transparent 40%),
+    radial-gradient(circle at 85% 90%,rgba(96,165,250,0.03) 0%,transparent 40%);
+  background-attachment:fixed;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+input,textarea,select{font:inherit;color:inherit;background:none;border:none;-webkit-tap-highlight-color:transparent;width:100%;outline:none}
+::selection{background:var(--accent-soft-2);color:var(--ink)}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}
+
+.wrap{max-width:880px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+/* TOP BAR */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding-bottom:1.25rem;margin-bottom:2rem;
+  border-bottom:1px solid var(--line);
+}
+.brand-mark{display:inline-flex;align-items:center;gap:.7rem}
+.brand-logo{
+  width:38px;height:38px;border-radius:10px;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:800;font-size:1rem;
+  color:var(--accent);position:relative;
+}
+.brand-logo::after{
+  content:'';position:absolute;top:7px;right:7px;width:4px;height:4px;
+  border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
+}
+.brand-text{font-family:var(--display);font-weight:800;font-size:1.2rem;letter-spacing:-.015em}
+.back-link{
+  font-family:var(--mono);font-size:.65rem;font-weight:700;
+  color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.4rem;transition:color .15s;
+}
+.back-link:hover{color:var(--ink-2)}
+.back-link svg{width:12px;height:12px;stroke-width:2.5}
+
+/* HERO */
+.hero{margin-bottom:2.5rem}
+.eyebrow{
+  font-family:var(--mono);font-size:.65rem;font-weight:700;
+  color:var(--accent);letter-spacing:.16em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:.5rem;margin-bottom:1rem;
+}
+.eyebrow::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
+  animation:pulse 3s cubic-bezier(.4,0,.2,1) infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2.2rem,5.5vw,3.2rem);
+  letter-spacing:-.035em;line-height:1.02;
+  margin-bottom:1rem;max-width:16ch;
+}
+.hero-title em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.hero-sub{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(1rem,2vw,1.1rem);
+  color:var(--mid);line-height:1.55;max-width:55ch;
+}
+
+/* META PILLS */
+.hero-meta{
+  display:flex;flex-wrap:wrap;gap:.4rem;
+  margin-top:1.25rem;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.35rem .7rem;
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:100px;
+  font-family:var(--mono);font-size:.6rem;font-weight:700;
+  color:var(--mid);letter-spacing:.08em;text-transform:uppercase;
+}
+.hero-pill svg{width:11px;height:11px;color:var(--accent);stroke-width:2.5}
+
+/* FORM SECTIONS */
+.brief{display:flex;flex-direction:column;gap:1.25rem}
+.sec{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:1.5rem 1.6rem 1.6rem;
+  position:relative;
+  overflow:hidden;
+}
+.sec::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;
+  width:3px;background:var(--accent);opacity:0;
+  transition:opacity .2s cubic-bezier(.4,0,.2,1);
+}
+.sec.touched::before{opacity:1}
+.sec-head{
+  display:flex;align-items:baseline;gap:.85rem;
+  margin-bottom:1.1rem;padding-bottom:.85rem;
+  border-bottom:1px solid var(--line);
+}
+.sec-num{
+  font-family:var(--mono);font-size:.85rem;font-weight:700;
+  color:var(--soft);letter-spacing:.04em;
+  flex-shrink:0;
+}
+.sec-titles{flex:1;min-width:0}
+.sec-eyebrow{
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--accent);letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:.25rem;
+}
+.sec-title{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.1rem,2.5vw,1.3rem);
+  letter-spacing:-.018em;line-height:1.2;color:var(--ink);
+}
+.sec-title em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+
+/* FIELDS */
+.fld{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.95rem}
+.fld:last-child{margin-bottom:0}
+.fld-row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.95rem}
+.fld-row:last-child{margin-bottom:0}
+.fld-row .fld{margin-bottom:0}
+.fld-label{
+  font-family:var(--mono);font-size:.58rem;font-weight:700;
+  color:var(--soft);letter-spacing:.12em;text-transform:uppercase;
+}
+.fld-label .req{color:var(--accent);margin-left:.25rem}
+.fld-label .opt{
+  color:var(--faint);font-family:var(--mono);font-weight:500;
+  letter-spacing:.04em;text-transform:none;margin-left:.4rem;
+}
+.fld-input{
+  padding:.75rem .9rem;
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;
+  font-family:var(--body);font-size:.9rem;color:var(--ink);
+  transition:border-color .15s,background .15s;
+}
+.fld-input::placeholder{color:var(--soft)}
+.fld-input:focus{border-color:var(--accent-soft-2);background:var(--surface-3);box-shadow:0 0 0 3px var(--accent-soft)}
+.fld-input.err{border-color:var(--err);background:var(--err-soft)}
+textarea.fld-input{min-height:84px;resize:vertical;line-height:1.55}
+.fld-help{
+  font-family:var(--mono);font-size:.56rem;font-weight:500;
+  color:var(--soft);letter-spacing:.06em;
+}
+.fld-help em{font-family:var(--serif);font-style:italic;font-weight:600;color:var(--mid)}
+
+/* RADIO GROUP */
+.radios{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:.5rem;
+}
+.radio{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.7rem .85rem;
+  background:var(--surface-2);border:1.5px solid var(--line);
+  border-radius:9px;cursor:pointer;
+  font-family:var(--display);font-size:.86rem;font-weight:500;
+  color:var(--ink-2);letter-spacing:-.005em;
+  transition:all .15s cubic-bezier(.4,0,.2,1);
+}
+.radio:hover{background:var(--surface-3);border-color:var(--line-2)}
+.radio input{display:none}
+.radio-check{
+  width:16px;height:16px;border-radius:50%;
+  border:1.5px solid var(--line-2);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.radio:has(input:checked){
+  background:var(--accent-soft);border-color:var(--accent);
+  color:var(--accent);font-weight:700;
+}
+.radio:has(input:checked) .radio-check{border-color:var(--accent);background:var(--accent)}
+.radio:has(input:checked) .radio-check::after{
+  content:'';width:5px;height:5px;border-radius:50%;background:var(--accent-fg);
+}
+
+/* SUBMIT ROW */
+.submit-row{
+  margin-top:.5rem;
+  display:flex;flex-direction:column;gap:1rem;
+}
+.error-box{
+  font-family:var(--body);font-size:.85rem;color:var(--err);
+  padding:.7rem .85rem;background:var(--err-soft);
+  border:1px solid rgba(248,113,113,0.2);border-radius:8px;
+}
+
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.85rem 1.4rem;border-radius:10px;
+  font-family:var(--display);font-size:.92rem;font-weight:700;
+  letter-spacing:-.005em;cursor:pointer;
+  transition:all .15s cubic-bezier(.4,0,.2,1);white-space:nowrap;
+}
+.btn svg{width:16px;height:16px;flex-shrink:0;stroke-width:2.5}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-primary{background:var(--accent);color:var(--accent-fg);box-shadow:0 4px 14px var(--accent-glow)}
+.btn-primary:hover:not(:disabled){background:var(--accent-h);box-shadow:0 6px 20px var(--accent-glow);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface-2);color:var(--ink);border:1px solid var(--line-2)}
+.btn-secondary:hover:not(:disabled){background:var(--surface-3);border-color:var(--mid)}
+.btn-submit{width:100%;padding:1rem 1.5rem;font-size:1rem}
+
+/* ALT PATH */
+.alt{
+  display:flex;align-items:center;justify-content:center;gap:.65rem;flex-wrap:wrap;
+  margin-top:1.25rem;padding:1.25rem;
+  border:1px dashed var(--line-2);border-radius:12px;
+  font-family:var(--display);font-size:.85rem;color:var(--mid);
+}
+.alt strong{color:var(--ink-2);font-weight:600}
+.alt a{
+  color:var(--accent);font-weight:700;
+  display:inline-flex;align-items:center;gap:.3rem;
+  transition:gap .15s;
+}
+.alt a:hover{gap:.45rem}
+.alt a svg{width:13px;height:13px;stroke-width:2.5}
+
+/* SUCCESS STATE */
+.success{display:none;animation:fadeUp .6s cubic-bezier(.16,1,.3,1)}
+.success.active{display:block}
+.success-mark{
+  width:64px;height:64px;border-radius:16px;
+  background:var(--accent-soft);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.5rem;animation:markPop .6s cubic-bezier(.16,1,.3,1) backwards;
+}
+.success-mark svg{width:30px;height:30px;stroke-width:3}
+@keyframes markPop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.success-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(2rem,5vw,2.6rem);
+  letter-spacing:-.03em;line-height:1.05;
+  margin-bottom:1.1rem;max-width:18ch;
+}
+.success-title em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+
+.success-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:1.4rem 1.5rem;
+  margin-bottom:1.2rem;border-left:3px solid var(--accent);
+}
+.success-card p{
+  font-family:var(--display);font-size:1rem;font-weight:500;
+  color:var(--ink-2);line-height:1.55;
+  margin-bottom:.65rem;
+}
+.success-card p:last-child{margin-bottom:0}
+.success-card p strong{font-weight:700;color:var(--ink)}
+.success-card p em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+
+.success-actions{display:flex;gap:.55rem;flex-wrap:wrap}
+
+/* LOADING SPINNER */
+.spinner{
+  display:inline-block;width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(10,10,16,0.25);border-top-color:var(--accent-fg);
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+.foot{
+  margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-family:var(--mono);font-size:.62rem;font-weight:600;
+  color:var(--soft);letter-spacing:.08em;text-transform:uppercase;
+}
+.foot em{font-family:var(--serif);font-style:italic;color:var(--accent);text-transform:none;letter-spacing:0}
+
+/* RESPONSIVE */
+@media(max-width:680px){
+  .wrap{padding:1.25rem 1rem 3rem}
+  .sec{padding:1.2rem 1.2rem 1.3rem}
+  .sec-head{flex-direction:row;gap:.7rem}
+  .sec-num{font-size:.75rem}
+  .fld-row{grid-template-columns:1fr}
+  .radios{grid-template-columns:1fr}
+  .hero-title{max-width:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a href="/" class="brand-mark" aria-label="APTRYK home">
+      <div class="brand-logo">A</div>
+      <div class="brand-text">APTRYK</div>
+    </a>
+    <a href="/" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+  </div>
+
+  <!-- FORM VIEW -->
+  <div id="formView">
+
+    <div class="hero">
+      <div class="eyebrow">Project Brief · Skip the discovery</div>
+      <h1 class="hero-title">You already know <em>what to build</em>.</h1>
+      <p class="hero-sub">The shortcut for operators who've done the homework — problem's clear, outcome's defined, budget exists. Drop the brief. We'll come back inside two business days with scope, price, and a path.</p>
+      <div class="hero-meta">
+        <span class="hero-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>5 min</span>
+        <span class="hero-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No call required</span>
+        <span class="hero-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>2-day reply</span>
+      </div>
+    </div>
+
+    <form class="brief" id="briefForm" novalidate>
+
+      <!-- SECTION 01 -->
+      <section class="sec" id="sec1">
+        <div class="sec-head">
+          <div class="sec-num">01</div>
+          <div class="sec-titles">
+            <div class="sec-eyebrow">The project</div>
+            <h2 class="sec-title">What you're <em>building</em>.</h2>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fName">Working title<span class="req">*</span></label>
+          <input class="fld-input" id="fProject" type="text" placeholder="Internal CRM rebuild · AI intake automation · Etc." maxlength="120" required/>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fPitch">One-line pitch<span class="req">*</span></label>
+          <input class="fld-input" id="fPitch" type="text" placeholder="What it is, in one sentence." maxlength="180" required/>
+          <span class="fld-help"><em>If it doesn't fit in a sentence, the project's not ready.</em></span>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fProblem">The problem you're solving<span class="req">*</span></label>
+          <textarea class="fld-input" id="fProblem" placeholder="What's actually broken or missing. Plain language." maxlength="800" required></textarea>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="sec" id="sec2">
+        <div class="sec-head">
+          <div class="sec-num">02</div>
+          <div class="sec-titles">
+            <div class="sec-eyebrow">What "done" looks like</div>
+            <h2 class="sec-title">The <em>success</em> shape.</h2>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fSuccess">What "good" looks like<span class="req">*</span></label>
+          <textarea class="fld-input" id="fSuccess" placeholder="Specific outcomes — metrics moved, hours saved, errors eliminated. Be concrete." maxlength="600" required></textarea>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fConstraints">Constraints<span class="opt">optional</span></label>
+          <textarea class="fld-input" id="fConstraints" placeholder="Budget range, hard deadlines, must-haves, integrations that aren't negotiable." maxlength="500"></textarea>
+          <span class="fld-help">The honest answer here saves us both time.</span>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="sec" id="sec3">
+        <div class="sec-head">
+          <div class="sec-num">03</div>
+          <div class="sec-titles">
+            <div class="sec-eyebrow">Context</div>
+            <h2 class="sec-title">The <em>landscape</em>.</h2>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fTried">What you've tried already<span class="opt">optional</span></label>
+          <textarea class="fld-input" id="fTried" placeholder="Previous attempts, tools considered, what worked, what didn't." maxlength="500"></textarea>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label" for="fStack">Your stack<span class="opt">optional</span></label>
+          <input class="fld-input" id="fStack" type="text" placeholder="e.g. QuickBooks, Salesforce, Slack, Linear, GPT-4o" maxlength="200"/>
+        </div>
+
+        <div class="fld">
+          <label class="fld-label">Timeline pressure<span class="req">*</span></label>
+          <div class="radios" id="timelineRadios">
+            <label class="radio"><input type="radio" name="timeline" value="this-month"/><span class="radio-check"></span>This month</label>
+            <label class="radio"><input type="radio" name="timeline" value="this-quarter"/><span class="radio-check"></span>Next quarter</label>
+            <label class="radio"><input type="radio" name="timeline" value="6-months"/><span class="radio-check"></span>Next 6 months</label>
+            <label class="radio"><input type="radio" name="timeline" value="flexible"/><span class="radio-check"></span>Flexible</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04 -->
+      <section class="sec" id="sec4">
+        <div class="sec-head">
+          <div class="sec-num">04</div>
+          <div class="sec-titles">
+            <div class="sec-eyebrow">You</div>
+            <h2 class="sec-title"><em>Who</em> we're talking to.</h2>
+          </div>
+        </div>
+
+        <div class="fld-row">
+          <div class="fld">
+            <label class="fld-label" for="fName">Name<span class="req">*</span></label>
+            <input class="fld-input" id="fName" type="text" placeholder="First and last" autocomplete="name" maxlength="80" required/>
+          </div>
+          <div class="fld">
+            <label class="fld-label" for="fEmail">Email<span class="req">*</span></label>
+            <input class="fld-input" id="fEmail" type="email" placeholder="you@company.com" autocomplete="email" maxlength="120" required/>
+          </div>
+        </div>
+
+        <div class="fld-row">
+          <div class="fld">
+            <label class="fld-label" for="fCompany">Company<span class="opt">optional</span></label>
+            <input class="fld-input" id="fCompany" type="text" placeholder="Company name" autocomplete="organization" maxlength="80"/>
+          </div>
+          <div class="fld">
+            <label class="fld-label" for="fRole">Your role<span class="opt">optional</span></label>
+            <input class="fld-input" id="fRole" type="text" placeholder="Founder, CTO, Ops lead…" autocomplete="organization-title" maxlength="80"/>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUBMIT -->
+      <div class="submit-row">
+        <div class="error-box" id="errorBox" style="display:none"></div>
+        <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">
+          <span id="submitText">Submit the brief</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <div class="alt">
+        <strong>Prefer to walk it through live?</strong>
+        <a href="/book" id="altBookLink">
+          Book a 30-min call
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- SUCCESS VIEW -->
+  <div id="successView" class="success">
+    <div class="success-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1 class="success-title">Got it. <em>We're on it.</em></h1>
+
+    <div class="success-card">
+      <p><strong>What happens next.</strong> We review every brief carefully — usually within one business day. You'll get a reply with shape, price, and the proposed path. No templates, no boilerplate.</p>
+      <p>If the project's a fit, we move into a kickoff call. If it's not, we'll tell you straight — and point you somewhere that is.</p>
+    </div>
+
+    <div class="success-card">
+      <p><em>Want to skip the wait?</em> Book a 30-minute call and we'll walk through your brief together — usually faster than waiting on email.</p>
+    </div>
+
+    <div class="success-actions">
+      <a href="/book" class="btn btn-primary" id="successBookLink">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book a call instead
+      </a>
+      <a href="/" class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Back to site
+      </a>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div>APTRYK · <em>Built for the real world.</em></div>
+    <div>aptryk.com/start</div>
+  </footer>
+
+</div>
+
+<script>
+'use strict';
+
+const form = document.getElementById('briefForm');
+const submitBtn = document.getElementById('submitBtn');
+const submitText = document.getElementById('submitText');
+const errorBox = document.getElementById('errorBox');
+
+// Visual touched-state on sections — fills the left accent bar as the user works
+document.querySelectorAll('.sec').forEach(sec => {
+  sec.addEventListener('focusin', () => sec.classList.add('touched'));
+});
+
+// Validation
+function getFormData() {
+  const timelineRadio = document.querySelector('input[name="timeline"]:checked');
+  return {
+    project:     document.getElementById('fProject').value.trim(),
+    pitch:       document.getElementById('fPitch').value.trim(),
+    problem:     document.getElementById('fProblem').value.trim(),
+    success:     document.getElementById('fSuccess').value.trim(),
+    constraints: document.getElementById('fConstraints').value.trim(),
+    tried:       document.getElementById('fTried').value.trim(),
+    stack:       document.getElementById('fStack').value.trim(),
+    timeline:    timelineRadio ? timelineRadio.value : '',
+    name:        document.getElementById('fName').value.trim(),
+    email:       document.getElementById('fEmail').value.trim(),
+    company:     document.getElementById('fCompany').value.trim(),
+    role:        document.getElementById('fRole').value.trim(),
+  };
+}
+
+function validate(d) {
+  const required = [
+    ['fProject', 'project', d.project, 'Working title is required'],
+    ['fPitch',   'pitch',   d.pitch,   'One-line pitch is required'],
+    ['fProblem', 'problem', d.problem, 'Describe the problem you\'re solving'],
+    ['fSuccess', 'success', d.success, 'Tell us what "good" looks like'],
+    ['fName',    'name',    d.name,    'Your name is required'],
+    ['fEmail',   'email',   d.email && /\S+@\S+\.\S+/.test(d.email) ? d.email : '', 'Valid email is required'],
+  ];
+  const errors = [];
+  required.forEach(([id, , val, msg]) => {
+    const el = document.getElementById(id);
+    if (!val) { el.classList.add('err'); errors.push(msg); }
+    else el.classList.remove('err');
+  });
+  if (!d.timeline) errors.push('Pick a timeline');
+  return errors;
+}
+
+function showError(msg) {
+  errorBox.textContent = msg;
+  errorBox.style.display = '';
+  errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function hideError() {
+  errorBox.style.display = 'none';
+}
+
+// SUBMIT
+form.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  hideError();
+
+  const d = getFormData();
+  const errors = validate(d);
+  if (errors.length > 0) {
+    showError(errors[0]);
+    const firstErr = document.querySelector('.fld-input.err');
+    if (firstErr) firstErr.focus();
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitText.innerHTML = '<span class="spinner"></span> Sending…';
+
+  // Build payloads
+  // 1) Web3Forms — email notification (same key as Consult uses)
+  const web3payload = {
+    access_key: '984c2aea-4a55-49f4-b202-87b1c1e5a2bd',
+    subject: 'New APTRYK Project Brief — ' + d.name + ' (' + (d.company || 'no company') + ')',
+    from_name: 'APTRYK Project Brief',
+    name: d.name,
+    email: d.email,
+    company: d.company,
+    role: d.role,
+    project: d.project,
+    pitch: d.pitch,
+    problem: d.problem,
+    success_criteria: d.success,
+    constraints: d.constraints,
+    tried: d.tried,
+    stack: d.stack,
+    timeline: d.timeline,
+    _source: 'project-brief',
+  };
+
+  // 2) WRM Intake worker — creates engagement in WRM at discovery stage
+  // Maps the brief into the same shape consult.html sends
+  const wrmPayload = {
+    name: d.name,
+    email: d.email,
+    company: d.company,
+    industry: '',
+    teamSize: '',
+    pains: '(submitted via project brief)',
+    dreamAutomation: d.pitch + '\n\n' + d.problem,
+    currentTools: d.stack,
+    timeline: d.timeline,
+    winDefinition: d.success,
+    extraNotes:
+      'PROJECT: ' + d.project + '\n\n' +
+      (d.role ? 'ROLE: ' + d.role + '\n\n' : '') +
+      (d.constraints ? 'CONSTRAINTS:\n' + d.constraints + '\n\n' : '') +
+      (d.tried ? 'WHAT THEY\'VE TRIED:\n' + d.tried : ''),
+    snapshot: 'Project Brief',
+    source: 'project-brief',
+  };
+
+  // Fire both in parallel
+  const web3promise = fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(web3payload),
+  }).catch(err => console.error('Web3Forms error:', err));
+
+  const wrmPromise = fetch('https://aptryk-intake.aaronldd.workers.dev/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(wrmPayload),
+  }).catch(err => console.error('WRM intake error:', err));
+
+  // Stash answers for /book in case they click "Book a call instead" on success
+  try {
+    sessionStorage.setItem('aptryk_consult_handoff', JSON.stringify({
+      name: d.name,
+      email: d.email,
+      problem: d.pitch + ' — ' + d.problem,
+      stack: d.stack,
+      outcome: d.success,
+    }));
+  } catch (_) {}
+
+  await Promise.allSettled([web3promise, wrmPromise]);
+
+  // Show success state
+  setTimeout(() => {
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('successView').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 400);
+});
+
+// Clear error state on input
+document.querySelectorAll('.fld-input').forEach(input => {
+  input.addEventListener('input', () => {
+    if (input.classList.contains('err')) input.classList.remove('err');
+    if (errorBox.style.display !== 'none') hideError();
+  });
+});
+</script>
+
+</body>
+</html>
