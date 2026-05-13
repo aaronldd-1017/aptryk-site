@@ -629,7 +629,19 @@ const state = {
   bookingId: null,
   availability: {},          // { "YYYY-MM-DD" (user-local): [{iso, time}] }
   apiAvailable: null,
+  handoff: null,             // answers passed from /consult, applied on step 3
 };
+
+// ── HANDOFF FROM /consult ─────────────────────────────────
+// If user came from the Consult page, those answers are stashed in
+// sessionStorage — we read them once on load and use them to pre-fill the form.
+try {
+  const raw = sessionStorage.getItem('aptryk_consult_handoff');
+  if (raw) {
+    state.handoff = JSON.parse(raw);
+    sessionStorage.removeItem('aptryk_consult_handoff'); // consume once
+  }
+} catch (_) {}
 
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const DAY_HEADERS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -810,6 +822,15 @@ function renderTimes() {
 function renderForm() {
   document.getElementById('formWhen').innerHTML = `${fmtDateLong(state.selectedDate)} · <em>${fmtTimeRange(state.selectedTime)}</em>`;
   document.getElementById('formWhenSub').textContent = '30 minutes · ' + getTzLabel();
+  // Pre-fill from consult handoff (only once — clears handoff after applying)
+  if (state.handoff) {
+    const h = state.handoff;
+    if (h.name)    document.getElementById('fName').value    = h.name;
+    if (h.email)   document.getElementById('fEmail').value   = h.email;
+    if (h.problem) document.getElementById('fProblem').value = h.problem;
+    if (h.stack)   document.getElementById('fStack').value   = h.stack;
+    state.handoff = null;
+  }
 }
 
 function renderConfirm() {
