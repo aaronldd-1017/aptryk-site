@@ -344,6 +344,22 @@ footer a:hover{color:var(--ink)}
     document.getElementById('resultEmail').textContent=answers.email;
     const firstName=(answers.name||'').trim().split(' ')[0];
     if(firstName)document.getElementById('resultIntro').textContent='Thanks, '+firstName+'. Based on what you shared, here\u2019s where you\u2019d likely get the most value from working with APTRYK.';
+    // Wire the "Book Discovery Call" button → /book, pass answers forward
+       const bookBtn=document.getElementById('bookCallBtn');
+       if(bookBtn){
+         bookBtn.href='/book';
+         bookBtn.addEventListener('click',function(){
+           try{
+             sessionStorage.setItem('aptryk_consult_handoff',JSON.stringify({
+               name:answers.name,
+               email:answers.email,
+               problem:answers.dreamAutomation,
+               stack:answers.currentTools,
+               outcome:answers.winDefinition
+             }));
+           }catch(_){}
+         });
+       }
     result.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});
   }
 })();
