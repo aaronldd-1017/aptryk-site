@@ -32,10 +32,13 @@
   --accent-soft-2:rgba(62,207,110,0.18);
   --accent-glow:rgba(62,207,110,0.35);
   --warn:#fbbf24;
+  --warn-soft:rgba(251,191,36,0.10);
   --info:#60a5fa;
   --info-soft:rgba(96,165,250,0.12);
   --purple:#a78bfa;
   --purple-soft:rgba(167,139,250,0.12);
+  --coral:#f87171;
+  --coral-soft:rgba(248,113,113,0.10);
   --shadow:0 4px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
   --shadow-lg:0 16px 40px rgba(0,0,0,.6);
 }
@@ -89,6 +92,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   width:5px;height:5px;border-radius:50%;
   background:var(--accent);
   box-shadow:0 0 7px var(--accent-glow);
+  animation:pulse 3s cubic-bezier(.4,0,.2,1) infinite;
 }
 .brand-text{
   font-family:var(--display);font-weight:800;font-size:1.45rem;
@@ -333,7 +337,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .tag-archive{color:var(--soft);background:var(--surface-2);border:1px solid var(--line)}
 .tag-public{color:var(--info);background:var(--info-soft);border:1px solid rgba(96,165,250,0.18)}
 .tag-internal{color:var(--purple);background:var(--purple-soft);border:1px solid rgba(167,139,250,0.18)}
-.tag-sellable{color:var(--warn);background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.18)}
+.tag-sellable{color:var(--warn);background:var(--warn-soft);border:1px solid rgba(251,191,36,0.18)}
+.tag-infra{color:var(--coral);background:var(--coral-soft);border:1px solid rgba(248,113,113,0.18)}
 
 .card-version{
   font-family:var(--mono);font-size:.6rem;font-weight:700;
@@ -374,6 +379,55 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   margin-bottom:.95rem;
 }
 .card-note strong{font-style:normal;font-family:var(--display);font-weight:700;color:var(--accent)}
+
+/* ── FUNNEL CALLOUT ── */
+.funnel{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:.75rem;
+  margin-bottom:1rem;
+  padding:1.1rem 1.25rem;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:13px;
+}
+.funnel-lane{
+  display:flex;flex-direction:column;gap:.45rem;
+  padding:.85rem;
+  background:var(--surface-2);border:1px solid var(--line);
+  border-radius:9px;
+}
+.funnel-label{
+  font-family:var(--mono);font-size:.55rem;font-weight:700;
+  color:var(--soft);letter-spacing:.14em;text-transform:uppercase;
+}
+.funnel-path{
+  font-family:var(--display);font-weight:700;font-size:.88rem;
+  color:var(--info);letter-spacing:-.005em;
+}
+.funnel-desc{
+  font-family:var(--body);font-size:.75rem;color:var(--mid);line-height:1.4;
+}
+.funnel-arrow{
+  font-family:var(--mono);font-size:.65rem;font-weight:700;
+  color:var(--accent);letter-spacing:.04em;margin-top:auto;
+  padding-top:.4rem;border-top:1px solid var(--line);
+}
+
+/* ── INFRA CARD VARIANT ── */
+.card-infra{
+  border-left:2px solid var(--coral);
+}
+.card-infra:hover{border-color:rgba(248,113,113,0.4)}
+.infra-url{
+  font-family:var(--mono);font-size:.6rem;font-weight:600;
+  color:var(--soft);letter-spacing:.04em;
+  background:var(--surface-2);border:1px solid var(--line);
+  padding:.25rem .5rem;border-radius:5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100%;
+  display:block;
+  margin-bottom:.85rem;
+}
 
 /* ── BRAND KIT INLINE BLOCK ── */
 .brand-kit{
@@ -471,6 +525,7 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
   .grid{grid-template-columns:1fr}
   .brand-kit{padding:1.15rem 1.2rem}
   .bk-grid{grid-template-columns:1fr 1fr}
+  .funnel{grid-template-columns:1fr}
 }
 @media(max-width:480px){
   .hero-stats{grid-template-columns:1fr 1fr}
@@ -493,13 +548,12 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
     </div>
     <div class="lib-eyebrow">Internal · Living Index</div>
     <h1 class="lib-title">Everything <em>we've built</em>, in one place.</h1>
-    <p class="lib-sub">The catalog. What's live, what's internal, what's sellable, what's archived. So you always know what APTRYK has, where it lives, and what it's for.</p>
+    <p class="lib-sub">The catalog. What's live, what's internal, what's sellable, what's wired together. So you always know what APTRYK has, where it lives, what it does, and how it connects.</p>
   </div>
   <div class="head-meta">
     <div class="head-meta-row"><span class="head-meta-dot"></span><strong>Living index</strong></div>
-    <div>Updated · 2026.05.03</div>
+    <div>Updated · 2026.05.13</div>
     <div>Version · v1.1</div>
-    <div>Stack · Cloudflare + Supabase</div>
   </div>
 </header>
 
@@ -517,21 +571,21 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
 
   <div class="hero">
     <div class="hero-body">
-      <div class="hero-tag">CANONICAL · v1.7</div>
+      <div class="hero-tag">CANONICAL · v1.6</div>
       <h2 class="hero-title">APTRYK <em>W/R/M Platform</em></h2>
-      <p class="hero-sub">"What Really Matters" — a single-file operating system for an AI consulting business. Engagements, pipeline, money, captures, decisions, activity, all in one calm dark-first interface. Built for thumb on mobile, cockpit on desktop.</p>
+      <p class="hero-sub">"What Really Matters" — a single-file operating system for an AI consulting business. Engagements, pipeline, money, captures, decisions, activity. Now with Supabase cloud sync — state persists across devices automatically. Built for thumb on mobile, cockpit on desktop.</p>
       <div class="hero-stats">
         <div class="hero-stat">
           <div class="hero-stat-label">Surface</div>
           <div class="hero-stat-value"><em>8</em> views</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-label">Sync</div>
-          <div class="hero-stat-value"><em>Real</em>-time</div>
+          <div class="hero-stat-label">Themes</div>
+          <div class="hero-stat-value"><em>3</em> palettes</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-label">Backend</div>
-          <div class="hero-stat-value"><em>Supa</em>base</div>
+          <div class="hero-stat-label">Footprint</div>
+          <div class="hero-stat-value">~165 <em>KB</em></div>
         </div>
       </div>
       <div class="hero-actions">
@@ -549,11 +603,15 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
       <div class="hero-side-title">Why It Matters</div>
       <div class="hero-feat">
         <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="hero-feat-text"><strong>Cloud-backed:</strong> Supabase stores all data, syncs everywhere</div>
+        <div class="hero-feat-text"><strong>Internal:</strong> Manages every APTRYK client engagement</div>
       </div>
       <div class="hero-feat">
         <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="hero-feat-text"><strong>Real-time:</strong> Shared workspace — team sees updates instantly</div>
+        <div class="hero-feat-text"><strong>Cloud-synced:</strong> Supabase backend, all devices, no install</div>
+      </div>
+      <div class="hero-feat">
+        <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="hero-feat-text"><strong>Intake-wired:</strong> Consult + Start submissions land here automatically</div>
       </div>
       <div class="hero-feat">
         <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -561,7 +619,7 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
       </div>
       <div class="hero-feat">
         <div class="hero-feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div class="hero-feat-text"><strong>Single file:</strong> Drop into any host, no install required</div>
+        <div class="hero-feat-text"><strong>Single file:</strong> Drop into any host, no install, no local DB</div>
       </div>
     </div>
   </div>
@@ -575,29 +633,29 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
     <div class="sec-title-block">
       <div class="sec-eyebrow">02 · Sellable & White-Labelable</div>
       <h2 class="sec-title">Things we can <em>turn into client deliverables</em>.</h2>
-      <p class="sec-sub">These are products and systems we built for ourselves that translate directly into client work — either as white-label installs, customized adaptations, or templates we can hand off.</p>
+      <p class="sec-sub">Products and systems we built for ourselves that translate directly into client work — white-label installs, customized adaptations, or templates we can hand off.</p>
     </div>
-    <div class="sec-count"><strong>3</strong> assets</div>
+    <div class="sec-count"><strong>4</strong> assets</div>
   </div>
 
   <div class="grid">
 
-    <!-- W/R/M Platform (cross-listed) -->
+    <!-- W/R/M Platform -->
     <article class="card">
       <div class="card-top">
         <div class="card-tag-row">
           <span class="tag tag-canonical">Live</span>
           <span class="tag tag-sellable">Sellable</span>
         </div>
-        <span class="card-version">v1.7</span>
+        <span class="card-version">v1.6</span>
       </div>
       <h3 class="card-name">W/R/M <em>Platform</em></h3>
-      <p class="card-desc">Operating system for AI consulting. Cloud-backed via Supabase with real-time sync. Workspace name editable in Settings — full rebrand in one field. Lime accent retoken-able via CSS vars.</p>
-      <div class="card-note"><strong>How to sell:</strong> $5–15K install, set up their Supabase project, customize tokens for client brand, train them for 1 hour. Recurring "platform refresh" retainer.</div>
+      <p class="card-desc">Operating system for AI consulting. Workspace name is editable in Settings — change it to "Acme Operations" and the entire app rebrands. Lime accent retoken-able via CSS vars. Supabase backend swappable for client's own project.</p>
+      <div class="card-note"><strong>How to sell:</strong> $5–15K install, customize tokens for client brand, train them for 1 hour. Recurring "platform refresh" retainer.</div>
       <div class="card-meta">
         <span><strong>165</strong> KB</span>
         <span>Single <strong>HTML</strong></span>
-        <span>Supabase <strong>cloud</strong></span>
+        <span>Supabase <strong>sync</strong></span>
       </div>
       <div class="card-actions">
         <a href="wrm.html" class="btn btn-primary btn-sm">Open</a>
@@ -635,19 +693,42 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
           <span class="tag tag-canonical">Live</span>
           <span class="tag tag-sellable">Adaptable</span>
         </div>
-        <span class="card-version">v1.0</span>
+        <span class="card-version">v1.1</span>
       </div>
       <h3 class="card-name">The <em>Consult</em> Intake</h3>
-      <p class="card-desc">8-question branded intake at <span class="bk-mono">aptryk.com/consult</span>. Web3Forms backend, no signup, mobile-first. Pattern can be adapted for client lead-gen or onboarding intake.</p>
+      <p class="card-desc">8-question branded intake at aptryk.com/consult. Web3Forms email notification + Intake Worker → WRM pipeline. Cross-links to /book on success state, passes answers via sessionStorage so /book pre-fills automatically.</p>
       <div class="card-note"><strong>How to sell:</strong> $1.5–3K to clone, rebrand, swap form action, add questions. Quick turnaround project.</div>
       <div class="card-meta">
         <span><strong>40</strong> KB</span>
         <span>Single <strong>HTML</strong></span>
-        <span>Web3Forms</span>
+        <span>Worker + Web3Forms</span>
       </div>
       <div class="card-actions">
         <a href="consult.html" class="btn btn-primary btn-sm">Open</a>
         <a href="consult.html" download class="btn btn-secondary btn-sm">DL</a>
+      </div>
+    </article>
+
+    <!-- Booking Page -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-sellable">Adaptable</span>
+        </div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">The <em>Booking</em> Page</h3>
+      <p class="card-desc">Cal.com embed at aptryk.com/book. 30-minute discovery call booking with brand-locked wrapper, context panel, and pre-fill from Consult handoff. Confirmations route to Intake Worker → WRM.</p>
+      <div class="card-note"><strong>How to sell:</strong> $1–2K to clone and rebrand. Swap Cal.com username, customize context copy. Any scheduling-first client is a fit.</div>
+      <div class="card-meta">
+        <span>Single <strong>HTML</strong></span>
+        <span>Cal.com</span>
+        <span>Pre-fill <strong>ready</strong></span>
+      </div>
+      <div class="card-actions">
+        <a href="book.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="https://aptryk.com/book" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Live ↗</a>
       </div>
     </article>
 
@@ -664,7 +745,7 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
       <h2 class="sec-title">How <em>we</em> work.</h2>
       <p class="sec-sub">Systems and documents we use to run APTRYK. These aren't products — they're the operating manual. Some have sellable adaptations (see above).</p>
     </div>
-    <div class="sec-count"><strong>2</strong> systems</div>
+    <div class="sec-count"><strong>3</strong> systems</div>
   </div>
 
   <div class="grid">
@@ -703,6 +784,25 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
       </div>
     </article>
 
+    <!-- Build Playbook — NEW -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-internal">Internal</span></div>
+        <span class="card-version">v1.1</span>
+      </div>
+      <h3 class="card-name">The <em>Build</em> Playbook</h3>
+      <p class="card-desc">Stack matrix + tool reference + 10 decision rules for every custom project type. What to reach for — and why — for marketing sites, AI apps, dashboards, intake forms, paid products, and more. Five views, keyboard-navigable.</p>
+      <div class="card-meta">
+        <span>Single <strong>HTML</strong></span>
+        <span><strong>5</strong> views</span>
+        <span>10 rules</span>
+      </div>
+      <div class="card-actions">
+        <a href="aptryk-build-playbook.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="aptryk-build-playbook.html" download class="btn btn-secondary btn-sm">DL</a>
+      </div>
+    </article>
+
   </div>
 </section>
 
@@ -714,9 +814,31 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
     <div class="sec-title-block">
       <div class="sec-eyebrow">04 · Public-Facing</div>
       <h2 class="sec-title">What <em>the world</em> sees.</h2>
-      <p class="sec-sub">Live sites at aptryk.com — the front door for prospects, clients, and partners.</p>
+      <p class="sec-sub">Live sites at aptryk.com — the front door for prospects, clients, and partners. Three conversion paths, one destination: WRM.</p>
     </div>
-    <div class="sec-count"><strong>2</strong> sites</div>
+    <div class="sec-count"><strong>4</strong> sites</div>
+  </div>
+
+  <!-- Conversion Funnel Callout -->
+  <div class="funnel">
+    <div class="funnel-lane">
+      <div class="funnel-label">Writers</div>
+      <div class="funnel-path">/consult</div>
+      <div class="funnel-desc">8-question intake for people who prefer to write first. Leads to /book on success.</div>
+      <div class="funnel-arrow">→ WRM · Inbound</div>
+    </div>
+    <div class="funnel-lane">
+      <div class="funnel-label">Talkers</div>
+      <div class="funnel-path">/book</div>
+      <div class="funnel-desc">30-min discovery call. Cal.com embed. Pre-fills from consult handoff if they came that way.</div>
+      <div class="funnel-arrow">→ WRM · Inbound</div>
+    </div>
+    <div class="funnel-lane">
+      <div class="funnel-label">Ready to go</div>
+      <div class="funnel-path">/start</div>
+      <div class="funnel-desc">Project Brief form. Scope, success, context, contact. For prospects who know what they want.</div>
+      <div class="funnel-arrow">→ WRM · Discovery</div>
+    </div>
   </div>
 
   <div class="grid">
@@ -730,10 +852,11 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
         <span class="card-version">v2.0</span>
       </div>
       <h3 class="card-name">aptryk.com <em>Landing</em></h3>
-      <p class="card-desc">The marketing front door. Hero, services, the brief promise, the case for hiring us. Single HTML, deep-linked, mobile-tuned, accessible.</p>
+      <p class="card-desc">The marketing front door. Hero, services, the brief promise, the case for hiring us. Three conversion CTAs: /consult, /book, /start. Single HTML, deep-linked, mobile-tuned, accessible.</p>
       <div class="card-meta">
         <span><strong>56</strong> KB</span>
         <span>Cloudflare Pages</span>
+        <span>3 <strong>CTAs</strong></span>
       </div>
       <div class="card-actions">
         <a href="aptryk-landing-v2.html" class="btn btn-primary btn-sm">Open</a>
@@ -761,16 +884,173 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
       </div>
     </article>
 
+    <!-- Book — NEW -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-public">Public</span>
+        </div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">Booking <em>Page</em> /book</h3>
+      <p class="card-desc">30-min discovery call scheduling at aptryk.com/book. Cal.com embed, brand-locked dark wrapper, context panel explaining what to expect. Reads sessionStorage handoff from /consult for seamless pre-fill.</p>
+      <div class="card-meta">
+        <span>Cal.com</span>
+        <span>Pre-fill ready</span>
+        <span>Cloudflare Pages</span>
+      </div>
+      <div class="card-actions">
+        <a href="book.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="https://aptryk.com/book" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Live ↗</a>
+      </div>
+    </article>
+
+    <!-- Start — NEW -->
+    <article class="card">
+      <div class="card-top">
+        <div class="card-tag-row">
+          <span class="tag tag-canonical">Live</span>
+          <span class="tag tag-public">Public</span>
+        </div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">Project <em>Brief</em> /start</h3>
+      <p class="card-desc">4-section project brief intake at aptryk.com/start: the project, success shape, context, and contact. Fires to Web3Forms (email) + Intake Worker → WRM simultaneously. Success state cross-links to /book.</p>
+      <div class="card-meta">
+        <span>Single <strong>HTML</strong></span>
+        <span>Dual submit</span>
+        <span>Cloudflare Pages</span>
+      </div>
+      <div class="card-actions">
+        <a href="start.html" class="btn btn-primary btn-sm">Open</a>
+        <a href="https://aptryk.com/start" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Live ↗</a>
+      </div>
+    </article>
+
   </div>
 </section>
 
 <!-- ============================================================
-     SECTION 5 — BRAND KIT
+     SECTION 5 — INFRASTRUCTURE & INTEGRATIONS (NEW)
 ============================================================ -->
 <section class="sec">
   <div class="sec-head">
     <div class="sec-title-block">
-      <div class="sec-eyebrow">05 · Brand Kit</div>
+      <div class="sec-eyebrow">05 · Infrastructure & Integrations</div>
+      <h2 class="sec-title">The <em>wiring</em> behind everything.</h2>
+      <p class="sec-sub">Services, workers, and third-party connectors that make the stack run. Not files we ship — services we depend on. Know what's here before changing anything.</p>
+    </div>
+    <div class="sec-count"><strong>5</strong> services</div>
+  </div>
+
+  <div class="grid">
+
+    <!-- Intake Worker -->
+    <article class="card card-infra">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-infra">Infrastructure</span></div>
+        <span class="card-version">v1.0</span>
+      </div>
+      <h3 class="card-name">APTRYK <em>Intake Worker</em></h3>
+      <p class="card-desc">Cloudflare Worker that receives POST submissions from /consult and /start, validates them, then writes a new inbound engagement to the WRM Supabase row. The bridge from public form to private pipeline.</p>
+      <span class="infra-url">aptryk-intake.aaronldd.workers.dev</span>
+      <div class="card-meta">
+        <span>Cloudflare <strong>Worker</strong></span>
+        <span>POST only</span>
+        <span>Supabase PATCH</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Dashboard ↗</a>
+      </div>
+    </article>
+
+    <!-- Supabase -->
+    <article class="card card-infra">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-infra">Infrastructure</span></div>
+        <span class="card-version">—</span>
+      </div>
+      <h3 class="card-name">Supabase <em>State Store</em></h3>
+      <p class="card-desc">Cloud persistence layer for WRM. Stores the full WRM state JSON in a single `workspaces` row keyed to `aptryk`. WRM reads on load, writes on change. Intake Worker patches on form submit.</p>
+      <span class="infra-url">cighroyoedffgndydiqs.supabase.co</span>
+      <div class="card-meta">
+        <span>Postgres</span>
+        <span>REST API</span>
+        <span>Free tier</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Dashboard ↗</a>
+      </div>
+    </article>
+
+    <!-- Cal.com -->
+    <article class="card card-infra">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-infra">Infrastructure</span></div>
+        <span class="card-version">—</span>
+      </div>
+      <h3 class="card-name">Cal.com <em>Bookings</em></h3>
+      <p class="card-desc">Powers the /book page. 30-minute discovery call event type, embedded inline with the brand wrapper. Confirmation emails auto-send. Booking notifications can be forwarded to hello@aptryk.com via Cloudflare routing.</p>
+      <span class="infra-url">cal.com/aptryk</span>
+      <div class="card-meta">
+        <span>Cal.com</span>
+        <span>Embed</span>
+        <span>Free tier</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://cal.com" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Dashboard ↗</a>
+      </div>
+    </article>
+
+    <!-- Web3Forms -->
+    <article class="card card-infra">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-infra">Infrastructure</span></div>
+        <span class="card-version">—</span>
+      </div>
+      <h3 class="card-name">Web3Forms <em>Email</em></h3>
+      <p class="card-desc">Email notification layer for /consult and /start. Every submission fires to the Web3Forms endpoint alongside the Intake Worker call. Delivers a formatted email to the inbox. No account, no backend, no cost.</p>
+      <span class="infra-url">api.web3forms.com/submit</span>
+      <div class="card-meta">
+        <span>Email only</span>
+        <span>No signup</span>
+        <span>Free</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://web3forms.com" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Docs ↗</a>
+      </div>
+    </article>
+
+    <!-- Cloudflare Email Routing -->
+    <article class="card card-infra">
+      <div class="card-top">
+        <div class="card-tag-row"><span class="tag tag-infra">Infrastructure</span></div>
+        <span class="card-version">—</span>
+      </div>
+      <h3 class="card-name">Cloudflare <em>Email Routing</em></h3>
+      <p class="card-desc">Routes hello@aptryk.com to the real inbox. Catch-all enabled so all @aptryk.com mail lands in one place. Cal.com booking notifications + Web3Forms alerts + direct prospect emails all converge here.</p>
+      <span class="infra-url">hello@aptryk.com → real inbox</span>
+      <div class="card-meta">
+        <span>Catch-all <strong>on</strong></span>
+        <span>Cloudflare</span>
+        <span>Free</span>
+      </div>
+      <div class="card-actions">
+        <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Dashboard ↗</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     SECTION 6 — BRAND KIT
+============================================================ -->
+<section class="sec">
+  <div class="sec-head">
+    <div class="sec-title-block">
+      <div class="sec-eyebrow">06 · Brand Kit</div>
       <h2 class="sec-title">The <em>signature</em> — locked.</h2>
       <p class="sec-sub">Type, color, voice. The brand stays consistent because every product references the same tokens. White-label clients only need to swap workspace name + accent color.</p>
     </div>
@@ -814,72 +1094,6 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
       <div class="bk-label">Voice</div>
       <p class="bk-voice"><strong>Built for the real world.</strong> Operator-direct. No fluff. Specific numbers over buzzwords. Italic emphasis sparingly. Personality lives in small places — empty states, confirmations, transitions. Never in chrome.</p>
     </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION 6 — INFRASTRUCTURE & STACK
-============================================================ -->
-<section class="sec">
-  <div class="sec-head">
-    <div class="sec-title-block">
-      <div class="sec-eyebrow">06 · Infrastructure & Stack</div>
-      <h2 class="sec-title">What <em>everything</em> runs on.</h2>
-      <p class="sec-sub">The pipes. Every tool in the library depends on this layer. When something breaks, check here first.</p>
-    </div>
-    <div class="sec-count"><strong>3</strong> services</div>
-  </div>
-
-  <div class="grid">
-
-    <article class="card">
-      <div class="card-top">
-        <div class="card-tag-row"><span class="tag tag-canonical">Live</span><span class="tag tag-internal">Internal</span></div>
-        <span class="card-version">Free tier</span>
-      </div>
-      <h3 class="card-name">Cloudflare <em>Pages</em></h3>
-      <p class="card-desc">Hosts every HTML file at aptryk.com. Push to GitHub → live in 30 seconds. Zero config, zero cost, global CDN. The deployment layer for all APTRYK tools.</p>
-      <div class="card-meta">
-        <span>GitHub <strong>connected</strong></span>
-        <span>Auto <strong>deploy</strong></span>
-      </div>
-      <div class="card-actions">
-        <a href="https://dash.cloudflare.com" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Dashboard ↗</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <div class="card-tag-row"><span class="tag tag-canonical">Live</span><span class="tag tag-internal">Internal</span></div>
-        <span class="card-version">Free tier</span>
-      </div>
-      <h3 class="card-name">Supabase <em>DB</em></h3>
-      <p class="card-desc">Postgres database backing the W/R/M Platform. Stores all workspace data as a single JSON blob. Real-time channel broadcasts updates to all connected sessions instantly.</p>
-      <div class="card-meta">
-        <span>Real-time <strong>on</strong></span>
-        <span>workspaces <strong>table</strong></span>
-      </div>
-      <div class="card-actions">
-        <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Dashboard ↗</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <div class="card-tag-row"><span class="tag tag-canonical">Live</span><span class="tag tag-internal">Internal</span></div>
-        <span class="card-version">main branch</span>
-      </div>
-      <h3 class="card-name">GitHub <em>Repo</em></h3>
-      <p class="card-desc">Source of truth for every file. aptryk-site repo on main branch. Upload files here to deploy. Commit messages are the changelog — write them like they matter.</p>
-      <div class="card-meta">
-        <span>aptryk-site <strong>repo</strong></span>
-        <span>Public</span>
-      </div>
-      <div class="card-actions">
-        <a href="https://github.com/aaronldd-1017/aptryk-site" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">Repo ↗</a>
-      </div>
-    </article>
-
   </div>
 </section>
 
@@ -963,7 +1177,7 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
 ============================================================ -->
 <footer class="foot">
   <div>APTRYK Library · <em>Built for the real world.</em></div>
-  <div>v1.1 · 2026.05.03</div>
+  <div>v1.1 · 2026.05.13</div>
 </footer>
 
 </div>
