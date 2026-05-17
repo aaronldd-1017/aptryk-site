@@ -71,6 +71,7 @@ body{
   font-family:var(--body);font-weight:400;line-height:1.6;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
+body.modal-open{overflow:hidden}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
 ::selection{background:var(--accent-soft-2);color:var(--ink)}
@@ -191,66 +192,41 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   font-family:var(--display);font-weight:800;
   font-size:clamp(2.4rem,5.5vw,3.85rem);
   letter-spacing:-.032em;line-height:1.02;
-  color:var(--ink);
-  margin-bottom:1.25rem;
-  max-width:18ch;
+  color:var(--ink);margin-bottom:1.25rem;max-width:18ch;
 }
-.hero-h1 em{
-  font-family:var(--serif);font-style:italic;
-  color:var(--accent);font-weight:700;
-}
+.hero-h1 em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
 .hero-sub{
   font-family:var(--body);font-weight:400;
   font-size:1.02rem;color:var(--mid);
-  line-height:1.7;max-width:46ch;
-  margin-bottom:2.25rem;
+  line-height:1.7;max-width:46ch;margin-bottom:2.25rem;
 }
 .hero-actions{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 
-/* Hero right column — capabilities */
-.hero-capabilities{
-  display:flex;flex-direction:column;gap:0;
-  padding-top:.5rem;
-}
-.hcap-block{
-  padding:1.15rem 0;
-  border-bottom:1px solid var(--line);
-}
+/* Hero right column */
+.hero-capabilities{display:flex;flex-direction:column;gap:0;padding-top:.5rem}
+.hcap-block{padding:1.15rem 0;border-bottom:1px solid var(--line)}
 .hcap-block:last-child{border-bottom:none}
 .hcap-block:first-child{padding-top:0}
 .hcap-label{
   font-family:var(--mono);font-size:.55rem;font-weight:700;
-  color:var(--soft);letter-spacing:.16em;text-transform:uppercase;
-  margin-bottom:.55rem;
+  color:var(--soft);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.55rem;
 }
-.hcap-list{
-  display:flex;flex-direction:column;gap:.3rem;
-}
+.hcap-list{display:flex;flex-direction:column;gap:.3rem}
 .hcap-item{
   font-family:var(--display);font-weight:600;font-size:.92rem;
   letter-spacing:-.008em;color:var(--ink-2);line-height:1.4;
 }
-.hcap-item em{
-  font-family:var(--serif);font-style:italic;
-  color:var(--accent);font-weight:700;
-}
-.hcap-detail{
-  font-family:var(--body);font-size:.82rem;color:var(--mid);
-  line-height:1.55;
-}
+.hcap-item em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+.hcap-detail{font-family:var(--body);font-size:.82rem;color:var(--mid);line-height:1.55}
 
-/* Credentials strip */
 .hero-strip{
-  margin-top:3.5rem;
-  padding-top:1.5rem;
+  margin-top:3.5rem;padding-top:1.5rem;
   border-top:1px solid var(--line);
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1.5rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
 }
 .strip-label{
   font-family:var(--mono);font-size:.55rem;font-weight:700;
-  color:var(--soft);letter-spacing:.16em;text-transform:uppercase;
-  margin-bottom:.4rem;
+  color:var(--soft);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.4rem;
 }
 .strip-value{
   font-family:var(--display);font-weight:700;font-size:1.1rem;
@@ -263,21 +239,16 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   .hero-inner{grid-template-columns:1fr;gap:2.5rem}
   .hero-strip{grid-template-columns:1fr 1fr}
 }
-@media(max-width:520px){
-  .hero-strip{grid-template-columns:1fr}
-}
+@media(max-width:520px){.hero-strip{grid-template-columns:1fr}}
 
-/* ── SECTION BG RHYTHM ── */
+/* ── SECTION ── */
 .bg-lifted{background:var(--surface)}
 .bg-deep{background:var(--bg)}
-
-/* ── SECTION CHROME ── */
 .section{padding:5rem 0}
 .sec-eyebrow{
   display:inline-flex;align-items:center;gap:.55rem;
   font-family:var(--mono);font-size:.58rem;font-weight:700;
-  color:var(--soft);letter-spacing:.18em;text-transform:uppercase;
-  margin-bottom:1rem;
+  color:var(--soft);letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem;
 }
 .sec-eyebrow::before{content:'';display:block;width:18px;height:1px;background:var(--accent)}
 .sec-h2{
@@ -290,15 +261,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .sec-sub{font-family:var(--body);font-size:1rem;color:var(--mid);line-height:1.65;max-width:50ch}
 
 /* ── SERVICES ── */
-.services-inner{
-  display:grid;grid-template-columns:300px 1fr;
-  gap:3.5rem 5rem;align-items:start;
-}
+.services-inner{display:grid;grid-template-columns:300px 1fr;gap:3.5rem 5rem;align-items:start}
 .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
 .service-card{
   padding:1.4rem 1.45rem;
-  background:var(--bg);
-  border:1px solid var(--line);border-radius:11px;
+  background:var(--bg);border:1px solid var(--line);border-radius:11px;
   display:flex;flex-direction:column;gap:.65rem;
   transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast);
 }
@@ -308,8 +275,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .service-num{
   font-family:var(--mono);font-size:.6rem;font-weight:700;
-  color:var(--accent);letter-spacing:.1em;
-  margin-bottom:.25rem;
+  color:var(--accent);letter-spacing:.1em;margin-bottom:.25rem;
 }
 .service-name{
   font-family:var(--display);font-weight:700;font-size:1.05rem;
@@ -326,24 +292,18 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 /* ── PRINCIPLES ── */
 .principles-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1rem;
-  margin-top:2.5rem;
+  gap:1rem;margin-top:2.5rem;
 }
 .principle{
   padding:1.5rem 1.5rem 1.65rem;
-  background:var(--surface-2);
-  border:1px solid var(--line);
-  border-radius:11px;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:11px;
 }
 .principle-num{
   font-family:var(--mono);font-size:.55rem;font-weight:700;
-  color:var(--accent);letter-spacing:.12em;
-  margin-bottom:.75rem;
+  color:var(--accent);letter-spacing:.12em;margin-bottom:.75rem;
   display:flex;align-items:center;gap:.5rem;
 }
-.principle-num::after{
-  content:'';flex:1;height:1px;background:var(--line);
-}
+.principle-num::after{content:'';flex:1;height:1px;background:var(--line)}
 .principle-title{
   font-family:var(--display);font-weight:700;font-size:1.05rem;
   letter-spacing:-.012em;color:var(--ink);
@@ -355,22 +315,16 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 @media(max-width:880px){.principles-grid{grid-template-columns:1fr}}
 
 /* ── PROCESS ── */
-.process-inner{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:3.5rem 5rem;align-items:start;
-}
+.process-inner{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem 5rem;align-items:start}
 .steps{display:flex;flex-direction:column;margin-top:2rem}
 .step{display:flex;gap:1rem;padding:1.15rem 0;border-bottom:1px solid var(--line)}
 .step:last-child{border-bottom:none;padding-bottom:0}
 .step:first-child{padding-top:0}
 .step-num{
-  font-family:var(--mono);font-size:.55rem;font-weight:700;
-  color:var(--accent);
+  font-family:var(--mono);font-size:.55rem;font-weight:700;color:var(--accent);
   min-width:30px;height:30px;
-  border-radius:7px;border:1px solid var(--accent-soft-2);
-  background:var(--accent-soft);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-top:.05rem;
+  border-radius:7px;border:1px solid var(--accent-soft-2);background:var(--accent-soft);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem;
 }
 .step-title{
   font-family:var(--display);font-weight:700;font-size:.95rem;
@@ -381,8 +335,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .promises{
   padding:2rem 2.25rem;
   background:var(--bg);border:1px solid var(--line);border-radius:14px;
-  display:flex;flex-direction:column;
-  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;position:relative;overflow:hidden;
 }
 .promises::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
@@ -406,22 +359,17 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 
 /* ── CONTACT SECTION ── */
 .cta-section{
-  padding:5.5rem 0;
-  position:relative;overflow:hidden;
+  padding:5.5rem 0;position:relative;overflow:hidden;
   background:
     radial-gradient(ellipse at 50% 70%,rgba(62,207,110,.045) 0%,transparent 55%),
     var(--bg);
   border-top:1px solid var(--line);
 }
-.cta-inner{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:3rem 5rem;align-items:start;
-}
+.cta-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem 5rem;align-items:start}
 .cta-h2{
   font-family:var(--display);font-weight:800;
   font-size:clamp(1.85rem,3.8vw,2.4rem);
-  letter-spacing:-.028em;line-height:1.1;
-  color:var(--ink);margin-bottom:.85rem;
+  letter-spacing:-.028em;line-height:1.1;color:var(--ink);margin-bottom:.85rem;
 }
 .cta-h2 em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
 .cta-desc{font-family:var(--body);font-size:.98rem;color:var(--mid);line-height:1.7;margin-bottom:1.85rem;max-width:44ch}
@@ -432,7 +380,6 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
 }
 
-/* Contact options card — three ways to reach us */
 .contact-card{
   padding:2rem 2.15rem;
   background:var(--surface);border:1px solid var(--line);
@@ -456,19 +403,29 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .contact-opt{
   display:block;padding:1rem 1.15rem;
   background:var(--surface-2);
-  border:1px solid var(--line);border-radius:10px;
-  position:relative;
+  border:1px solid var(--line);border-radius:10px;position:relative;
   transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast);
 }
 .contact-opt:hover{
   border-color:rgba(62,207,110,.22);
-  background:var(--surface-3);
-  transform:translateX(3px);
+  background:var(--surface-3);transform:translateX(3px);
+}
+.contact-opt-primary{
+  border-color:var(--accent-soft-2);
+  background:rgba(62,207,110,.04);
+}
+.contact-opt-primary:hover{
+  border-color:rgba(62,207,110,.4);
+  background:rgba(62,207,110,.08);
 }
 .contact-opt-meta{
   font-family:var(--mono);font-size:.5rem;font-weight:700;
-  color:var(--accent);letter-spacing:.16em;text-transform:uppercase;
-  margin-bottom:.4rem;
+  color:var(--accent);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.4rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.contact-opt-badge{
+  background:var(--accent);color:var(--accent-fg);
+  padding:.1rem .4rem;border-radius:3px;font-size:.42rem;letter-spacing:.1em;
 }
 .contact-opt-title{
   font-family:var(--display);font-weight:700;font-size:.95rem;
@@ -477,22 +434,78 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .contact-opt-title-arrow{
   font-family:var(--body);font-weight:400;font-size:1.05rem;color:var(--soft);
-  transition:transform var(--t-fast),color var(--t-fast);
-  flex-shrink:0;
+  transition:transform var(--t-fast),color var(--t-fast);flex-shrink:0;
 }
 .contact-opt:hover .contact-opt-title-arrow{transform:translateX(3px);color:var(--accent)}
-.contact-opt-desc{
-  font-family:var(--body);font-size:.78rem;color:var(--mid);line-height:1.55;
-}
+.contact-opt-desc{font-family:var(--body);font-size:.78rem;color:var(--mid);line-height:1.55}
 
 @media(max-width:880px){.cta-inner{grid-template-columns:1fr;gap:2.5rem}}
 
+/* ── CONTACT MODAL ── */
+.modal{
+  position:fixed;inset:0;z-index:500;
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .25s var(--ease-out),visibility .25s var(--ease-out);
+}
+.modal.open{opacity:1;visibility:visible;pointer-events:auto}
+.modal-backdrop{
+  position:absolute;inset:0;
+  background:rgba(5,5,10,.65);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+.modal-panel{
+  position:relative;z-index:1;
+  width:100%;max-width:480px;
+  background:var(--surface);
+  border:1px solid var(--line-2);
+  border-radius:16px;
+  padding:1.85rem 1.85rem 1.65rem;
+  box-shadow:0 24px 64px rgba(0,0,0,.65);
+  max-height:calc(100vh - 3rem);overflow-y:auto;
+  transform:translateY(24px) scale(.97);
+  transition:transform .35s var(--ease-out);
+}
+.modal-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent-soft-2) 40%,var(--accent-soft-2) 60%,transparent);
+}
+.modal.open .modal-panel{transform:translateY(0) scale(1)}
+.modal-close{
+  position:absolute;top:.85rem;right:.85rem;
+  width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;color:var(--soft);
+  transition:background var(--t-fast),color var(--t-fast);
+}
+.modal-close:hover{background:var(--surface-2);color:var(--ink)}
+.modal-close svg{width:15px;height:15px;stroke-width:2.5}
+.modal-header{margin-bottom:1.35rem;padding-right:2.5rem}
+.modal-eyebrow{
+  font-family:var(--mono);font-size:.55rem;font-weight:700;
+  color:var(--accent);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.55rem;
+}
+.modal-title{
+  font-family:var(--display);font-weight:700;font-size:1.2rem;
+  letter-spacing:-.018em;color:var(--ink);line-height:1.3;
+}
+.modal-title em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
+
+@media(max-width:520px){
+  .modal{padding:0;align-items:flex-end}
+  .modal-panel{
+    max-height:88vh;
+    border-radius:18px 18px 0 0;
+    transform:translateY(48px);
+    padding:1.65rem 1.4rem 1.4rem;
+  }
+  .modal.open .modal-panel{transform:translateY(0)}
+}
+
 /* ── FOOTER ── */
 .footer{background:var(--surface);border-top:1px solid var(--line);padding:2rem 0}
-.footer-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:1.5rem;flex-wrap:wrap;
-}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .footer-brand{
   font-family:var(--display);font-weight:800;font-size:.9rem;
   letter-spacing:-.01em;color:var(--mid);
@@ -501,8 +514,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .footer-brand strong{color:var(--ink-2);font-weight:800}
 .footer-brand-sub{
   font-family:var(--mono);font-size:.55rem;font-weight:600;
-  color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
-  margin-top:.25rem;
+  color:var(--soft);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem;
 }
 .footer-center{
   font-family:var(--mono);font-size:.62rem;font-weight:600;
@@ -517,8 +529,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .footer-nav a{transition:color var(--t-fast)}
 .footer-nav a:hover{color:var(--accent)}
-.footer-copy{font-family:var(--mono);font-size:.55rem;font-weight:600;color:var(--faint);letter-spacing:.08em;text-transform:uppercase}
-
+.footer-copy{
+  font-family:var(--mono);font-size:.55rem;font-weight:600;
+  color:var(--faint);letter-spacing:.08em;text-transform:uppercase;
+}
 @media(max-width:680px){
   .footer-inner{flex-direction:column;align-items:flex-start;text-align:left;gap:1rem}
 }
@@ -549,7 +563,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
         <a href="#contact">Contact</a>
       </div>
       <div class="nav-right">
-        <a href="mailto:hello@aptryk.com" class="btn btn-outline btn-sm">Contact us</a>
+        <a href="#contact" class="btn btn-outline btn-sm" data-modal="contact" aria-haspopup="dialog">Contact us</a>
         <a href="/start" class="btn btn-primary btn-sm">
           Start a project
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -575,7 +589,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
             Start a project
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
-          <a href="mailto:hello@aptryk.com" class="btn btn-outline">Contact us</a>
+          <a href="#contact" class="btn btn-outline" data-modal="contact" aria-haspopup="dialog">Contact us</a>
         </div>
       </div>
 
@@ -629,7 +643,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
         <h2 class="sec-h2" id="capabilities-title">A focused <em>practice.</em></h2>
         <p class="sec-sub">Four areas of work that compound. Most engagements draw on two or three together — strategy paired with the build, or systems paired with advisory.</p>
         <div style="margin-top:1.85rem">
-          <a href="/consult" class="btn btn-outline btn-sm">
+          <a href="#contact" class="btn btn-outline btn-sm" data-modal="contact" aria-haspopup="dialog">
             Discuss an engagement
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
@@ -667,7 +681,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   </div>
 </section>
 
-<!-- APPROACH / PRINCIPLES -->
+<!-- APPROACH -->
 <section class="section bg-deep" id="approach" aria-labelledby="approach-title">
   <div class="container">
 
@@ -784,7 +798,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
             Start a project
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
-          <a href="mailto:hello@aptryk.com" class="btn btn-outline">Contact us</a>
+          <a href="#contact" class="btn btn-outline" data-modal="contact" aria-haspopup="dialog">Contact us</a>
         </div>
         <p class="cta-note">Responds within one business day.</p>
       </div>
@@ -795,16 +809,16 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 
         <div class="contact-options">
 
-          <a href="/consult" class="contact-opt">
-            <div class="contact-opt-meta">5 Min · Snapshot</div>
+          <a href="/consult" class="contact-opt contact-opt-primary">
+            <div class="contact-opt-meta">5 Min · Snapshot <span class="contact-opt-badge">Recommended</span></div>
             <div class="contact-opt-title">Take the consult<span class="contact-opt-title-arrow" aria-hidden="true">→</span></div>
             <div class="contact-opt-desc">A focused intake. You get a personalized snapshot of where we'd help most.</div>
           </a>
 
-          <a href="/start" class="contact-opt">
-            <div class="contact-opt-meta">Project Brief · 24hr Response</div>
-            <div class="contact-opt-title">Start a project<span class="contact-opt-title-arrow" aria-hidden="true">→</span></div>
-            <div class="contact-opt-desc">Already know what you need? Send us a brief and we'll respond within one business day.</div>
+          <a href="/book" class="contact-opt">
+            <div class="contact-opt-meta">15–30 Min · Live</div>
+            <div class="contact-opt-title">Book a call<span class="contact-opt-title-arrow" aria-hidden="true">→</span></div>
+            <div class="contact-opt-desc">Schedule time on the calendar. Talk through your situation in real time.</div>
           </a>
 
           <a href="mailto:hello@aptryk.com" class="contact-opt">
@@ -845,9 +859,44 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   </div>
 </footer>
 
+<!-- CONTACT MODAL -->
+<div class="modal" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle" aria-hidden="true">
+  <div class="modal-backdrop" data-close="modal" aria-hidden="true"></div>
+  <div class="modal-panel" role="document">
+    <button type="button" class="modal-close" aria-label="Close" data-close="modal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <div class="modal-eyebrow">Three ways to reach us</div>
+      <h2 class="modal-title" id="contactModalTitle">Choose what fits your <em>situation.</em></h2>
+    </div>
+    <div class="contact-options">
+
+      <a href="/consult" class="contact-opt contact-opt-primary">
+        <div class="contact-opt-meta">5 Min · Snapshot <span class="contact-opt-badge">Recommended</span></div>
+        <div class="contact-opt-title">Take the consult<span class="contact-opt-title-arrow" aria-hidden="true">→</span></div>
+        <div class="contact-opt-desc">A focused intake. You get a personalized snapshot of where we'd help most.</div>
+      </a>
+
+      <a href="/book" class="contact-opt">
+        <div class="contact-opt-meta">15–30 Min · Live</div>
+        <div class="contact-opt-title">Book a call<span class="contact-opt-title-arrow" aria-hidden="true">→</span></div>
+        <div class="contact-opt-desc">Schedule time on the calendar. Talk through your situation in real time.</div>
+      </a>
+
+      <a href="mailto:hello@aptryk.com" class="contact-opt">
+        <div class="contact-opt-meta">Direct Email</div>
+        <div class="contact-opt-title">hello@aptryk.com<span class="contact-opt-title-arrow" aria-hidden="true">→</span></div>
+        <div class="contact-opt-desc">Prefer to skip the form? Reach out directly.</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
-  // Scroll reveals
+  // ── Scroll reveals ──
   const els = document.querySelectorAll('.rev');
   if('IntersectionObserver' in window){
     const ro = new IntersectionObserver(entries => {
@@ -860,18 +909,84 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
     els.forEach(el => el.classList.add('in'));
   }
 
-  // Reduced motion
+  // Reduced motion fallback
   if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
     els.forEach(el => el.classList.add('in'));
   }
 
-  // Smooth anchor scrolling (in-page links only)
+  // ── Smooth anchor scrolling (excluding modal triggers) ──
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
+      if(a.hasAttribute('data-modal')) return; // modal triggers handled below
       const id = a.getAttribute('href');
       if(id.length <= 1) return;
       const t = document.querySelector(id);
       if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+    });
+  });
+
+  // ── Contact modal ──
+  const modal = document.getElementById('contactModal');
+  const triggers = document.querySelectorAll('[data-modal="contact"]');
+  const closers = modal.querySelectorAll('[data-close="modal"]');
+  let lastFocus = null;
+
+  function openModal(trigger){
+    lastFocus = trigger || document.activeElement;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-open');
+    // Focus the primary option after the panel animates in
+    setTimeout(()=>{
+      const first = modal.querySelector('.contact-opt');
+      if(first) first.focus();
+    }, 80);
+  }
+
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-open');
+    if(lastFocus && typeof lastFocus.focus === 'function'){
+      lastFocus.focus();
+    }
+  }
+
+  triggers.forEach(t => {
+    t.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(t);
+    });
+  });
+
+  closers.forEach(c => c.addEventListener('click', closeModal));
+
+  // Escape key closes
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && modal.classList.contains('open')){
+      closeModal();
+    }
+  });
+
+  // Focus trap inside modal
+  modal.addEventListener('keydown', e => {
+    if(e.key !== 'Tab' || !modal.classList.contains('open')) return;
+    const focusable = modal.querySelectorAll('a, button');
+    if(!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if(e.shiftKey && document.activeElement === first){
+      e.preventDefault(); last.focus();
+    } else if(!e.shiftKey && document.activeElement === last){
+      e.preventDefault(); first.focus();
+    }
+  });
+
+  // Close modal when a contact option is clicked (lets the navigation happen)
+  modal.querySelectorAll('.contact-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      // small delay so the click registers before close
+      setTimeout(closeModal, 80);
     });
   });
 })();
