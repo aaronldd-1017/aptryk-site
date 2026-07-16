@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="APTRYK"/>
 <meta name="twitter:description" content="Independent technology consulting. Strategy, engineering, delivery."/>
 
-<meta name="theme-color" content="#0a0a10"/>
+<meta name="theme-color" content="#08081a"/>
 
 <!-- Favicon — APTRYK brand mark -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -38,24 +38,24 @@
   --body:'DM Sans',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --bg:#0a0a10;
-  --surface:#11111a;
-  --surface-2:#171723;
-  --surface-3:#1f1f2e;
-  --line:rgba(255,255,255,0.06);
-  --line-2:rgba(255,255,255,0.10);
-  --line-3:rgba(255,255,255,0.15);
-  --ink:#f4f4f7;
-  --ink-2:#d8d8e0;
+  --bg:#08081a;
+  --surface:#0d0d1e;
+  --surface-2:#12122a;
+  --surface-3:#181836;
+  --line:rgba(180,190,255,0.07);
+  --line-2:rgba(180,190,255,0.11);
+  --line-3:rgba(180,190,255,0.17);
+  --ink:#eef0fb;
+  --ink-2:#c8cde8;
   --mid:#9d9db0;
-  --soft:#6b6b80;
-  --faint:#3a3a4a;
-  --accent:#3ecf6e;
-  --accent-h:#5edd86;
-  --accent-fg:#060d0a;
-  --accent-soft:rgba(62,207,110,0.10);
-  --accent-soft-2:rgba(62,207,110,0.16);
-  --accent-glow:rgba(62,207,110,0.28);
+  --soft:#6e6e92;
+  --faint:#2a2a45;
+  --accent:#4a7cf5;
+  --accent-h:#6b93f7;
+  --accent-fg:#f0f4ff;
+  --accent-soft:rgba(74,124,245,0.10);
+  --accent-soft-2:rgba(74,124,245,0.16);
+  --accent-glow:rgba(74,124,245,0.28);
   --shadow:0 4px 22px rgba(0,0,0,.5);
   --t-fast:130ms;
   --t-base:220ms;
@@ -132,7 +132,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 /* ── NAV ── */
 .nav{
   position:sticky;top:0;z-index:400;
-  background:rgba(10,10,16,.92);
+  background:rgba(8,8,24,.95);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--line);
 }
@@ -197,7 +197,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   display:flex;align-items:center;justify-content:space-between;
   padding:.95rem 1.25rem;
   border-bottom:1px solid var(--line);
-  background:rgba(10,10,16,.92);
+  background:rgba(8,8,24,.95);
   backdrop-filter:blur(18px);
 }
 .mobile-nav-brand{
@@ -248,7 +248,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   padding:6.5rem 0 5.5rem;
   position:relative;overflow:hidden;
   background:
-    radial-gradient(ellipse at 15% 100%,rgba(62,207,110,0.045) 0%,transparent 50%),
+    radial-gradient(ellipse at 15% 100%,rgba(74,124,245,0.045) 0%,transparent 50%),
     var(--bg);
 }
 .hero-inner{
@@ -356,7 +356,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   transition:border-color var(--t-fast),transform var(--t-fast),box-shadow var(--t-fast);
 }
 .service-card:hover{
-  border-color:rgba(62,207,110,.18);
+  border-color:rgba(74,124,245,.18);
   transform:translateY(-2px);box-shadow:var(--shadow);
 }
 .service-num{
@@ -494,16 +494,16 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast);
 }
 .contact-opt:hover{
-  border-color:rgba(62,207,110,.22);
+  border-color:rgba(74,124,245,.22);
   background:var(--surface-3);transform:translateX(3px);
 }
 .contact-opt-primary{
   border-color:var(--accent-soft-2);
-  background:rgba(62,207,110,.04);
+  background:rgba(74,124,245,.04);
 }
 .contact-opt-primary:hover{
-  border-color:rgba(62,207,110,.4);
-  background:rgba(62,207,110,.08);
+  border-color:rgba(74,124,245,.4);
+  background:rgba(74,124,245,.08);
 }
 .contact-opt-meta{
   font-family:var(--mono);font-size:.5rem;font-weight:700;
@@ -551,7 +551,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .modal.open{opacity:1;visibility:visible;pointer-events:auto}
 .modal-backdrop{
   position:absolute;inset:0;
-  background:rgba(5,5,10,.65);
+  background:rgba(4,4,14,.72);
   backdrop-filter:blur(10px);
   -webkit-backdrop-filter:blur(10px);
 }
@@ -650,6 +650,152 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   }
 }
 body{padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* ══════════════════════════════════════════════
+   APTRYK · BLUE TECHNICAL REDESIGN
+══════════════════════════════════════════════ */
+
+/* ── GRID BACKGROUND ── */
+/* Applied to hero's own ::before so it stays in hero's stacking context and never covers content */
+
+/* ── NAV ── */
+.nav{
+  border-bottom-color:rgba(74,124,245,0.14);
+  box-shadow:0 1px 0 rgba(74,124,245,0.06),0 4px 20px rgba(0,0,0,.32);
+}
+.nav-logo{
+  background:linear-gradient(145deg,#0c1838 0%,#152048 100%);
+  border:1px solid rgba(74,124,245,0.3);
+  color:var(--accent);border-radius:7px;
+}
+.nav-logo::after{box-shadow:0 0 8px rgba(74,124,245,0.8)}
+.nav-links a{letter-spacing:.14em}
+
+/* ── HERO ── */
+.hero{
+  background:
+    radial-gradient(ellipse 55% 75% at 8% 95%,rgba(74,124,245,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 35% 50% at 92% 8%,rgba(74,124,245,0.06) 0%,transparent 65%),
+    /* grid lines faded on the right side */
+    linear-gradient(rgba(74,124,245,0.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,124,245,0.045) 1px,transparent 1px),
+    var(--bg);
+  background-size:auto,auto,56px 56px,56px 56px,auto;
+  overflow:hidden;
+}
+.hero-kicker{color:var(--accent);letter-spacing:.22em}
+.hero-kicker::before{width:22px;opacity:0.9}
+.hero-h1{letter-spacing:-.036em}
+.hero-h1 em{color:var(--accent)}
+/* Hero capabilities: card treatment */
+.hero-capabilities{
+  background:rgba(74,124,245,0.04);
+  border:1px solid rgba(74,124,245,0.11);
+  border-radius:10px;padding:1.25rem 1.4rem;
+}
+.hcap-block{border-bottom-color:rgba(74,124,245,0.1)}
+.hcap-label{color:var(--accent);opacity:.75;letter-spacing:.18em}
+.hcap-item em,.strip-value em{color:var(--accent)}
+.hero-strip{border-top-color:rgba(74,124,245,0.12)}
+
+/* ── BUTTONS ── */
+.btn{border-radius:6px}
+.btn-sm{border-radius:5px}
+.btn-primary{
+  box-shadow:0 0 0 1px rgba(74,124,245,0.45),inset 0 1px 0 rgba(255,255,255,0.12);
+}
+.btn-primary:hover{
+  box-shadow:0 6px 24px rgba(74,124,245,0.38),0 0 0 1px rgba(74,124,245,0.55);
+}
+.btn-outline{border-color:rgba(74,124,245,0.22)}
+.btn-outline:hover{
+  border-color:rgba(74,124,245,0.45);
+  background:rgba(74,124,245,0.08);
+  box-shadow:none;
+}
+
+/* ── SECTION HEADERS ── */
+.sec-eyebrow{color:var(--accent);letter-spacing:.22em}
+.sec-eyebrow::before{background:var(--accent)}
+.sec-h2 em,.cta-h2 em{color:var(--accent)}
+
+/* ── SERVICE CARDS ── */
+.service-card{
+  background:var(--surface);border-color:rgba(74,124,245,0.09);border-radius:8px;
+}
+.service-card:hover{
+  border-color:rgba(74,124,245,0.3);
+  box-shadow:0 0 0 1px rgba(74,124,245,0.1),0 10px 30px rgba(0,0,0,.4);
+  transform:translateY(-3px);
+}
+.service-num{color:var(--accent)}
+.service-name em{color:var(--accent)}
+
+/* ── PRINCIPLES ── */
+.principle{background:var(--surface-2);border-color:rgba(74,124,245,0.09);border-radius:8px}
+.principle-num{color:var(--accent)}
+.principle-num::after{background:rgba(74,124,245,0.12)}
+.principle-title em{color:var(--accent)}
+
+/* ── PROCESS ── */
+.step{border-bottom-color:rgba(74,124,245,0.1)}
+.step-num{
+  background:rgba(74,124,245,0.1);border-color:rgba(74,124,245,0.25);
+  color:var(--accent);border-radius:6px;
+}
+.promises{border-color:rgba(74,124,245,0.1);border-radius:10px}
+.promises::before{
+  background:linear-gradient(90deg,transparent,rgba(74,124,245,0.45) 35%,rgba(74,124,245,0.45) 65%,transparent);
+}
+.promise{border-bottom-color:rgba(74,124,245,0.08)}
+.promise-value em{color:var(--accent)}
+
+/* ── CTA / CONTACT ── */
+.cta-section{
+  background:
+    radial-gradient(ellipse at 50% 75%,rgba(74,124,245,0.08) 0%,transparent 55%),
+    var(--bg);
+  border-top-color:rgba(74,124,245,0.1);
+}
+.contact-card{border-color:rgba(74,124,245,0.12);border-radius:10px}
+.contact-card::before{
+  background:linear-gradient(90deg,transparent,rgba(74,124,245,0.5) 40%,rgba(74,124,245,0.5) 60%,transparent);
+}
+.contact-card-q em{color:var(--accent)}
+.contact-opt{border-radius:8px;border-color:rgba(74,124,245,0.09)}
+.contact-opt:hover{border-color:rgba(74,124,245,0.32);background:rgba(74,124,245,0.06)}
+.contact-opt-primary{border-color:rgba(74,124,245,0.26);background:rgba(74,124,245,0.06)}
+.contact-opt-primary:hover{border-color:rgba(74,124,245,0.5);background:rgba(74,124,245,0.12)}
+.contact-opt-meta{color:var(--accent)}
+.contact-opt-badge{background:var(--accent);color:var(--accent-fg)}
+.contact-opt:hover .contact-opt-title-arrow{color:var(--accent)}
+
+/* ── MODAL ── */
+.modal-panel{border-radius:12px;border-color:rgba(74,124,245,0.15)}
+.modal-panel::before{
+  background:linear-gradient(90deg,transparent,rgba(74,124,245,0.5) 40%,rgba(74,124,245,0.5) 60%,transparent);
+}
+.modal-eyebrow{color:var(--accent)}
+.modal-title em{color:var(--accent)}
+
+/* ── MOBILE NAV ── */
+.mobile-nav-logo{
+  background:linear-gradient(145deg,#0c1838 0%,#152048 100%);
+  border:1px solid rgba(74,124,245,0.28);color:var(--accent);
+}
+.mobile-nav-link:hover{color:var(--accent)}
+
+/* ── FOOTER ── */
+.footer{border-top-color:rgba(74,124,245,0.1)}
+.footer-center a{color:var(--accent)}
+.footer-nav a:hover{color:var(--accent)}
+
+/* ── GLOBAL POLISH ── */
+::selection{background:rgba(74,124,245,0.25);color:var(--ink)}
+:focus-visible{outline-color:var(--accent)}
+.skip-link{background:var(--accent);color:var(--accent-fg)}
+::-webkit-scrollbar-thumb{background:rgba(74,124,245,0.2)}
+::-webkit-scrollbar-thumb:hover{background:rgba(74,124,245,0.35)}
 
 /* ── REDUCED MOTION ── */
 @media(prefers-reduced-motion:reduce){

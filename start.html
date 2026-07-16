@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>Start a project · APTRYK</title>
-<meta name="theme-color" content="#0a0a10"/>
+<meta name="theme-color" content="#08081a"/>
 <meta name="description" content="The shortcut for operators who've done the homework. Drop your project brief — we'll come back inside two business days with scope, price, and a path."/>
 
 <meta property="og:title" content="Start a project · APTRYK"/>
@@ -22,12 +22,12 @@
   --body:'DM Sans',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --bg:#0a0a10;--surface:#11111a;--surface-2:#171723;--surface-3:#1f1f2e;
-  --line:rgba(255,255,255,0.06);--line-2:rgba(255,255,255,0.10);
-  --ink:#f4f4f7;--ink-2:#d8d8e0;--mid:#9d9db0;--soft:#6b6b80;--faint:#444454;
-  --accent:#3ecf6e;--accent-h:#5edd86;--accent-fg:#0a0a10;
-  --accent-soft:rgba(62,207,110,0.12);--accent-soft-2:rgba(62,207,110,0.18);
-  --accent-glow:rgba(62,207,110,0.35);
+  --bg:#08081a;--surface:#0d0d1e;--surface-2:#12122a;--surface-3:#181836;
+  --line:rgba(180,190,255,0.07);--line-2:rgba(180,190,255,0.11);
+  --ink:#eef0fb;--ink-2:#c8cde8;--mid:#9d9db0;--soft:#6e6e92;--faint:#38385a;
+  --accent:#4a7cf5;--accent-h:#6b93f7;--accent-fg:#f0f4ff;
+  --accent-soft:rgba(74,124,245,0.12);--accent-soft-2:rgba(74,124,245,0.18);
+  --accent-glow:rgba(74,124,245,0.35);
   --err:#f87171;--err-soft:rgba(248,113,113,0.10);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -37,7 +37,7 @@ body{
   font-family:var(--body);font-weight:400;line-height:1.55;
   -webkit-font-smoothing:antialiased;min-height:100svh;
   background-image:
-    radial-gradient(circle at 15% 10%,rgba(62,207,110,0.04) 0%,transparent 40%),
+    radial-gradient(circle at 15% 10%,rgba(74,124,245,0.04) 0%,transparent 40%),
     radial-gradient(circle at 85% 90%,rgba(96,165,250,0.03) 0%,transparent 40%);
   background-attachment:fixed;
 }
@@ -342,6 +342,58 @@ textarea.fld-input{min-height:84px;resize:vertical;line-height:1.55}
 }
 /* Safe area */
 body{padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* ══ APTRYK BLUE TECHNICAL REDESIGN ══ */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(74,124,245,0.038) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,124,245,0.038) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,black 0%,transparent 85%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,black 0%,transparent 85%);
+}
+.wrap{position:relative;z-index:1}
+.brand-logo{
+  background:linear-gradient(145deg,#0c1838 0%,#152048 100%);
+  border:1px solid rgba(74,124,245,0.28);color:var(--accent);
+}
+.brand-logo::after{box-shadow:0 0 8px rgba(74,124,245,0.8)}
+.topbar{border-bottom-color:rgba(74,124,245,0.12)}
+.back-link:hover{color:var(--accent)}
+.eyebrow{color:var(--accent)}
+.hero-title em{color:var(--accent)}
+.hero-pill{
+  border:1px solid rgba(74,124,245,0.2);background:rgba(74,124,245,0.07);
+  color:var(--ink-2);border-radius:5px;
+}
+/* Sections */
+.sec{border-color:rgba(74,124,245,0.1);border-radius:9px}
+.sec-head{border-bottom-color:rgba(74,124,245,0.1)}
+.sec-num{color:var(--accent)}
+.sec-title em{color:var(--accent)}
+/* Form fields */
+.fld-input:focus{border-color:rgba(74,124,245,0.45);box-shadow:0 0 0 3px rgba(74,124,245,0.12)}
+.fld-input{border-color:rgba(74,124,245,0.1);border-radius:7px}
+textarea.fld-input{border-radius:7px}
+/* Radio buttons */
+.radio{border-color:rgba(74,124,245,0.1);border-radius:7px}
+.radio:has(input:checked){border-color:var(--accent);background:rgba(74,124,245,0.1)}
+.radio-dot{border-color:rgba(74,124,245,0.3)}
+.radio-dot::after{background:var(--accent)}
+/* Buttons */
+.btn{border-radius:6px}
+.btn-primary{box-shadow:0 0 0 1px rgba(74,124,245,0.45),inset 0 1px 0 rgba(255,255,255,0.12)}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(74,124,245,0.38),0 0 0 1px rgba(74,124,245,0.55)}
+/* Budget tags */
+.budget-tag{border-color:rgba(74,124,245,0.15);border-radius:5px}
+.budget-tag.active{border-color:var(--accent);background:rgba(74,124,245,0.12);color:var(--accent)}
+/* Success */
+.success-icon{border-color:rgba(74,124,245,0.25);background:rgba(74,124,245,0.08)}
+.foot{border-top-color:rgba(74,124,245,0.1)}
+::selection{background:rgba(74,124,245,0.25);color:var(--ink)}
+:focus-visible{outline-color:var(--accent)}
+::-webkit-scrollbar-thumb{background:rgba(74,124,245,0.2)}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{

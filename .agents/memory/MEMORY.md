@@ -1,0 +1,1 @@
+- [APTRYK redesign — blue technical system](aptryk-redesign.md) — pseudo-element z-index stacking: body::before (fixed) sits above main content unless main has explicit z-index; use hero background-image layers instead for safe grid overlays.

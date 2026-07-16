@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <title>APTRYK Library — Everything we've built</title>
-<meta name="theme-color" content="#0a0a10"/>
+<meta name="theme-color" content="#08081a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
@@ -14,23 +14,23 @@
   --body:'DM Sans',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --bg:#0a0a10;
-  --surface:#11111a;
-  --surface-2:#171723;
-  --surface-3:#1f1f2e;
-  --line:rgba(255,255,255,0.06);
-  --line-2:rgba(255,255,255,0.10);
-  --ink:#f4f4f7;
-  --ink-2:#d8d8e0;
+  --bg:#08081a;
+  --surface:#0d0d1e;
+  --surface-2:#12122a;
+  --surface-3:#181836;
+  --line:rgba(180,190,255,0.07);
+  --line-2:rgba(180,190,255,0.11);
+  --ink:#eef0fb;
+  --ink-2:#c8cde8;
   --mid:#9d9db0;
-  --soft:#6b6b80;
-  --faint:#444454;
-  --accent:#3ecf6e;
-  --accent-h:#5edd86;
-  --accent-fg:#0a0a10;
-  --accent-soft:rgba(62,207,110,0.12);
-  --accent-soft-2:rgba(62,207,110,0.18);
-  --accent-glow:rgba(62,207,110,0.35);
+  --soft:#6e6e92;
+  --faint:#38385a;
+  --accent:#4a7cf5;
+  --accent-h:#6b93f7;
+  --accent-fg:#f0f4ff;
+  --accent-soft:rgba(74,124,245,0.12);
+  --accent-soft-2:rgba(74,124,245,0.18);
+  --accent-glow:rgba(74,124,245,0.35);
   --warn:#fbbf24;
   --warn-soft:rgba(251,191,36,0.10);
   --info:#60a5fa;
@@ -54,7 +54,7 @@ body{
   -webkit-font-smoothing:antialiased;
   min-height:100svh;
   background-image:
-    radial-gradient(circle at 15% 10%,rgba(62,207,110,0.04) 0%,transparent 40%),
+    radial-gradient(circle at 15% 10%,rgba(74,124,245,0.04) 0%,transparent 40%),
     radial-gradient(circle at 85% 90%,rgba(96,165,250,0.03) 0%,transparent 40%);
   background-attachment:fixed;
 }
@@ -545,6 +545,51 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
 }
 /* Safe area */
 body{padding-bottom:env(safe-area-inset-bottom,0px)}
+
+/* ══ APTRYK BLUE TECHNICAL REDESIGN ══ */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(74,124,245,0.038) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(74,124,245,0.038) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,black 0%,transparent 85%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,black 0%,transparent 85%);
+}
+.wrap{position:relative;z-index:1}
+/* Brand */
+.brand-logo{
+  background:linear-gradient(145deg,#0c1838 0%,#152048 100%);
+  border:1px solid rgba(74,124,245,0.28);color:var(--accent);border-radius:11px;
+}
+.brand-logo::after{box-shadow:0 0 8px rgba(74,124,245,0.8)}
+.head-meta-dot{box-shadow:0 0 6px rgba(74,124,245,0.7)}
+.brand-pill{background:rgba(74,124,245,0.12);color:var(--accent)}
+.lib-title em{color:var(--accent)}
+/* Header border */
+.head{border-bottom-color:rgba(74,124,245,0.12)}
+/* Sections */
+.sec-head{border-bottom-color:rgba(74,124,245,0.1)}
+.sec-title em{color:var(--accent)}
+.sec-count strong{color:var(--accent)}
+/* Hero card (WRM) */
+.hero{border-color:rgba(74,124,245,0.12);border-radius:14px}
+.hero-stat-val{color:var(--accent)}
+/* Grid cards */
+.grid-card{border-color:rgba(74,124,245,0.09);border-radius:9px}
+.grid-card:hover{border-color:rgba(74,124,245,0.28);box-shadow:0 0 0 1px rgba(74,124,245,0.1),0 8px 24px rgba(0,0,0,.4)}
+.card-tag{border-radius:4px}
+/* Brand kit */
+.brand-kit{border-color:rgba(74,124,245,0.1);border-radius:10px}
+/* Funnel */
+.funnel-stage{border-color:rgba(74,124,245,0.1);border-radius:8px}
+.funnel-stage:hover{border-color:rgba(74,124,245,0.28)}
+/* Status badges */
+.status-live{background:rgba(74,124,245,0.12);color:var(--accent);border-color:rgba(74,124,245,0.2)}
+.foot{border-top-color:rgba(74,124,245,0.1)}
+::selection{background:rgba(74,124,245,0.25);color:var(--ink)}
+:focus-visible{outline-color:var(--accent)}
+::-webkit-scrollbar-thumb{background:rgba(74,124,245,0.2)}
 </style>
 </head>
 <body>
