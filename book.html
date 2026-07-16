@@ -413,19 +413,41 @@ textarea.fld-input{min-height:64px;resize:vertical}
 
 /* ── RESPONSIVE ── */
 @media(max-width:880px){
-  .wrap{padding:1rem 1rem 3rem}
+  .wrap{padding:1.25rem 1.25rem 3rem}
   .main{grid-template-columns:1fr}
   .hero-title{font-size:clamp(1.85rem,7vw,2.4rem)}
 }
+@media(max-width:680px){
+  .wrap{padding:1rem 1rem 3rem}
+  .hero-title{font-size:clamp(1.6rem,8vw,2.1rem)}
+  /* Topbar: stack brand + back on tiny screens */
+  .topbar{gap:.75rem}
+  .brand-text{font-size:1rem}
+  /* Enlarge touch targets */
+  .cal-cell{aspect-ratio:1;min-height:40px}
+  .cal-nav-btn{width:36px;height:36px}
+  .slot-btn,.btn{min-height:44px}
+  .back-link{padding:.25rem 0}
+  /* Confirmation field rows stack */
+  .fld-row{grid-template-columns:1fr}
+  /* Slots: 3 across on wide-ish mobile */
+  .slots{grid-template-columns:repeat(3,1fr)}
+}
 @media(max-width:480px){
   .facts{grid-template-columns:1fr 1fr}
-  .brand-text{font-size:1rem}
   .fld-row{grid-template-columns:1fr}
   .slots{grid-template-columns:repeat(2,1fr)}
   .cal-cell{font-size:.84rem}
   .rail{font-size:.54rem;gap:.35rem}
   .rail-sep{width:8px}
 }
+@media(max-width:360px){
+  .rail{gap:.2rem;font-size:.5rem}
+  .rail-sep{width:5px}
+  .slots{grid-template-columns:repeat(2,1fr)}
+}
+/* Safe area for notch / home bar */
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
 
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}

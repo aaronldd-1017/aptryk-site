@@ -527,11 +527,24 @@ details.archive .grid{padding:1rem 1.25rem 1.25rem}
   .bk-grid{grid-template-columns:1fr 1fr}
   .funnel{grid-template-columns:1fr}
 }
+@media(max-width:680px){
+  .wrap{padding:1rem 1rem 3rem}
+  .lib-title{font-size:clamp(1.65rem,8vw,2.2rem)}
+  .sec-head{flex-wrap:wrap;gap:.75rem}
+  .brand-text{font-size:1.2rem}
+}
 @media(max-width:480px){
   .hero-stats{grid-template-columns:1fr 1fr}
   .hero-stats .hero-stat:last-child{grid-column:1/-1}
   .bk-grid{grid-template-columns:1fr}
+  .head-meta{font-size:.58rem}
 }
+@media(max-width:360px){
+  .brand-text{font-size:1.1rem}
+  .lib-title{font-size:1.65rem}
+}
+/* Safe area */
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
 </style>
 </head>
 <body>

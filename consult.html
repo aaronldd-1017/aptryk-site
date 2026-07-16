@@ -67,6 +67,19 @@ input:focus,textarea:focus{outline:none;border-color:var(--lime-dim);box-shadow:
 input::placeholder,textarea::placeholder{color:var(--faint)}
 .input-group{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
 @media(max-width:520px){.input-group{grid-template-columns:1fr}}
+@media(max-width:680px){
+  header{padding:.75rem 1rem}
+  main{padding:1.5rem 1rem 3rem}
+  .progress-wrap{padding:0 1rem}
+  /* Prevent iOS zoom on inputs */
+  input,textarea,select{font-size:16px}
+  /* Touch targets */
+  .btn-primary,button[type="button"]{min-height:48px}
+}
+@media(max-width:400px){
+  .logo{font-size:1rem}
+}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
 .input-label{font-family:var(--display);font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--mid);margin-bottom:0.4rem;display:block;}
 .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;gap:1rem;}
 .btn{font-family:var(--display);font-weight:700;font-size:0.88rem;padding:0.85rem 1.6rem;border-radius:10px;border:none;cursor:pointer;letter-spacing:0.03em;display:inline-flex;align-items:center;gap:0.4rem;transition:all 0.25s var(--ease-out);}

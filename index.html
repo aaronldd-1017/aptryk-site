@@ -91,6 +91,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 
 /* ── LAYOUT ── */
 .container{max-width:1100px;margin:0 auto;padding-left:1.75rem;padding-right:1.75rem}
+@media(max-width:680px){.container{padding-left:1.25rem;padding-right:1.25rem}}
 
 /* ── ANIMATIONS ── */
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -131,7 +132,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 /* ── NAV ── */
 .nav{
   position:sticky;top:0;z-index:400;
-  background:rgba(10,10,16,.85);
+  background:rgba(10,10,16,.92);
   backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid var(--line);
 }
@@ -165,7 +166,82 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .nav-links a{transition:color var(--t-fast)}
 .nav-links a:hover{color:var(--ink-2)}
 .nav-right{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
-@media(max-width:680px){.nav-links{display:none}}
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger{
+  display:none;
+  width:40px;height:40px;align-items:center;justify-content:center;
+  border-radius:8px;color:var(--ink-2);flex-shrink:0;
+  transition:background var(--t-fast),color var(--t-fast);
+}
+.nav-hamburger:hover{background:var(--surface-2);color:var(--ink)}
+.nav-hamburger svg{width:20px;height:20px;stroke-width:2}
+.nav-hamburger .icon-close{display:none}
+.nav-hamburger.open .icon-open{display:none}
+.nav-hamburger.open .icon-close{display:block}
+
+/* ── MOBILE NAV OVERLAY ── */
+.mobile-nav{
+  position:fixed;inset:0;z-index:390;
+  display:flex;flex-direction:column;
+  background:var(--bg);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(-6px);
+  transition:opacity .22s var(--ease-out),visibility .22s,transform .22s var(--ease-out);
+}
+.mobile-nav.open{
+  opacity:1;visibility:visible;pointer-events:auto;transform:none;
+}
+.mobile-nav-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.95rem 1.25rem;
+  border-bottom:1px solid var(--line);
+  background:rgba(10,10,16,.92);
+  backdrop-filter:blur(18px);
+}
+.mobile-nav-brand{
+  display:flex;align-items:center;gap:.6rem;
+  font-family:var(--display);font-weight:800;font-size:1.05rem;
+  letter-spacing:-.015em;color:var(--ink);
+}
+.mobile-nav-logo{
+  width:34px;height:34px;border-radius:9px;background:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:800;font-size:.85rem;color:var(--accent);
+}
+.mobile-nav-close{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;color:var(--soft);
+  transition:background var(--t-fast),color var(--t-fast);
+}
+.mobile-nav-close:hover{background:var(--surface-2);color:var(--ink)}
+.mobile-nav-close svg{width:18px;height:18px;stroke-width:2.5}
+.mobile-nav-links{
+  flex:1;overflow-y:auto;padding:1rem 1.25rem;
+  display:flex;flex-direction:column;
+}
+.mobile-nav-link{
+  display:flex;align-items:center;
+  padding:1rem 0;
+  font-family:var(--mono);font-size:.72rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--mid);
+  border-bottom:1px solid var(--line);
+  transition:color var(--t-fast);
+}
+.mobile-nav-link:hover{color:var(--ink)}
+.mobile-nav-actions{
+  padding:1.25rem;display:flex;flex-direction:column;gap:.6rem;
+  border-top:1px solid var(--line);
+  background:var(--surface);
+}
+.mobile-nav-actions .btn{justify-content:center;width:100%;padding:1rem 1.5rem}
+
+@media(max-width:680px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+  .nav-right .btn-outline{display:none}
+}
 
 /* ── HERO ── */
 .hero{
@@ -235,16 +311,26 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .strip-value em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
 
 @media(max-width:880px){
-  .hero{padding:4rem 0 3.5rem}
-  .hero-inner{grid-template-columns:1fr;gap:2.5rem}
+  .hero{padding:3.5rem 0 3rem}
+  .hero-inner{grid-template-columns:1fr;gap:2rem}
   .hero-strip{grid-template-columns:1fr 1fr}
 }
-@media(max-width:520px){.hero-strip{grid-template-columns:1fr}}
+@media(max-width:680px){
+  .hero{padding:2.75rem 0 2.5rem}
+  .hero-strip{grid-template-columns:1fr 1fr}
+}
+@media(max-width:400px){
+  .hero-strip{display:flex;overflow-x:auto;gap:1rem;padding-bottom:.5rem;scrollbar-width:none}
+  .hero-strip::-webkit-scrollbar{display:none}
+  .hero-strip > *{flex:0 0 auto;min-width:130px}
+}
 
 /* ── SECTION ── */
 .bg-lifted{background:var(--surface)}
 .bg-deep{background:var(--bg)}
 .section{padding:5rem 0}
+@media(max-width:880px){.section{padding:3.5rem 0}}
+@media(max-width:680px){.section{padding:2.75rem 0}}
 .sec-eyebrow{
   display:inline-flex;align-items:center;gap:.55rem;
   font-family:var(--mono);font-size:.58rem;font-weight:700;
@@ -359,7 +445,8 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 
 /* ── CONTACT SECTION ── */
 .cta-section{
-  padding:5.5rem 0;position:relative;overflow:hidden;
+  padding:5.5rem 0;
+  position:relative;overflow:hidden;
   background:
     radial-gradient(ellipse at 50% 70%,rgba(62,207,110,.045) 0%,transparent 55%),
     var(--bg);
@@ -440,6 +527,19 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .contact-opt-desc{font-family:var(--body);font-size:.78rem;color:var(--mid);line-height:1.55}
 
 @media(max-width:880px){.cta-inner{grid-template-columns:1fr;gap:2.5rem}}
+@media(max-width:680px){.cta-section{padding:3rem 0}}
+
+/* ── MOBILE TOUCH TARGETS ── */
+@media(max-width:680px){
+  .btn{min-height:48px}
+  .contact-opt{padding:1.1rem 1.15rem}
+  .service-card{padding:1.4rem}
+  .step{padding:1.25rem 0}
+  .step-num{width:36px;height:36px;min-width:36px}
+}
+
+/* ── SAFE AREA (notch / home bar) ── */
+.footer{padding-bottom:max(2rem,calc(1rem + env(safe-area-inset-bottom,0px)))}
 
 /* ── CONTACT MODAL ── */
 .modal{
@@ -537,6 +637,20 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   .footer-inner{flex-direction:column;align-items:flex-start;text-align:left;gap:1rem}
 }
 
+/* ── SAFE AREA (iOS notch / home bar) ── */
+.nav{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.container{
+  padding-left:max(1.75rem,calc(1rem + env(safe-area-inset-left,0px)));
+  padding-right:max(1.75rem,calc(1rem + env(safe-area-inset-right,0px)));
+}
+@media(max-width:680px){
+  .container{
+    padding-left:max(1.25rem,calc(.75rem + env(safe-area-inset-left,0px)));
+    padding-right:max(1.25rem,calc(.75rem + env(safe-area-inset-right,0px)));
+  }
+}
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+
 /* ── REDUCED MOTION ── */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:.01ms!important;transition-duration:.01ms!important}
@@ -568,10 +682,40 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
           Start a project
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
+        <button class="nav-hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
     </div>
   </div>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
+  <div class="mobile-nav-head">
+    <a href="/" class="mobile-nav-brand" aria-label="APTRYK home">
+      <div class="mobile-nav-logo">A</div>
+      APTRYK
+    </a>
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-nav-links" aria-label="Mobile navigation">
+    <a href="#capabilities" class="mobile-nav-link">Capabilities</a>
+    <a href="#approach" class="mobile-nav-link">Approach</a>
+    <a href="#process" class="mobile-nav-link">Process</a>
+    <a href="#contact" class="mobile-nav-link" data-modal="contact">Contact</a>
+  </nav>
+  <div class="mobile-nav-actions">
+    <a href="/start" class="btn btn-primary">
+      Start a project
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a href="#contact" class="btn btn-outline" data-modal="contact" aria-haspopup="dialog">Contact us</a>
+  </div>
+</div>
 
 <main id="main">
 
@@ -896,6 +1040,41 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 
 <script>
 (function(){
+  // ── Hamburger / mobile nav ──
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  const mobileNavClose = document.getElementById('mobileNavClose');
+  let lastFocusBurger = null;
+
+  function openMobileNav(){
+    lastFocusBurger = document.activeElement;
+    mobileNav.classList.add('open');
+    mobileNav.setAttribute('aria-hidden','false');
+    hamburgerBtn.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded','true');
+    document.body.classList.add('modal-open');
+    mobileNavClose.focus();
+  }
+  function closeMobileNav(){
+    mobileNav.classList.remove('open');
+    mobileNav.setAttribute('aria-hidden','true');
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded','false');
+    document.body.classList.remove('modal-open');
+    if(lastFocusBurger && typeof lastFocusBurger.focus === 'function') lastFocusBurger.focus();
+  }
+  hamburgerBtn.addEventListener('click', ()=>{
+    mobileNav.classList.contains('open') ? closeMobileNav() : openMobileNav();
+  });
+  mobileNavClose.addEventListener('click', closeMobileNav);
+  // Close on link click (non-modal links navigate; modal links open modal)
+  mobileNav.querySelectorAll('.mobile-nav-link, .mobile-nav-actions a').forEach(a => {
+    a.addEventListener('click', ()=>{ setTimeout(closeMobileNav, 80); });
+  });
+  document.addEventListener('keydown', e=>{
+    if(e.key==='Escape' && mobileNav.classList.contains('open')) closeMobileNav();
+  });
+
   // ── Scroll reveals ──
   const els = document.querySelectorAll('.rev');
   if('IntersectionObserver' in window){
