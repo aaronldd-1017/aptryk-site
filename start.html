@@ -14,12 +14,12 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
-  --display:'Syne',-apple-system,sans-serif;
-  --body:'DM Sans',-apple-system,sans-serif;
+  --display:'Space Grotesk',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --bg:#08081a;--surface:#0d0d1e;--surface-2:#12122a;--surface-3:#181836;
@@ -60,14 +60,14 @@ input,textarea,select{font:inherit;color:inherit;background:none;border:none;-we
 .brand-logo{
   width:38px;height:38px;border-radius:10px;background:var(--ink);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:800;font-size:1rem;
+  font-family:var(--display);font-weight:700;font-size:1rem;
   color:var(--accent);position:relative;
 }
 .brand-logo::after{
   content:'';position:absolute;top:7px;right:7px;width:4px;height:4px;
   border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
 }
-.brand-text{font-family:var(--display);font-weight:800;font-size:1.2rem;letter-spacing:-.015em}
+.brand-text{font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:-.015em}
 .back-link{
   font-family:var(--mono);font-size:.65rem;font-weight:700;
   color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
@@ -90,7 +90,7 @@ input,textarea,select{font:inherit;color:inherit;background:none;border:none;-we
 }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .hero-title{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(2.2rem,5.5vw,3.2rem);
   letter-spacing:-.035em;line-height:1.02;
   margin-bottom:1rem;max-width:16ch;
@@ -277,7 +277,7 @@ textarea.fld-input{min-height:84px;resize:vertical;line-height:1.55}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 .success-title{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(2rem,5vw,2.6rem);
   letter-spacing:-.03em;line-height:1.05;
   margin-bottom:1.1rem;max-width:18ch;

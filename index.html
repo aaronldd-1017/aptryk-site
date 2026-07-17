@@ -30,12 +30,12 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 <style>
 /* ── TOKENS ── */
 :root{
-  --display:'Syne',-apple-system,sans-serif;
-  --body:'DM Sans',-apple-system,sans-serif;
+  --display:'Space Grotesk',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --bg:#08081a;
@@ -142,14 +142,14 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .nav-brand{
   display:flex;align-items:center;gap:.65rem;
-  font-family:var(--display);font-weight:800;font-size:1.05rem;
+  font-family:var(--display);font-weight:700;font-size:1.05rem;
   letter-spacing:-.015em;color:var(--ink);flex-shrink:0;
 }
 .nav-logo{
   width:34px;height:34px;border-radius:9px;
   background:var(--ink);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:800;font-size:.85rem;
+  font-family:var(--display);font-weight:700;font-size:.85rem;
   color:var(--accent);position:relative;
 }
 .nav-logo::after{
@@ -202,13 +202,13 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .mobile-nav-brand{
   display:flex;align-items:center;gap:.6rem;
-  font-family:var(--display);font-weight:800;font-size:1.05rem;
+  font-family:var(--display);font-weight:700;font-size:1.05rem;
   letter-spacing:-.015em;color:var(--ink);
 }
 .mobile-nav-logo{
   width:34px;height:34px;border-radius:9px;background:var(--ink);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:800;font-size:.85rem;color:var(--accent);
+  font-family:var(--display);font-weight:700;font-size:.85rem;color:var(--accent);
 }
 .mobile-nav-close{
   width:40px;height:40px;display:flex;align-items:center;justify-content:center;
@@ -265,7 +265,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   content:'';display:block;width:18px;height:1px;background:var(--accent);
 }
 .hero-h1{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(2.4rem,5.5vw,3.85rem);
   letter-spacing:-.032em;line-height:1.02;
   color:var(--ink);margin-bottom:1.25rem;max-width:18ch;
@@ -338,7 +338,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .sec-eyebrow::before{content:'';display:block;width:18px;height:1px;background:var(--accent)}
 .sec-h2{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(1.85rem,3.8vw,2.45rem);
   letter-spacing:-.028em;line-height:1.1;color:var(--ink);
   margin-bottom:.85rem;max-width:18ch;
@@ -435,7 +435,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   color:var(--soft);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;
 }
 .promise-value{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:1.25rem;letter-spacing:-.018em;color:var(--ink);line-height:1.15;margin-bottom:.3rem;
 }
 .promise-value em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:700}
@@ -454,7 +454,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 }
 .cta-inner{display:grid;grid-template-columns:1fr 1fr;gap:3rem 5rem;align-items:start}
 .cta-h2{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(1.85rem,3.8vw,2.4rem);
   letter-spacing:-.028em;line-height:1.1;color:var(--ink);margin-bottom:.85rem;
 }
@@ -607,11 +607,11 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 .footer{background:var(--surface);border-top:1px solid var(--line);padding:2rem 0}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .footer-brand{
-  font-family:var(--display);font-weight:800;font-size:.9rem;
+  font-family:var(--display);font-weight:700;font-size:.9rem;
   letter-spacing:-.01em;color:var(--mid);
   display:flex;align-items:center;gap:.5rem;
 }
-.footer-brand strong{color:var(--ink-2);font-weight:800}
+.footer-brand strong{color:var(--ink-2);font-weight:700}
 .footer-brand-sub{
   font-family:var(--mono);font-size:.55rem;font-weight:600;
   color:var(--soft);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem;

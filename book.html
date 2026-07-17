@@ -9,12 +9,12 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 
 <style>
 :root{
-  --display:'Syne',-apple-system,sans-serif;
-  --body:'DM Sans',-apple-system,sans-serif;
+  --display:'Space Grotesk',-apple-system,sans-serif;
+  --body:'Inter',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
   --bg:#08081a;--surface:#0d0d1e;--surface-2:#12122a;--surface-3:#181836;
@@ -55,14 +55,14 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;-webkit-ta
 .brand-logo{
   width:34px;height:34px;border-radius:9px;background:var(--ink);
   display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:800;font-size:.95rem;
+  font-family:var(--display);font-weight:700;font-size:.95rem;
   color:var(--accent);position:relative;
 }
 .brand-logo::after{
   content:'';position:absolute;top:6px;right:6px;width:4px;height:4px;
   border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent-glow);
 }
-.brand-text{font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-.015em}
+.brand-text{font-family:var(--display);font-weight:700;font-size:1.1rem;letter-spacing:-.015em}
 .back-link{
   font-family:var(--mono);font-size:.62rem;font-weight:700;
   color:var(--soft);letter-spacing:.1em;text-transform:uppercase;
@@ -85,7 +85,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;-webkit-ta
 }
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .hero-title{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(2rem,5vw,2.85rem);
   letter-spacing:-.03em;line-height:1.05;
   max-width:14ch;margin-bottom:.65rem;
@@ -205,7 +205,7 @@ input,textarea{font:inherit;color:inherit;background:none;border:none;-webkit-ta
   width:4px;height:4px;border-radius:50%;background:var(--accent);
   box-shadow:0 0 4px var(--accent-glow);
 }
-.cal-cell.today{font-weight:800;color:var(--accent)}
+.cal-cell.today{font-weight:700;color:var(--accent)}
 .cal-cell.today.avail{border-color:var(--accent-soft-2)}
 .cal-cell.selected{
   background:var(--accent)!important;color:var(--accent-fg)!important;
@@ -325,7 +325,7 @@ textarea.fld-input{min-height:64px;resize:vertical}
 .confirm-mark svg{width:22px;height:22px;stroke-width:3}
 @keyframes confirmPop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 .confirm-title{
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(1.4rem,3.5vw,1.85rem);
   letter-spacing:-.025em;line-height:1.05;color:var(--ink);max-width:18ch;
 }
