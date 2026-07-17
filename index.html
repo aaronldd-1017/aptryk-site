@@ -802,9 +802,194 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:.01ms!important;transition-duration:.01ms!important}
   .rev{opacity:1!important;transform:none!important}
 }
+
+/* ══════════════════════════════════════════════
+   APTRYK · SPACE / SAAS — IMMERSIVE
+══════════════════════════════════════════════ */
+
+/* ── GRAIN TEXTURE ── */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:200;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size:300px 300px;
+  opacity:0.042;
+  mix-blend-mode:overlay;
+}
+
+/* ── NAV: FROSTED GLASS ── */
+.nav{
+  background:rgba(8,8,24,0.72);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.052);
+  box-shadow:none;
+}
+
+/* ── HERO: ATMOSPHERIC ORBS — NO GRID ── */
+.hero{
+  background:
+    radial-gradient(ellipse 90% 65% at 12% -8%,rgba(74,124,245,0.22) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 75% at 90% 20%,rgba(99,80,255,0.14) 0%,transparent 52%),
+    radial-gradient(ellipse 45% 45% at 55% 115%,rgba(74,124,245,0.09) 0%,transparent 55%),
+    var(--bg);
+  background-size:auto;
+}
+.hero-orb-1,.hero-orb-2,.hero-orb-3{
+  position:absolute;border-radius:50%;pointer-events:none;
+}
+.hero-orb-1{
+  width:700px;height:700px;top:-320px;left:-180px;
+  background:radial-gradient(circle,rgba(74,124,245,0.18) 0%,transparent 65%);
+  filter:blur(90px);
+}
+.hero-orb-2{
+  width:550px;height:550px;top:-160px;right:-100px;
+  background:radial-gradient(circle,rgba(120,80,255,0.13) 0%,transparent 65%);
+  filter:blur(80px);
+}
+.hero-orb-3{
+  width:380px;height:380px;bottom:-60px;left:35%;
+  background:radial-gradient(circle,rgba(74,124,245,0.08) 0%,transparent 65%);
+  filter:blur(70px);
+}
+
+/* ── GRADIENT TEXT: HERO H1 ── */
+.hero-h1{
+  background:linear-gradient(175deg,#ffffff 0%,rgba(255,255,255,0.72) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-h1 em{
+  font-family:var(--serif);font-style:italic;font-weight:700;
+  background:linear-gradient(135deg,#7aa5f8 0%,#9d78f5 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+
+/* ── HERO CAPABILITIES: PREMIUM GLASS ── */
+.hero-capabilities{
+  background:rgba(255,255,255,0.028);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,0.085);
+  border-radius:14px;
+  padding:1.4rem 1.5rem;
+  box-shadow:0 20px 60px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* ── BUTTONS: GRADIENT SYSTEM ── */
+.btn-primary{
+  background:linear-gradient(135deg,#4a7cf5 0%,#6366f1 100%);
+  border:none;
+  box-shadow:0 0 0 1px rgba(74,124,245,0.5),0 4px 18px rgba(74,124,245,0.3),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-primary:hover{
+  background:linear-gradient(135deg,#5b8df7 0%,#7274f3 100%);
+  box-shadow:0 0 0 1px rgba(74,124,245,0.6),0 8px 32px rgba(74,124,245,0.45),inset 0 1px 0 rgba(255,255,255,0.2);
+  transform:translateY(-1px);
+}
+.btn-outline{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.11);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.btn-outline:hover{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(74,124,245,0.4);
+  box-shadow:none;
+}
+
+/* ── SERVICE CARDS: GLASS ── */
+.service-card{
+  background:rgba(255,255,255,0.025);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.062);
+}
+.service-card:hover{
+  background:rgba(255,255,255,0.042);
+  border-color:rgba(74,124,245,0.22);
+  box-shadow:0 0 0 1px rgba(74,124,245,0.08),0 20px 50px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.05);
+  transform:translateY(-3px);
+}
+
+/* ── PRINCIPLES: GLASS ── */
+.principle{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.052);
+}
+
+/* ── SECTION ATMOSPHERES ── */
+#capabilities{
+  background:
+    radial-gradient(ellipse 55% 50% at 95% 50%,rgba(74,124,245,0.06) 0%,transparent 55%),
+    var(--bg);
+}
+#approach{
+  background:
+    radial-gradient(ellipse 50% 60% at 5% 55%,rgba(99,80,255,0.06) 0%,transparent 55%),
+    var(--bg);
+}
+#process{
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 30%,rgba(74,124,245,0.05) 0%,transparent 55%),
+    var(--bg);
+}
+
+/* ── PROMISES: GLASS ── */
+.promises{
+  background:rgba(255,255,255,0.018);
+  border:1px solid rgba(255,255,255,0.055);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+/* ── CTA SECTION ── */
+.cta-section{
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 60%,rgba(74,124,245,0.10) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 15% 100%,rgba(99,80,255,0.06) 0%,transparent 50%),
+    var(--bg);
+  border-top:1px solid rgba(255,255,255,0.042);
+}
+
+/* ── CONTACT CARD: GLOW GLASS ── */
+.contact-card{
+  background:rgba(255,255,255,0.025);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.07);
+  box-shadow:0 0 80px rgba(74,124,245,0.07),0 40px 80px rgba(0,0,0,0.22);
+}
+.contact-opt{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.058)}
+.contact-opt:hover{background:rgba(255,255,255,0.042);border-color:rgba(74,124,245,0.28)}
+.contact-opt-primary{background:rgba(74,124,245,0.06);border:1px solid rgba(74,124,245,0.22)}
+.contact-opt-primary:hover{background:rgba(74,124,245,0.10);border-color:rgba(74,124,245,0.42)}
+
+/* ── MODAL: PREMIUM GLASS ── */
+.modal-backdrop{background:rgba(4,4,18,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.modal-panel{
+  background:rgba(12,12,28,0.92);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 0 1px rgba(74,124,245,0.10),0 30px 80px rgba(0,0,0,0.5);
+}
+
+/* ── FOOTER: GLASS ── */
+.footer{
+  background:rgba(8,8,24,0.82);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,0.048);
+}
 </style>
 </head>
 <body>
+<div class="grain" aria-hidden="true"></div>
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -813,7 +998,7 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
   <div class="container">
     <div class="nav-inner">
       <a href="/" class="nav-brand" aria-label="APTRYK home">
-        <div class="nav-logo" aria-hidden="true">A</div>
+        <div class="nav-logo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 15L8 1L14 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/><path d="M4.5 10.5L11.5 10.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg></div>
         APTRYK
       </a>
       <div class="nav-links">
@@ -841,7 +1026,7 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
 <div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
   <div class="mobile-nav-head">
     <a href="/" class="mobile-nav-brand" aria-label="APTRYK home">
-      <div class="mobile-nav-logo">A</div>
+      <div class="mobile-nav-logo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 15L8 1L14 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/><path d="M4.5 10.5L11.5 10.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg></div>
       APTRYK
     </a>
     <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
@@ -867,6 +1052,9 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
 
 <!-- HERO -->
 <section class="hero" aria-label="Introduction">
+  <div class="hero-orb-1" aria-hidden="true"></div>
+  <div class="hero-orb-2" aria-hidden="true"></div>
+  <div class="hero-orb-3" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-inner">
 
