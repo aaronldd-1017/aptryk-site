@@ -18,7 +18,7 @@
 <meta name="twitter:title" content="APTRYK"/>
 <meta name="twitter:description" content="Independent technology consulting. Strategy, engineering, delivery."/>
 
-<meta name="theme-color" content="#08081a"/>
+<meta name="theme-color" content="#020209"/>
 
 <!-- Favicon — APTRYK brand mark -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
@@ -38,18 +38,18 @@
   --body:'Inter',-apple-system,sans-serif;
   --serif:'Playfair Display',Georgia,serif;
   --mono:'JetBrains Mono',ui-monospace,monospace;
-  --bg:#08081a;
-  --surface:#0d0d1e;
-  --surface-2:#12122a;
-  --surface-3:#181836;
-  --line:rgba(180,190,255,0.07);
-  --line-2:rgba(180,190,255,0.11);
-  --line-3:rgba(180,190,255,0.17);
+  --bg:#020209;
+  --surface:#06061a;
+  --surface-2:#0a0a20;
+  --surface-3:#0f0f28;
+  --line:rgba(180,190,255,0.052);
+  --line-2:rgba(180,190,255,0.082);
+  --line-3:rgba(180,190,255,0.13);
   --ink:#eef0fb;
   --ink-2:#c8cde8;
   --mid:#9d9db0;
   --soft:#6e6e92;
-  --faint:#2a2a45;
+  --faint:#141430;
   --accent:#4a7cf5;
   --accent-h:#6b93f7;
   --accent-fg:#f0f4ff;
@@ -94,20 +94,20 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 @media(max-width:680px){.container{padding-left:1.25rem;padding-right:1.25rem}}
 
 /* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
-.anim{animation:fadeUp .65s var(--ease-out) both}
-.d0{animation-delay:0s}.d1{animation-delay:.08s}.d2{animation-delay:.16s}
-.d3{animation-delay:.24s}.d4{animation-delay:.32s}.d5{animation-delay:.40s}
+.anim{animation:fadeUp .5s cubic-bezier(0.16,1,0.3,1) both}
+.d0{animation-delay:0s}.d1{animation-delay:.055s}.d2{animation-delay:.11s}
+.d3{animation-delay:.165s}.d4{animation-delay:.22s}.d5{animation-delay:.275s}
 
 .rev{
-  opacity:0;transform:translateY(20px);
-  transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);
+  opacity:0;transform:translateY(11px);
+  transition:opacity .6s cubic-bezier(0.16,1,0.3,1),transform .6s cubic-bezier(0.16,1,0.3,1);
 }
 .rev.in{opacity:1;transform:none}
-.rd1{transition-delay:.07s}.rd2{transition-delay:.14s}
-.rd3{transition-delay:.21s}.rd4{transition-delay:.28s}
+.rd1{transition-delay:.06s}.rd2{transition-delay:.12s}
+.rd3{transition-delay:.18s}.rd4{transition-delay:.24s}
 
 /* ── BUTTONS ── */
 .btn{
@@ -187,18 +187,19 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   background:var(--bg);
   padding-bottom:env(safe-area-inset-bottom,0px);
   opacity:0;visibility:hidden;pointer-events:none;
-  transform:translateY(-6px);
-  transition:opacity .22s var(--ease-out),visibility .22s,transform .22s var(--ease-out);
+  transform:translateY(-22px);
+  transition:opacity .36s cubic-bezier(0.16,1,0.3,1),visibility .36s,transform .42s cubic-bezier(0.16,1,0.3,1);
 }
 .mobile-nav.open{
-  opacity:1;visibility:visible;pointer-events:auto;transform:none;
+  opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);
 }
 .mobile-nav-head{
   display:flex;align-items:center;justify-content:space-between;
   padding:.95rem 1.25rem;
   border-bottom:1px solid var(--line);
-  background:rgba(8,8,24,.95);
-  backdrop-filter:blur(18px);
+  background:rgba(2,2,9,.96);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
 }
 .mobile-nav-brand{
   display:flex;align-items:center;gap:.6rem;
@@ -546,32 +547,33 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
   position:fixed;inset:0;z-index:500;
   display:flex;align-items:center;justify-content:center;padding:1.5rem;
   opacity:0;visibility:hidden;pointer-events:none;
-  transition:opacity .25s var(--ease-out),visibility .25s var(--ease-out);
+  transition:opacity .28s cubic-bezier(0.16,1,0.3,1),visibility .28s;
 }
 .modal.open{opacity:1;visibility:visible;pointer-events:auto}
 .modal-backdrop{
   position:absolute;inset:0;
-  background:rgba(4,4,14,.72);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
+  background:rgba(2,2,9,.8);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
 }
 .modal-panel{
   position:relative;z-index:1;
   width:100%;max-width:480px;
-  background:var(--surface);
-  border:1px solid var(--line-2);
-  border-radius:16px;
+  background:rgba(9,9,26,0.96);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:18px;
   padding:1.85rem 1.85rem 1.65rem;
-  box-shadow:0 24px 64px rgba(0,0,0,.65);
+  box-shadow:0 0 0 1px rgba(74,124,245,0.09),0 32px 80px rgba(0,0,0,.75);
   max-height:calc(100vh - 3rem);overflow-y:auto;
-  transform:translateY(24px) scale(.97);
-  transition:transform .35s var(--ease-out);
+  transform:translateY(16px);
+  opacity:0;
+  transition:transform .45s cubic-bezier(0.16,1,0.3,1),opacity .3s cubic-bezier(0.16,1,0.3,1);
 }
 .modal-panel::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--accent-soft-2) 40%,var(--accent-soft-2) 60%,transparent);
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;border-radius:18px 18px 0 0;
+  background:linear-gradient(90deg,transparent,rgba(74,124,245,0.3) 40%,rgba(74,124,245,0.3) 60%,transparent);
 }
-.modal.open .modal-panel{transform:translateY(0) scale(1)}
+.modal.open .modal-panel{transform:translateY(0);opacity:1}
 .modal-close{
   position:absolute;top:.85rem;right:.85rem;
   width:32px;height:32px;
@@ -595,12 +597,12 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;-we
 @media(max-width:520px){
   .modal{padding:0;align-items:flex-end}
   .modal-panel{
-    max-height:88vh;
-    border-radius:18px 18px 0 0;
-    transform:translateY(48px);
-    padding:1.65rem 1.4rem 1.4rem;
+    max-height:90vh;
+    border-radius:20px 20px 0 0;
+    transform:translateY(40px);opacity:0;
+    padding:1.65rem 1.4rem calc(1.4rem + env(safe-area-inset-bottom,0px));
   }
-  .modal.open .modal-panel{transform:translateY(0)}
+  .modal.open .modal-panel{transform:translateY(0);opacity:1}
 }
 
 /* ── FOOTER ── */
@@ -986,6 +988,98 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
   -webkit-backdrop-filter:blur(12px);
   border-top:1px solid rgba(255,255,255,0.048);
 }
+
+/* ══════════════════════════════════════════════
+   APTRYK · PRECISION POLISH — v2
+══════════════════════════════════════════════ */
+
+/* ── PRECISION FRAME LOGO MARK ── */
+.nav-logo{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#08081f 0%,#0d0d28 100%);
+  border:1px solid rgba(74,124,245,0.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05),0 0 0 1px rgba(74,124,245,0.04);
+  color:rgba(140,172,255,0.92);
+  font-size:0;
+}
+.nav-logo::after{
+  width:5px;height:5px;top:4px;right:4px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px rgba(74,124,245,1),0 0 16px rgba(74,124,245,0.5);
+}
+.mobile-nav-logo{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#08081f 0%,#0d0d28 100%);
+  border:1px solid rgba(74,124,245,0.2);
+  color:rgba(140,172,255,0.92);
+  font-size:0;
+}
+
+/* ── GLASS RECALIBRATED FOR NEAR-BLACK BASE ── */
+.service-card{background:rgba(255,255,255,0.032)}
+.service-card:hover{background:rgba(255,255,255,0.055);border-color:rgba(74,124,245,0.24)}
+.hero-capabilities{
+  background:rgba(255,255,255,0.032);
+  border:1px solid rgba(255,255,255,0.078);
+}
+.contact-card{
+  background:rgba(255,255,255,0.028);
+  box-shadow:0 0 100px rgba(74,124,245,0.09),0 50px 100px rgba(0,0,0,0.5);
+}
+.contact-opt{background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.065)}
+.contact-opt:hover{background:rgba(255,255,255,0.048);border-color:rgba(74,124,245,0.3)}
+.promises{background:rgba(255,255,255,0.022);border:1px solid rgba(255,255,255,0.052)}
+.principle{background:rgba(255,255,255,0.026)}
+
+/* ── NAV + FOOTER DARK GLASS ── */
+.nav{background:rgba(2,2,9,0.80);border-bottom:1px solid rgba(255,255,255,0.046)}
+.footer{background:rgba(2,2,9,0.88);border-top:1px solid rgba(255,255,255,0.042)}
+
+/* ── MODAL: DARK BASE ── */
+.modal-backdrop{background:rgba(1,1,6,0.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+
+/* ── HERO ORBS: BRIGHTER ON NEAR-BLACK ── */
+.hero{
+  background:
+    radial-gradient(ellipse 90% 65% at 12% -8%,rgba(74,124,245,0.28) 0%,transparent 55%),
+    radial-gradient(ellipse 60% 75% at 90% 20%,rgba(99,80,255,0.18) 0%,transparent 52%),
+    radial-gradient(ellipse 45% 45% at 55% 115%,rgba(74,124,245,0.12) 0%,transparent 55%),
+    var(--bg);
+  background-size:auto;
+}
+.hero-orb-1{background:radial-gradient(circle,rgba(74,124,245,0.24) 0%,transparent 65%)}
+.hero-orb-2{background:radial-gradient(circle,rgba(120,80,255,0.18) 0%,transparent 65%)}
+.hero-orb-3{background:radial-gradient(circle,rgba(74,124,245,0.11) 0%,transparent 65%)}
+
+/* ── SECTION ATMOSPHERES: DEEPER ── */
+#capabilities{
+  background:
+    radial-gradient(ellipse 55% 50% at 95% 50%,rgba(74,124,245,0.08) 0%,transparent 55%),
+    var(--bg);
+}
+#approach{
+  background:
+    radial-gradient(ellipse 50% 60% at 5% 55%,rgba(99,80,255,0.08) 0%,transparent 55%),
+    var(--bg);
+}
+.cta-section{
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 60%,rgba(74,124,245,0.12) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 40% at 15% 100%,rgba(99,80,255,0.07) 0%,transparent 50%),
+    var(--bg);
+}
+
+/* ── BUTTONS: CRISP PRESS RESPONSE ── */
+.btn{
+  transition:background .14s ease,color .14s ease,border-color .14s ease,
+    box-shadow .22s cubic-bezier(0.16,1,0.3,1),
+    transform .14s cubic-bezier(0.16,1,0.3,1),opacity .14s ease;
+}
+.btn-primary:active,.btn-outline:active{transform:scale(0.975)}
+
+/* ── QUALITY SWEEP ── */
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.065)}
+::selection{background:rgba(74,124,245,0.25);color:#fff}
 </style>
 </head>
 <body>
@@ -998,7 +1092,7 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
   <div class="container">
     <div class="nav-inner">
       <a href="/" class="nav-brand" aria-label="APTRYK home">
-        <div class="nav-logo" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 15L8 1L14 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/><path d="M4.5 10.5L11.5 10.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg></div>
+        <div class="nav-logo" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.75" y="2.75" width="9.5" height="9.5" rx="1.5" transform="rotate(45 7.5 7.5)" stroke="currentColor" stroke-width="1.3"/><rect x="5" y="5" width="5" height="5" rx="1" fill="currentColor"/></svg></div>
         APTRYK
       </a>
       <div class="nav-links">
@@ -1026,7 +1120,7 @@ body{padding-bottom:env(safe-area-inset-bottom,0px)}
 <div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
   <div class="mobile-nav-head">
     <a href="/" class="mobile-nav-brand" aria-label="APTRYK home">
-      <div class="mobile-nav-logo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 15L8 1L14 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/><path d="M4.5 10.5L11.5 10.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="square"/></svg></div>
+      <div class="mobile-nav-logo"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2.75" y="2.75" width="9.5" height="9.5" rx="1.5" transform="rotate(45 7.5 7.5)" stroke="currentColor" stroke-width="1.3"/><rect x="5" y="5" width="5" height="5" rx="1" fill="currentColor"/></svg></div>
       APTRYK
     </a>
     <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
