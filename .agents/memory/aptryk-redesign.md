@@ -1,51 +1,45 @@
 ---
-name: APTRYK ground-up redesign — deep space system
-description: Design tokens, typography, logo, and routing details for the ground-up 2026 redesign.
+name: APTRYK redesign system
+description: Design tokens, font decisions, and CSS architecture lessons for the APTRYK site
 ---
 
-## Design System (current)
+## Active design system
 
-**Palette**
-- `--bg: #03030d` — true near-black, cold
-- `--accent-cyan: #00e5ff` — primary electric accent
-- `--accent-indigo: #4050ff` — secondary, mono labels
-- `--accent-violet: #a855f7` — tertiary, available but used sparingly
-- `--ink: #ffffff`, `--ink-mid: #a0aec0`, `--ink-muted: #64748b`
-- `--surface: rgba(7,7,20,0.6)` — glass card background
-- `--surface-border: rgba(0,229,255,0.1)` / hover `rgba(0,229,255,0.3)`
+- **Display font**: Space Grotesk 700 (headlines, nav, buttons, stats)
+- **Body font**: Inter (paragraphs, card text)
+- **Mono font**: JetBrains Mono 700 (section labels, nav links, stat labels)
+- **Serif font**: Playfair Display italic (em tags only — gradient accent)
+- **Background**: `#020209` deep space
+- **Accent**: `#4a7cf5` blue → `#6366f1` indigo gradient
+- **em gradient**: `linear-gradient(130deg, #7aa5f8 0%, #a07ef8 100%)` — blue to purple
 
-**Typography**
-- Display: `Syne` 800 — tight tracking, bold headings
-- Body: `DM Sans` 400/500/600
-- Serif italic accent: `Playfair Display` italic — used in `<em>` within headlines
-- Mono labels: `JetBrains Mono` 500/700 — uppercase, letter-spaced 0.1em, indigo color
-- Font load: `Syne:wght@600;700;800`, `DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600`, `Playfair+Display:ital,wght@1,600;1,700`, `JetBrains+Mono:wght@500;700`
+## CSS architecture rule
 
-**Logo mark**
-- Currently: `<img src="/favicon.svg">` — geometric rounded-square SVG
-- favicon.svg exists at root (coordinate-node concept from previous pass — may want to redesign as part of future task)
+**ONE style block, no override layers.** The task-agent merge (Task #5) created two competing CSS systems (Syne/DM Sans cyan-indigo vs Space Grotesk blue). The fix was to delete the entire old `<style>` block and write one unified system from scratch.
 
-**Background effects**
-- `.bg-fx` — fixed radial gradients, indigo top-left + cyan bottom-right
-- `.bg-grid` — fixed 40px grid lines at 2% white opacity, masked to top-20% → transparent
+**Why:** CSS override layers cause specificity wars, bloat, and visual inconsistency. When a task agent rewrites HTML, always rebuild CSS as one block rather than appending overrides.
 
-## File structure
-- `index.html` — main landing, ~500 lines
-- `book.html` — booking flow (4-step calendar + form), ~420 lines  
-- `start.html` — project brief form, ~300 lines
-- `library.html` — project library with categories, ~250 lines
-- `server.py` — clean URL server (maps /book → book.html etc.)
-- `favicon.svg` — SVG brand mark (dark bg + cyan coordinate node)
+## Gradient text on nested em
 
-## Routing
-- Dev server: `python3 server.py` (CleanURLHandler — strips .html, maps /book → book.html)
-- Production: Cloudflare Pages with `_routes.json`
-- Nav links use extension-less URLs (/book, /start, /library) — works in both environments
+Don't gradient the parent `h1` and the child `em` simultaneously — nested `background-clip: text` is unreliable. Instead: leave `h1` as solid `var(--ink)`, apply gradient only to `h1 em`. This resolves cleanly and `-webkit-text-fill-color: transparent` doesn't leak.
 
-## Key patterns
-- Scroll reveal: `.rev` class + IntersectionObserver → adds `.in` class → opacity/translateY
-- Delay classes: `.d-1`, `.d-2`, `.d-3` (transition-delay 0.1/0.2/0.3s)
-- Modal: `.modal-backdrop` + `.open` class toggle, backdrop click closes
-- Mobile nav: `.mobile-nav` full-screen overlay with `translateY(-100%)` → `translateY(0)` slide
+## z-index stacking
 
-**Why:** pseudo-element z-index stacking issue documented previously — body::before (fixed) sits above main content unless main has explicit z-index. Using hero background-image layers for grid overlays avoids this.
+- `.bg-fx` (atmosphere orbs): `z-index: 0` — fixed, behind everything
+- `.bg-grid`: `display: none` (killed permanently)
+- `.grain`: `z-index: 1` — fixed overlay, mix-blend-mode: overlay
+- All page content: `z-index: 2` (set on nav, section, .hero, footer, .modal-backdrop)
+- `.mobile-nav`: `z-index: 200`
+- `.modal-backdrop`: `z-index: 999`
+
+## Server
+
+`python3 server.py` — added by task agent. Maps `/book` → `/book.html` etc. (clean URLs). Keep this.
+
+## Post-merge setup
+
+`scripts/post-merge.sh` configured. Static site — no build step. Future merges will succeed.
+
+## CSS variable naming
+
+Use short, flat names: `--bg`, `--border`, `--border-h`, `--surface`, `--surface-h`, `--ink`, `--ink-2`, `--ink-3`, `--accent`, `--accent-2`. Avoid long names like `--surface-border-hover` — they encourage bloat.
