@@ -14,9 +14,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,600;1,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ─────────────────────────────────────────────
-   APTRYK — single design system
-───────────────────────────────────────────── */
 :root {
   --bg:       #020209;
   --border:   rgba(255,255,255,0.068);
@@ -222,21 +219,54 @@ footer{
 /* ── MOBILE NAV ── */
 .mobile-nav{
   position:fixed;inset:0;z-index:200;
-  background:rgba(2,2,9,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  display:flex;flex-direction:column;padding:1.5rem;
-  transform:translateY(-100%);visibility:hidden;
-  transition:transform .36s cubic-bezier(.16,1,.3,1);
+  background:#020209;
+  display:flex;flex-direction:column;padding:1.25rem 1.5rem 2rem;
+  transform:translateX(100%);visibility:hidden;
+  transition:transform .38s cubic-bezier(.16,1,.3,1),visibility 0s .38s;
 }
-.mobile-nav.open{transform:translateY(0);visibility:visible}
-.mobile-nav-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:2.5rem}
-.mobile-nav-links{flex:1;display:flex;flex-direction:column}
-.mobile-nav-links a{font-family:'Space Grotesk',sans-serif;font-size:2.25rem;font-weight:700;color:var(--ink-2);padding:.7rem 0;letter-spacing:-.03em;border-bottom:1px solid rgba(255,255,255,.04);transition:color .14s}
-.mobile-nav-links a:hover{color:var(--ink)}
-.mobile-nav-footer{padding-top:1.75rem;display:flex;flex-direction:column;gap:.625rem}
+.mobile-nav.open{transform:translateX(0);visibility:visible;transition:transform .38s cubic-bezier(.16,1,.3,1),visibility 0s 0s}
+.mobile-nav-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:3rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.mobile-nav-links{flex:1;display:flex;flex-direction:column;justify-content:center;gap:.25rem}
+.mobile-nav-links a{
+  font-family:'Space Grotesk',sans-serif;font-size:1.7rem;font-weight:700;
+  color:var(--ink-3);padding:.6rem 0;letter-spacing:-.03em;
+  border-bottom:1px solid rgba(255,255,255,.035);
+  transition:color .14s,padding-left .2s cubic-bezier(.16,1,.3,1);
+  display:flex;align-items:center;gap:.5rem;
+}
+.mobile-nav-links a::before{content:'';width:0;height:2px;background:var(--accent);border-radius:2px;transition:width .2s cubic-bezier(.16,1,.3,1);flex-shrink:0}
+.mobile-nav-links a:hover,.mobile-nav-links a:active{color:var(--ink);padding-left:.25rem}
+.mobile-nav-links a:hover::before,.mobile-nav-links a:active::before{width:18px}
+.mobile-nav-footer{padding-top:2rem;display:flex;flex-direction:column;gap:.625rem}
 
 /* ── RESPONSIVE ── */
-@media(max-width:900px){.approach-item{grid-template-columns:1fr;gap:.5rem}.process-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){.nav-links,.nav-actions{display:none}.mobile-toggle{display:block}.process-grid{grid-template-columns:1fr}.hero-stats{gap:1.5rem}}
+@media(max-width:900px){
+  .approach-item{grid-template-columns:1fr;gap:.5rem}
+  .process-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .nav-links,.nav-actions{display:none}
+  .mobile-toggle{display:block}
+  section{padding:5rem 0}
+  .hero{min-height:auto;padding-top:68px;padding-bottom:4rem}
+  .hero h1{font-size:clamp(1.9rem,9vw,2.6rem);letter-spacing:-.035em}
+  .hero p{font-size:.95rem;margin-bottom:1.75rem}
+  .hero-ctas{gap:.625rem}
+  .hero-ctas .btn{flex:1;min-width:0;justify-content:center}
+  .hero-stats{margin-top:3rem;padding-top:1.5rem;gap:1.25rem}
+  .stat-val{font-size:.88rem}
+  .cap-grid{grid-template-columns:1fr}
+  .cap-card{padding:1.5rem 1.25rem}
+  .process-grid{grid-template-columns:1fr}
+  .cta-section{padding:5.5rem 0}
+  .cta-section h2{font-size:clamp(1.75rem,7vw,2.5rem)}
+  .cta-actions{flex-direction:column;align-items:stretch}
+  .cta-actions .btn{justify-content:center}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:1rem}
+  .section-header{margin-bottom:2.5rem}
+  .section-header h2{font-size:clamp(1.75rem,6.5vw,2.5rem)}
+  .approach-item h3{font-size:1.25rem}
+}
 
 /* ── QUALITY ── */
 ::-webkit-scrollbar{width:5px}
@@ -261,7 +291,6 @@ footer{
       <a href="#capabilities">Capabilities</a>
       <a href="#approach">Approach</a>
       <a href="#process">Process</a>
-      <a href="/library">Library</a>
     </div>
     <div class="nav-actions">
       <button class="btn btn-secondary btn-sm" data-modal="contact" style="padding: 0.6rem 1rem; font-size: 0.75rem;">Contact</button>
@@ -288,7 +317,6 @@ footer{
     <a href="#capabilities">Capabilities</a>
     <a href="#approach">Approach</a>
     <a href="#process">Process</a>
-    <a href="/library">Library</a>
   </nav>
   <div class="mobile-nav-footer">
     <a href="/start" class="btn btn-primary" style="width:100%;justify-content:center;">Start a project</a>
@@ -417,7 +445,6 @@ footer{
   <div class="container footer-inner">
     <div class="footer-logo">APTRYK</div>
     <div class="footer-links">
-      <a href="/library">Library</a>
       <a href="mailto:hello@aptryk.com">hello@aptryk.com</a>
     </div>
     <div class="footer-copy">&copy; 2026 APTRYK. All rights reserved.</div>
