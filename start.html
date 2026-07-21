@@ -6,290 +6,606 @@
 <title>Start a project · APTRYK</title>
 <meta name="description" content="Drop your project brief — we'll come back inside two business days with scope, price, and a path."/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
-<meta name="theme-color" content="#03030d"/>
+<meta name="theme-color" content="#030308"/>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@1,600;1,700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+/* ── TOKENS ─────────────────────────────── */
 :root {
-  --font-disp: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --font-serif: 'Playfair Display', serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  
-  --bg: #03030d;
-  --surface: rgba(7, 7, 20, 0.6);
-  --surface-border: rgba(0, 229, 255, 0.15);
-  
-  --ink: #ffffff;
-  --ink-mid: #a0aec0;
-  --ink-muted: #64748b;
-  
-  --accent-cyan: #00e5ff;
-  --accent-indigo: #4050ff;
-  
-  --err: #ef4444;
+  --bg:        #030308;
+  --ink:       #edf0ff;
+  --ink-2:     #7a7f9e;
+  --ink-3:     #35384f;
+  --accent:    #4a7cf5;
+  --accent-2:  #6366f1;
+  --border:    rgba(255,255,255,.06);
+  --border-h:  rgba(74,124,245,.28);
+  --surface:   rgba(255,255,255,.024);
+  --surface-h: rgba(255,255,255,.04);
+  --nav-h:     60px;
+  --pad:       clamp(1.25rem, 5vw, 2.5rem);
+  --r:         10px;
 }
 
+/* ── RESET ──────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; background: var(--bg); }
+html { scroll-behavior: smooth; background: var(--bg); }
 body {
-  font-family: var(--font-body); color: var(--ink-mid); line-height: 1.6;
-  background-color: var(--bg); -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem; line-height: 1.65;
+  color: var(--ink-2); background: var(--bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; background: none; border: none; cursor: pointer; color: inherit; }
+
+/* ── ATMOSPHERE ─────────────────────────── */
+.atm {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.atm-orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px);
+  animation: float 24s ease-in-out infinite alternate;
+}
+.atm-orb-a {
+  width: min(700px, 90vw); height: min(600px, 80vw);
+  left: -15%; top: -20%;
+  background: radial-gradient(circle at 40% 40%, rgba(74,124,245,.22), transparent 65%);
+  animation-duration: 22s;
+}
+.atm-orb-b {
+  width: min(500px, 80vw); height: min(450px, 70vw);
+  right: -10%; top: 15%;
+  background: radial-gradient(circle at 60% 40%, rgba(99,102,241,.14), transparent 65%);
+  animation-duration: 28s; animation-delay: -8s;
+}
+.atm-orb-c {
+  width: min(450px, 75vw); height: min(400px, 65vw);
+  left: 20%; bottom: -10%;
+  background: radial-gradient(circle at 50% 50%, rgba(74,124,245,.08), transparent 65%);
+  animation-duration: 32s; animation-delay: -15s;
+}
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(2%, 3%) scale(1.04); }
+}
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 300px; opacity: .03; mix-blend-mode: overlay;
+}
+nav, main { position: relative; z-index: 2; }
+
+/* ── NAV ────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--nav-h);
+  transition: background .3s, border-color .3s;
+  border-bottom: 1px solid transparent;
+  background: rgba(3,3,8,.88);
+  backdrop-filter: saturate(150%) blur(22px);
+  -webkit-backdrop-filter: saturate(150%) blur(22px);
+  border-color: var(--border);
+}
+.nav-inner {
+  max-width: 860px; margin: 0 auto; padding: 0 var(--pad);
+  height: 100%; display: flex; align-items: center;
+  justify-content: space-between; gap: 1.5rem;
+}
+.logo {
+  display: flex; align-items: center; gap: .55rem;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .95rem; font-weight: 700; letter-spacing: -.025em;
+  color: var(--ink); flex-shrink: 0;
+}
+.logo img { width: 27px; height: 27px; border-radius: 6px; }
+.back-btn {
+  display: flex; align-items: center; gap: .45rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .63rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3);
+  transition: color .15s;
+}
+.back-btn:hover { color: var(--ink-2); }
+.back-btn svg { flex-shrink: 0; }
+
+/* ── LAYOUT ─────────────────────────────── */
+main {
+  max-width: 860px; margin: 0 auto;
+  padding: calc(var(--nav-h) + clamp(3rem, 7vw, 5rem)) var(--pad) clamp(4rem, 8vw, 7rem);
 }
 
-.bg-fx {
-  position: fixed; inset: 0; pointer-events: none; z-index: -1;
-  background-image: radial-gradient(circle at 10% 10%, rgba(64,80,255,0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 90% 90%, rgba(0,229,255,0.05) 0%, transparent 50%);
+/* ── TYPOGRAPHY ─────────────────────────── */
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .12em;
+}
+.tag {
+  display: inline-flex; align-items: center; gap: .5rem;
+  color: var(--accent); margin-bottom: 1.25rem;
+}
+.tag::before { content: ''; width: 14px; height: 1px; background: currentColor; }
+
+/* ── HERO ───────────────────────────────── */
+.hero { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.hero h1 {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: clamp(2rem, 5.5vw, 3.25rem);
+  font-weight: 700; letter-spacing: -.045em; line-height: 1.06;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.hero h1 .grad {
+  background: linear-gradient(128deg, #7aa5f8 0%, #a07ef8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero p {
+  font-size: clamp(.9rem, 2vw, 1.05rem);
+  color: var(--ink-2);
+  max-width: 520px;
+  line-height: 1.7;
 }
 
-.wrap { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
-
-/* Topbar */
-.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; }
-.logo-lockup { display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-disp); font-weight: 800; font-size: 1.2rem; color: var(--ink); text-decoration: none; }
-.logo-icon { width: 32px; height: 32px; }
-.back-link { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; }
-.back-link:hover { color: var(--accent-cyan); }
-
-/* Hero */
-.hero { margin-bottom: 3rem; }
-.mono-tag { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.1em; display: inline-block; margin-bottom: 1rem; }
-h1 { font-family: var(--font-disp); font-size: clamp(2.5rem, 5vw, 4rem); color: var(--ink); line-height: 1.1; margin-bottom: 1rem; letter-spacing: -0.03em; }
-h1 em { font-family: var(--font-serif); font-style: italic; color: var(--accent-cyan); font-weight: normal; }
-p.sub { font-size: 1.1rem; max-width: 600px; }
-
-/* Form Sections */
-.sec { background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem; position: relative; overflow: hidden; }
-.sec::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent-indigo); opacity: 0; transition: opacity 0.3s; }
-.sec:focus-within::before { opacity: 1; background: var(--accent-cyan); }
-
-.sec-head { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem; }
-.sec-num { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--accent-indigo); }
-.sec-title h2 { font-family: var(--font-disp); font-size: 1.5rem; color: var(--ink); }
-.sec-title .eyebrow { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 0.25rem; display: block; }
-
-.fld { margin-bottom: 1.5rem; }
-.fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-.fld label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); text-transform: uppercase; margin-bottom: 0.5rem; }
-.fld label span.opt { color: var(--ink-muted); opacity: 0.5; text-transform: none; }
-.fld input, .fld textarea {
-  width: 100%; padding: 1rem; border-radius: 8px; background: rgba(0,0,0,0.3);
-  border: 1px solid var(--surface-border); font-family: var(--font-body); font-size: 1rem; color: var(--ink);
-  transition: all 0.2s;
+/* ── FORM CARD ──────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(1.5rem, 4vw, 2.25rem);
+  margin-bottom: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .25s;
 }
-.fld input:focus, .fld textarea:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 0 1px var(--accent-cyan); }
-.fld-help { font-size: 0.8rem; color: var(--ink-muted); margin-top: 0.5rem; display: block; }
-
-/* Radios */
-.radios { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.radio-lbl {
-  display: flex; align-items: center; gap: 0.75rem; padding: 1rem; border: 1px solid var(--surface-border);
-  border-radius: 8px; cursor: pointer; transition: all 0.2s;
+.card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  opacity: 0;
+  transition: opacity .25s;
+  border-radius: 2px;
 }
-.radio-lbl:hover { border-color: var(--accent-indigo); background: rgba(255,255,255,0.02); }
-.radio-lbl input { display: none; }
-.radio-circle { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ink-muted); display: flex; align-items: center; justify-content: center; }
-.radio-lbl input:checked + .radio-circle { border-color: var(--accent-cyan); }
-.radio-lbl input:checked + .radio-circle::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent-cyan); }
-.radio-lbl input:checked ~ span { color: var(--ink); font-weight: 600; }
+.card:focus-within { border-color: var(--border-h); }
+.card:focus-within::before { opacity: 1; }
 
+.card-head {
+  display: flex; align-items: flex-start; gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem; font-weight: 500;
+  color: var(--accent); letter-spacing: .06em;
+  padding-top: .15rem;
+  flex-shrink: 0;
+}
+.card-title-block { display: flex; flex-direction: column; gap: .2rem; }
+.card-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .6rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-3);
+}
+.card-title {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 600; letter-spacing: -.025em;
+  color: var(--ink); line-height: 1.2;
+}
+
+/* ── FIELDS ─────────────────────────────── */
+.fld { margin-bottom: 1.25rem; }
+.fld:last-child { margin-bottom: 0; }
+.fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.fld label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-3);
+  margin-bottom: .5rem;
+}
+.fld label .opt {
+  font-family: 'Inter', sans-serif;
+  font-size: .7rem; font-weight: 400;
+  text-transform: none; letter-spacing: 0;
+  color: var(--ink-3); opacity: .6;
+}
+
+.fld input,
+.fld textarea {
+  width: 100%;
+  padding: .8rem 1rem;
+  border-radius: var(--r);
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  font-family: 'Inter', sans-serif;
+  font-size: .9rem; color: var(--ink);
+  transition: border-color .18s, box-shadow .18s, background .18s;
+  resize: vertical;
+  -webkit-appearance: none;
+}
+.fld input::placeholder,
+.fld textarea::placeholder { color: var(--ink-3); }
+.fld input:hover,
+.fld textarea:hover { border-color: var(--ink-3); }
+.fld input:focus,
+.fld textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(74,124,245,.04);
+  box-shadow: 0 0 0 3px rgba(74,124,245,.1);
+}
+
+/* ── RADIO TILES ────────────────────────── */
+.radios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .625rem;
+}
+.radio-tile {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  cursor: pointer;
+  transition: border-color .18s, background .18s;
+  user-select: none;
+}
+.radio-tile:hover { border-color: var(--ink-3); background: var(--surface-h); }
+.radio-tile input[type="radio"] { display: none; }
+.radio-dot {
+  width: 16px; height: 16px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink-3);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color .18s;
+}
+.radio-dot::after {
+  content: ''; width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0; transform: scale(0);
+  transition: opacity .15s, transform .18s cubic-bezier(.16,1,.3,1);
+}
+.radio-tile:has(input:checked) {
+  border-color: var(--border-h);
+  background: rgba(74,124,245,.06);
+}
+.radio-tile:has(input:checked) .radio-dot {
+  border-color: var(--accent);
+}
+.radio-tile:has(input:checked) .radio-dot::after {
+  opacity: 1; transform: scale(1);
+}
+.radio-tile:has(input:checked) .radio-text {
+  color: var(--ink);
+}
+.radio-text {
+  font-family: 'Inter', sans-serif;
+  font-size: .88rem; font-weight: 400;
+  color: var(--ink-2);
+  transition: color .18s;
+}
+
+/* ── SUBMIT ─────────────────────────────── */
+.submit-area { margin-top: 2rem; }
 .btn-submit {
-  width: 100%; padding: 1.25rem; border-radius: 12px; background: var(--accent-cyan); color: #000;
-  font-family: var(--font-disp); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
-  border: none; cursor: pointer; transition: all 0.3s; margin-bottom: 2rem;
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  width: 100%; padding: .9rem 1.5rem;
+  border-radius: var(--r);
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .95rem; font-weight: 600; letter-spacing: -.01em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  box-shadow: 0 0 0 1px rgba(74,124,245,.32),
+              0 4px 18px rgba(74,124,245,.22),
+              inset 0 1px 0 rgba(255,255,255,.1);
+  border: none; cursor: pointer;
+  transition: transform .18s cubic-bezier(.16,1,.3,1),
+              box-shadow .22s cubic-bezier(.16,1,.3,1),
+              opacity .15s;
 }
-.btn-submit:hover { background: #fff; box-shadow: 0 0 30px rgba(0,229,255,0.4); transform: translateY(-2px); }
-
-.alt-path { text-align: center; font-size: 0.95rem; }
-.alt-path a { color: var(--accent-cyan); text-decoration: underline; font-weight: 600; }
-
-/* Success */
-#successView { display: none; text-align: center; padding: 4rem 0; animation: fadeIn 0.5s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.success-icon { width: 80px; height: 80px; border-radius: 50%; background: rgba(0,229,255,0.1); border: 1px solid var(--accent-cyan); display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; color: var(--accent-cyan); }
-.success-icon svg { width: 40px; height: 40px; }
-
-@media (max-width: 768px) {
-  .fld-row { grid-template-columns: 1fr; gap: 0; }
-  .radios { grid-template-columns: 1fr; }
-  .sec { padding: 1.5rem; }
+.btn-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(74,124,245,.4),
+              0 8px 28px rgba(74,124,245,.32),
+              inset 0 1px 0 rgba(255,255,255,.14);
 }
+.btn-submit:active { transform: scale(.98); }
+.btn-submit:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+.alt-path {
+  text-align: center;
+  margin-top: 1.25rem;
+  font-size: .85rem;
+  color: var(--ink-3);
+}
+.alt-path a {
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--border);
+  transition: color .14s, border-color .14s;
+}
+.alt-path a:hover { color: var(--ink); border-color: var(--ink-2); }
+
+/* ── SUCCESS ────────────────────────────── */
+#successView {
+  display: none; text-align: center;
+  padding: clamp(3rem, 8vw, 6rem) 0;
+  animation: fadeUp .55s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.success-ring {
+  width: 72px; height: 72px; border-radius: 50%;
+  border: 1px solid var(--border-h);
+  background: rgba(74,124,245,.08);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 2rem;
+  color: var(--accent);
+}
+#successView h1 {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700; letter-spacing: -.04em;
+  color: var(--ink); margin-bottom: .75rem;
+}
+#successView h1 .grad {
+  background: linear-gradient(128deg, #7aa5f8 0%, #a07ef8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#successView p {
+  font-size: .95rem; color: var(--ink-2);
+  max-width: 400px; margin: 0 auto 2.5rem;
+}
+.home-btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .65rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r); padding: .65rem 1.25rem;
+  transition: color .15s, border-color .15s;
+}
+.home-btn:hover { color: var(--ink-2); border-color: var(--ink-3); }
+
+/* ── REVEAL ─────────────────────────────── */
+.rev { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.16,1,.3,1), transform .6s cubic-bezier(.16,1,.3,1); }
+.rev.in { opacity: 1; transform: none; }
+.d1 { transition-delay: .07s; } .d2 { transition-delay: .14s; } .d3 { transition-delay: .21s; } .d4 { transition-delay: .28s; }
+
+/* ── RESPONSIVE ─────────────────────────── */
+@media (max-width: 600px) {
+  .fld-row { grid-template-columns: 1fr; }
+  .radios  { grid-template-columns: 1fr; }
+}
+
+/* ── SCROLLBAR ──────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.05); border-radius: 2px; }
+::selection { background: rgba(74,124,245,.22); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
 </style>
 </head>
 <body>
-<div class="bg-fx"></div>
 
-<div class="wrap">
-  <header class="topbar">
-    <a href="/" class="logo-lockup">
-      <img src="/favicon.svg" alt="APTRYK" class="logo-icon"/>
+<div class="atm" aria-hidden="true">
+  <div class="atm-orb atm-orb-a"></div>
+  <div class="atm-orb atm-orb-b"></div>
+  <div class="atm-orb atm-orb-c"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <img src="/favicon.svg" alt="APTRYK logo"/>
       APTRYK
     </a>
-    <a href="/" class="back-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    <a href="/" class="back-btn">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 6.5H3M6.5 3L3 6.5l3.5 3.5"/>
+      </svg>
       Back
     </a>
-  </header>
+  </div>
+</nav>
 
+<main>
   <div id="formView">
+    <!-- Hero -->
     <div class="hero">
-      <span class="mono-tag">Project Brief</span>
-      <h1>You already know <em>what to build</em>.</h1>
-      <p class="sub">The shortcut for operators who've done the homework. Drop your project brief — we'll come back inside two business days with scope, price, and a path.</p>
+      <p class="tag mono rev">Project Brief</p>
+      <h1 class="rev d1">You already know <span class="grad">what to build</span>.</h1>
+      <p class="rev d2">For operators who've done the homework. Drop your brief — we'll come back within two business days with scope, price, and a path.</p>
     </div>
 
-    <form id="briefForm">
-      <!-- Section 1 -->
-      <section class="sec">
-        <div class="sec-head">
-          <div class="sec-num">01</div>
-          <div class="sec-title">
-            <span class="eyebrow">The project</span>
-            <h2>What you're building</h2>
+    <form id="briefForm" novalidate>
+
+      <!-- 01 — The project -->
+      <div class="card rev d1">
+        <div class="card-head">
+          <div class="card-num">01</div>
+          <div class="card-title-block">
+            <span class="card-eyebrow">The project</span>
+            <span class="card-title">What you're building</span>
           </div>
         </div>
         <div class="fld">
-          <label>Working title *</label>
-          <input type="text" id="fProject" placeholder="Internal CRM rebuild · Customer portal · Etc." required />
+          <label>Working title <span class="req">*</span></label>
+          <input type="text" id="fProject" placeholder="Internal CRM rebuild · Customer portal · Etc." required/>
         </div>
         <div class="fld">
-          <label>One-line pitch *</label>
-          <input type="text" id="fPitch" placeholder="If it doesn't fit in a sentence, the project's not ready." required />
+          <label>One-line pitch <span class="req">*</span></label>
+          <input type="text" id="fPitch" placeholder="If it doesn't fit in a sentence, the project's not ready." required/>
         </div>
         <div class="fld">
-          <label>The problem you're solving *</label>
+          <label>The problem you're solving <span class="req">*</span></label>
           <textarea id="fProblem" rows="4" placeholder="What's broken? What's blocking growth?" required></textarea>
         </div>
-      </section>
+      </div>
 
-      <!-- Section 2 -->
-      <section class="sec">
-        <div class="sec-head">
-          <div class="sec-num">02</div>
-          <div class="sec-title">
-            <span class="eyebrow">What "done" looks like</span>
-            <h2>The success shape</h2>
+      <!-- 02 — Success shape -->
+      <div class="card rev d2">
+        <div class="card-head">
+          <div class="card-num">02</div>
+          <div class="card-title-block">
+            <span class="card-eyebrow">What "done" looks like</span>
+            <span class="card-title">The success shape</span>
           </div>
         </div>
         <div class="fld">
-          <label>What good looks like *</label>
+          <label>What good looks like <span class="req">*</span></label>
           <textarea id="fSuccess" rows="3" placeholder="Specific outcomes — metrics moved, hours saved, errors eliminated." required></textarea>
         </div>
         <div class="fld">
           <label>Constraints <span class="opt">Optional</span></label>
           <textarea id="fConstraints" rows="2" placeholder="Budget range, hard deadlines, non-negotiable compliance."></textarea>
         </div>
-      </section>
+      </div>
 
-      <!-- Section 3 -->
-      <section class="sec">
-        <div class="sec-head">
-          <div class="sec-num">03</div>
-          <div class="sec-title">
-            <span class="eyebrow">Context</span>
-            <h2>The landscape</h2>
+      <!-- 03 — Context -->
+      <div class="card rev d3">
+        <div class="card-head">
+          <div class="card-num">03</div>
+          <div class="card-title-block">
+            <span class="card-eyebrow">Context</span>
+            <span class="card-title">The landscape</span>
           </div>
         </div>
         <div class="fld">
           <label>What you've tried already <span class="opt">Optional</span></label>
-          <textarea id="fTried" rows="2" placeholder="Previous attempts, discarded tools..."></textarea>
+          <textarea id="fTried" rows="2" placeholder="Previous attempts, discarded tools…"></textarea>
         </div>
         <div class="fld">
           <label>Your stack <span class="opt">Optional</span></label>
-          <input type="text" id="fStack" placeholder="e.g. AWS, Stripe, Segment, React" />
+          <input type="text" id="fStack" placeholder="e.g. AWS, Stripe, Segment, React"/>
         </div>
         <div class="fld">
-          <label>Timeline pressure *</label>
+          <label>Timeline pressure <span class="req">*</span></label>
           <div class="radios">
-            <label class="radio-lbl">
-              <input type="radio" name="timeline" value="this_month" required />
-              <div class="radio-circle"></div>
-              <span>This month</span>
+            <label class="radio-tile">
+              <input type="radio" name="timeline" value="this_month" required/>
+              <div class="radio-dot"></div>
+              <span class="radio-text">This month</span>
             </label>
-            <label class="radio-lbl">
-              <input type="radio" name="timeline" value="next_quarter" />
-              <div class="radio-circle"></div>
-              <span>Next quarter</span>
+            <label class="radio-tile">
+              <input type="radio" name="timeline" value="next_quarter"/>
+              <div class="radio-dot"></div>
+              <span class="radio-text">Next quarter</span>
             </label>
-            <label class="radio-lbl">
-              <input type="radio" name="timeline" value="6_months" />
-              <div class="radio-circle"></div>
-              <span>Next 6 months</span>
+            <label class="radio-tile">
+              <input type="radio" name="timeline" value="6_months"/>
+              <div class="radio-dot"></div>
+              <span class="radio-text">Next 6 months</span>
             </label>
-            <label class="radio-lbl">
-              <input type="radio" name="timeline" value="flexible" />
-              <div class="radio-circle"></div>
-              <span>Flexible</span>
+            <label class="radio-tile">
+              <input type="radio" name="timeline" value="flexible"/>
+              <div class="radio-dot"></div>
+              <span class="radio-text">Flexible</span>
             </label>
           </div>
         </div>
-      </section>
-
-      <!-- Section 4 -->
-      <section class="sec">
-        <div class="sec-head">
-          <div class="sec-num">04</div>
-          <div class="sec-title">
-            <span class="eyebrow">You</span>
-            <h2>Who we're talking to</h2>
-          </div>
-        </div>
-        <div class="fld-row">
-          <div class="fld">
-            <label>Name *</label>
-            <input type="text" id="fName" required />
-          </div>
-          <div class="fld">
-            <label>Email *</label>
-            <input type="email" id="fEmail" required />
-          </div>
-        </div>
-        <div class="fld-row">
-          <div class="fld">
-            <label>Company *</label>
-            <input type="text" id="fCompany" required />
-          </div>
-          <div class="fld">
-            <label>Your role *</label>
-            <input type="text" id="fRole" required />
-          </div>
-        </div>
-      </section>
-
-      <button type="submit" class="btn-submit" id="submitBtn">Submit the brief</button>
-      
-      <div class="alt-path">
-        Prefer to talk it through? <a href="/book">Book a discovery call instead.</a>
       </div>
+
+      <!-- 04 — You -->
+      <div class="card rev d4">
+        <div class="card-head">
+          <div class="card-num">04</div>
+          <div class="card-title-block">
+            <span class="card-eyebrow">You</span>
+            <span class="card-title">Who we're talking to</span>
+          </div>
+        </div>
+        <div class="fld-row">
+          <div class="fld">
+            <label>Name <span class="req">*</span></label>
+            <input type="text" id="fName" required/>
+          </div>
+          <div class="fld">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="fEmail" required/>
+          </div>
+        </div>
+        <div class="fld-row">
+          <div class="fld">
+            <label>Company <span class="req">*</span></label>
+            <input type="text" id="fCompany" required/>
+          </div>
+          <div class="fld">
+            <label>Your role <span class="req">*</span></label>
+            <input type="text" id="fRole" required/>
+          </div>
+        </div>
+      </div>
+
+      <div class="submit-area rev d4">
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 8h12M9 3l5 5-5 5"/>
+          </svg>
+          Submit the brief
+        </button>
+        <p class="alt-path">Prefer to talk first? <a href="/book">Book a discovery call instead.</a></p>
+      </div>
+
     </form>
   </div>
 
+  <!-- Success -->
   <div id="successView">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+    <div class="success-ring">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
     </div>
-    <h1>We're <em>on it</em>.</h1>
-    <p class="sub" style="margin: 0 auto 2rem;">Shape, price, and proposed path within one business day.</p>
-    <a href="/" class="back-link" style="justify-content: center; font-size: 1rem;">Return home</a>
+    <h1>Brief <span class="grad">received</span>.</h1>
+    <p>Scope, price, and a proposed path within two business days. We'll reach out directly.</p>
+    <a href="/" class="home-btn">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 6.5H3M6.5 3L3 6.5l3.5 3.5"/>
+      </svg>
+      Back to home
+    </a>
   </div>
-</div>
+</main>
 
 <script>
-document.getElementById('briefForm').addEventListener('submit', (e) => {
+// Scroll reveal
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.06, rootMargin: '0px 0px -24px 0px' });
+document.querySelectorAll('.rev').forEach(el => io.observe(el));
+
+// Form submit
+document.getElementById('briefForm').addEventListener('submit', e => {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
-  btn.textContent = 'Sending...';
   btn.disabled = true;
-  
-  // Simulate submission
+  btn.innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <path d="M8 2v3M8 11v3M2 8h3M11 8h3" opacity=".4"/>
+    </svg>
+    Sending…`;
+
   setTimeout(() => {
     document.getElementById('formView').style.display = 'none';
-    document.getElementById('successView').style.display = 'block';
+    const sv = document.getElementById('successView');
+    sv.style.display = 'block';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 1200);
 });
