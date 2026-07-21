@@ -118,7 +118,7 @@ h1, h2, h3, h4 {
 }
 .tag::before { content: ''; width: 14px; height: 1px; background: currentColor; }
 .grad {
-  background: linear-gradient(128deg, #7aa5f8 0%, #a07ef8 100%);
+  background: linear-gradient(128deg, #7aa5f8 0%, #5c5cf0 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -175,16 +175,16 @@ nav.stuck {
 .btn:active { transform: scale(.97) !important; }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  background: linear-gradient(135deg, #7aa5f8 0%, #5c5cf0 100%);
   color: #fff;
-  box-shadow: 0 0 0 1px rgba(74,124,245,.32),
-              0 4px 18px rgba(74,124,245,.22),
+  box-shadow: 0 0 0 1px rgba(122,165,248,.22),
+              0 4px 16px rgba(92,92,240,.18),
               inset 0 1px 0 rgba(255,255,255,.1);
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 0 0 1px rgba(74,124,245,.36),
-              0 4px 14px rgba(74,124,245,.16),
+  box-shadow: 0 0 0 1px rgba(122,165,248,.3),
+              0 4px 12px rgba(92,92,240,.14),
               inset 0 1px 0 rgba(255,255,255,.14);
 }
 .btn-ghost {
@@ -427,138 +427,152 @@ footer {
 /* ── MODAL ──────────────────────────────── */
 .modal-bd {
   position: fixed; inset: 0; z-index: 999;
-  background: rgba(2,2,7,.78);
-  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  background: rgba(0,0,6,.85);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
   display: flex; align-items: center; justify-content: center;
   padding: var(--pad);
   opacity: 0; pointer-events: none;
-  transition: opacity .22s;
+  transition: opacity .2s ease;
 }
 .modal-bd.open { opacity: 1; pointer-events: auto; }
+
+/* Box: only transform animates — backdrop handles fade */
 .modal-box {
-  background: #08081a;
+  background: #04040c;
   border: 1px solid rgba(255,255,255,.07);
-  border-radius: 14px;
-  width: 100%; max-width: 480px;
-  max-height: min(90vh, 720px);
+  border-radius: 16px;
+  width: 100%; max-width: 460px;
+  max-height: min(88vh, 660px);
   overflow-y: auto;
   padding: clamp(1.5rem, 4vw, 2rem);
   position: relative;
-  box-shadow: 0 0 0 1px rgba(74,124,245,.06), 0 30px 80px rgba(0,0,0,.6);
-  transform: translateY(18px); opacity: 0;
-  transition: transform .38s cubic-bezier(.16,1,.3,1), opacity .26s;
+  box-shadow: 0 0 0 1px rgba(122,165,248,.04), 0 32px 80px rgba(0,0,0,.8);
+  transform: translateY(14px) scale(.97);
+  transition: transform .38s cubic-bezier(.16,1,.3,1);
 }
-.modal-bd.open .modal-box { transform: translateY(0); opacity: 1; }
+.modal-bd.open .modal-box { transform: translateY(0) scale(1); }
+
 .modal-x {
   position: absolute; top: 1rem; right: 1rem;
-  width: 30px; height: 30px;
+  width: 28px; height: 28px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%; border: 1px solid var(--border);
-  color: var(--ink-3); background: rgba(255,255,255,.03);
-  transition: color .14s, background .14s;
+  color: var(--ink-3); background: none;
+  transition: color .14s, border-color .14s;
 }
-.modal-x:hover { color: var(--ink); background: rgba(255,255,255,.06); }
-.modal-box h3 { font-size: 1.45rem; font-weight: 700; margin-bottom: .3rem; }
-.modal-box > p { font-size: .86rem; color: var(--ink-2); margin-bottom: 1.25rem; }
-.modal-opts { display: flex; flex-direction: column; gap: .5rem; }
-.modal-opt {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .95rem 1.1rem;
-  border: 1px solid var(--border); border-radius: 10px;
-  background: rgba(255,255,255,.018);
-  transition: all .18s cubic-bezier(.16,1,.3,1);
-}
-.modal-opt:hover { border-color: var(--border-h); background: rgba(74,124,245,.04); transform: translateX(2px); }
-.modal-opt-info h4 { font-family: 'Instrument Sans', sans-serif; font-size: .9rem; font-weight: 600; color: var(--ink); margin-bottom: .15rem; }
-.modal-opt-info p { font-size: .76rem; color: var(--ink-2); margin: 0; }
-.modal-opt svg { color: var(--accent); flex-shrink: 0; }
+.modal-x:hover { color: var(--ink); border-color: rgba(255,255,255,.12); }
 
-/* modal divider */
-.modal-divider {
+/* Header */
+.modal-head { margin-bottom: 1.5rem; padding-right: 2rem; }
+.modal-head .tag { margin-bottom: .5rem; }
+.modal-head h3 {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1.35rem; font-weight: 700;
+  letter-spacing: -.03em; color: var(--ink);
+}
+
+/* Path links */
+.modal-paths { display: flex; flex-direction: column; gap: .35rem; }
+.modal-path {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .85rem 1rem;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: rgba(255,255,255,.016);
+  transition: border-color .16s, background .16s, transform .16s;
+}
+.modal-path:hover {
+  border-color: rgba(122,165,248,.22);
+  background: rgba(122,165,248,.035);
+  transform: translateX(3px);
+}
+.modal-path-label {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: .88rem; font-weight: 600; color: var(--ink);
+  margin-bottom: .1rem;
+}
+.modal-path-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .62rem; letter-spacing: .04em; color: var(--ink-3);
+}
+.modal-path-arrow {
+  color: var(--ink-3); flex-shrink: 0;
+  transition: color .16s, transform .16s;
+}
+.modal-path:hover .modal-path-arrow { color: var(--accent); transform: translateX(2px); }
+
+/* Separator */
+.modal-sep {
   display: flex; align-items: center; gap: .75rem;
   margin: 1.25rem 0 1.1rem;
 }
-.modal-divider::before,
-.modal-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.modal-divider span {
+.modal-sep::before, .modal-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.modal-sep span {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3); white-space: nowrap;
+  font-size: .56rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-3);
 }
 
-/* email row */
-.modal-email-row {
-  display: flex; align-items: center; gap: .6rem;
-  margin-bottom: 1.1rem;
-}
-.modal-email-row svg { color: var(--ink-3); flex-shrink: 0; }
-.modal-email-link {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .78rem; letter-spacing: .01em;
-  color: var(--ink-2);
-  border-bottom: 1px solid var(--border);
-  transition: color .14s, border-color .14s;
-}
-.modal-email-link:hover { color: var(--ink); border-color: var(--ink-3); }
-
-/* direct message form */
-.modal-msg-form { display: flex; flex-direction: column; gap: .625rem; }
-.modal-fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: .625rem; }
-.modal-fld label {
-  display: block;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3); margin-bottom: .35rem;
-}
-.modal-fld input,
-.modal-fld textarea {
+/* Form — placeholder-only, no labels */
+.modal-msg-form { display: flex; flex-direction: column; gap: .45rem; }
+.modal-fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+.modal-fld input, .modal-fld textarea {
   width: 100%; padding: .65rem .85rem;
   border-radius: 8px;
-  background: rgba(255,255,255,.03);
+  background: rgba(255,255,255,.026);
   border: 1px solid var(--border);
   font-family: 'Inter', sans-serif;
-  font-size: .85rem; color: var(--ink);
-  transition: border-color .15s, background .15s, box-shadow .15s;
+  font-size: .84rem; color: var(--ink);
+  transition: border-color .14s, background .14s;
   -webkit-appearance: none;
 }
-.modal-fld input::placeholder,
-.modal-fld textarea::placeholder { color: var(--ink-3); }
-.modal-fld input:focus,
-.modal-fld textarea:focus {
+.modal-fld input::placeholder, .modal-fld textarea::placeholder { color: var(--ink-3); }
+.modal-fld input:focus, .modal-fld textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  background: rgba(74,124,245,.04);
-  box-shadow: 0 0 0 3px rgba(74,124,245,.1);
+  border-color: rgba(122,165,248,.38);
+  background: rgba(122,165,248,.028);
 }
 .modal-fld textarea { resize: none; }
+
+/* Send button — logo gradient */
 .modal-send {
   display: flex; align-items: center; justify-content: center; gap: .4rem;
-  width: 100%; padding: .72rem 1rem;
+  width: 100%; padding: .7rem 1rem; margin-top: .2rem;
   border-radius: 9px;
   font-family: 'Instrument Sans', sans-serif;
-  font-size: .88rem; font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-  box-shadow: 0 0 0 1px rgba(74,124,245,.3), 0 4px 14px rgba(74,124,245,.2), inset 0 1px 0 rgba(255,255,255,.1);
-  border: none; cursor: pointer; margin-top: .25rem;
-  transition: transform .18s cubic-bezier(.16,1,.3,1), box-shadow .2s, opacity .15s;
+  font-size: .88rem; font-weight: 600; color: #fff;
+  background: linear-gradient(135deg, #7aa5f8 0%, #5c5cf0 100%);
+  border: none; cursor: pointer;
+  transition: transform .18s cubic-bezier(.16,1,.3,1), opacity .15s;
 }
-.modal-send:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(74,124,245,.32), 0 4px 12px rgba(74,124,245,.14), inset 0 1px 0 rgba(255,255,255,.12); }
+.modal-send:hover { transform: translateY(-1px); opacity: .88; }
 .modal-send:active { transform: scale(.98); }
-.modal-send:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+.modal-send:disabled { opacity: .4; cursor: not-allowed; transform: none; }
 
-/* sent confirmation */
+/* Sent state */
 .modal-sent {
   display: none;
-  margin-top: 1rem;
-  padding: .85rem 1rem;
+  padding: .9rem 1rem; margin-top: .2rem;
   border-radius: 9px;
-  border: 1px solid rgba(74,124,245,.22);
-  background: rgba(74,124,245,.07);
-  font-size: .83rem; color: var(--ink-2);
-  line-height: 1.55;
+  border: 1px solid rgba(122,165,248,.16);
+  background: rgba(122,165,248,.05);
+  font-size: .83rem; color: var(--ink-2); line-height: 1.55;
 }
-.modal-sent strong { color: var(--ink); font-weight: 600; }
+.modal-sent strong { color: var(--ink); display: block; margin-bottom: .2rem; }
+
+/* Email footer */
+.modal-foot {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.modal-foot a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .68rem; letter-spacing: .06em;
+  color: var(--ink-3);
+  transition: color .14s;
+}
+.modal-foot a:hover { color: var(--ink-2); }
 
 @media (max-width: 480px) {
   .modal-fld-row { grid-template-columns: 1fr; }
@@ -854,65 +868,57 @@ footer {
 <div class="modal-bd" id="modal">
   <div class="modal-box">
     <button class="modal-x" id="modalX" aria-label="Close">
-      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-        <line x1="1" y1="1" x2="12" y2="12"/><line x1="12" y1="1" x2="1" y2="12"/>
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <line x1="1" y1="1" x2="10" y2="10"/><line x1="10" y1="1" x2="1" y2="10"/>
       </svg>
     </button>
-    <p class="tag mono" style="margin-bottom:.875rem;">Get in touch</p>
-    <h3>How to start.</h3>
-    <p>Choose the path that fits where you are right now.</p>
-    <div class="modal-opts">
-      <a href="/book" class="modal-opt">
-        <div class="modal-opt-info">
-          <h4>Book a discovery call</h4>
-          <p>30 minutes. Bring a problem. Free.</p>
+
+    <div class="modal-head">
+      <p class="tag mono">Get in touch</p>
+      <h3>Start a conversation.</h3>
+    </div>
+
+    <div class="modal-paths">
+      <a href="/book" class="modal-path">
+        <div>
+          <div class="modal-path-label">Book a discovery call</div>
+          <div class="modal-path-sub">30 min · free · bring a problem</div>
         </div>
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8.5h11M8.5 3l5.5 5.5-5.5 5.5"/></svg>
+        <svg class="modal-path-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 7.5h10M8 3l4.5 4.5L8 12"/></svg>
       </a>
-      <a href="/start" class="modal-opt">
-        <div class="modal-opt-info">
-          <h4>Start a project</h4>
-          <p>Drop a brief. We'll quote it in 48 hours.</p>
+      <a href="/start" class="modal-path">
+        <div>
+          <div class="modal-path-label">Start a project</div>
+          <div class="modal-path-sub">Drop a brief · quoted in 48 h</div>
         </div>
-        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8.5h11M8.5 3l5.5 5.5-5.5 5.5"/></svg>
+        <svg class="modal-path-arrow" width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2.5 7.5h10M8 3l4.5 4.5L8 12"/></svg>
       </a>
     </div>
 
-    <div class="modal-divider"><span>or send a message</span></div>
-
-    <div class="modal-email-row">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="1" y="3" width="12" height="8" rx="1.5"/>
-        <path d="M1 4.5l6 4 6-4"/>
-      </svg>
-      <a href="mailto:hello@aptryk.com" class="modal-email-link">hello@aptryk.com</a>
-    </div>
+    <div class="modal-sep"><span>or</span></div>
 
     <form class="modal-msg-form" id="modalMsgForm" novalidate>
       <div class="modal-fld-row">
         <div class="modal-fld">
-          <label>Name</label>
-          <input type="text" id="mName" placeholder="Your name" required/>
+          <input type="text" id="mName" placeholder="Name" required/>
         </div>
         <div class="modal-fld">
-          <label>Email</label>
-          <input type="email" id="mEmail" placeholder="you@company.com" required/>
+          <input type="email" id="mEmail" placeholder="Email" required/>
         </div>
       </div>
       <div class="modal-fld">
-        <label>Message</label>
-        <textarea id="mMsg" rows="3" placeholder="What's on your mind?" required></textarea>
+        <textarea id="mMsg" rows="3" placeholder="What are you working on?" required></textarea>
       </div>
-      <button type="submit" class="modal-send" id="modalSendBtn">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 7h10M8 3l4 4-4 4"/>
-        </svg>
-        Send message
-      </button>
+      <button type="submit" class="modal-send" id="modalSendBtn">Send message</button>
     </form>
 
     <div class="modal-sent" id="modalSent">
-      <strong>Message received.</strong> We'll reply to your inbox within one business day.
+      <strong>Message received.</strong>
+      We'll reply to your inbox within one business day.
+    </div>
+
+    <div class="modal-foot">
+      <a href="mailto:hello@aptryk.com">hello@aptryk.com</a>
     </div>
   </div>
 </div>
