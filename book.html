@@ -30,12 +30,12 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { background: #010109; scroll-behavior: smooth; }
+html { background: #000008; scroll-behavior: smooth; }
 body {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1rem; line-height: 1.65;
   color: var(--ink-2);
-  background: radial-gradient(ellipse 120% 60% at 30% -2%, #06041a 0%, #010109 52%);
+  background: radial-gradient(ellipse 150% 55% at 22% -8%, #00101e 0%, #000008 58%);
   min-height: 100svh; overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -56,13 +56,13 @@ button { font: inherit; background: none; border: none; cursor: pointer; color: 
 .atm-orb-a {
   width: min(900px, 130vw); height: min(750px, 110vw);
   left: -20%; top: -25%;
-  background: radial-gradient(circle at 40% 40%, rgba(48,28,135,.07), transparent 60%);
+  background: radial-gradient(circle at 40% 40%, rgba(10,80,200,.045), transparent 60%);
   animation-duration: 26s;
 }
 .atm-orb-b {
   width: min(650px, 105vw); height: min(580px, 90vw);
   right: -15%; bottom: 5%;
-  background: radial-gradient(circle at 60% 40%, rgba(72,28,115,.05), transparent 60%);
+  background: radial-gradient(circle at 60% 40%, rgba(8,100,220,.03), transparent 60%);
   animation-duration: 34s; animation-delay: -10s;
 }
 @keyframes float {
@@ -72,7 +72,7 @@ button { font: inherit; background: none; border: none; cursor: pointer; color: 
 .grain {
   position: fixed; inset: 0; pointer-events: none; z-index: 1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 300px; opacity: .03; mix-blend-mode: overlay;
+  background-size: 300px; opacity: .016; mix-blend-mode: overlay;
 }
 
 /* ── LAYOUT ── */
