@@ -249,19 +249,33 @@ nav.stuck {
   gap: 1.25rem;
   padding: clamp(1.5rem, 3.5vw, 2.25rem) 0;
   border-bottom: 1px solid var(--border);
-  transition: background .2s;
+  position: relative;
+  transition: background .22s;
 }
-.cap-row:hover { background: rgba(255,255,255,.012); }
+.cap-row::before {
+  content: '';
+  position: absolute; left: -1px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  opacity: 0;
+  transition: opacity .22s;
+  border-radius: 2px;
+}
+.cap-row:hover { background: rgba(74,124,245,.028); }
+.cap-row:hover::before { opacity: 1; }
 .cap-n {
   font-family: 'JetBrains Mono', monospace;
   font-size: .63rem; letter-spacing: .08em;
-  color: var(--ink-3); padding-top: .22rem; line-height: 1;
+  color: var(--accent); padding-top: .22rem; line-height: 1;
+  opacity: .7;
 }
 .cap-body h3 {
   font-size: clamp(1rem, 2.5vw, 1.2rem);
   font-weight: 600; letter-spacing: -.025em;
   margin-bottom: .5rem;
+  transition: color .18s;
 }
+.cap-row:hover .cap-body h3 { color: #fff; }
 .cap-body p { font-size: clamp(.82rem, 1.8vw, .9rem); color: var(--ink-2); line-height: 1.7; max-width: 580px; }
 
 /* ── APPROACH ───────────────────────────── */
@@ -277,14 +291,35 @@ nav.stuck {
 .ap-cell {
   background: var(--bg);
   padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.25rem);
+  position: relative;
   transition: background .22s;
 }
-.ap-cell:hover { background: rgba(255,255,255,.016); }
-.ap-cell h3 { font-size: clamp(1.05rem, 2.5vw, 1.25rem); font-weight: 700; margin-bottom: .625rem; }
-.ap-cell p { font-size: clamp(.82rem, 1.8vw, .9rem); color: var(--ink-2); line-height: 1.7; }
+.ap-cell::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  opacity: 0;
+  transition: opacity .22s;
+}
+.ap-cell:hover { background: rgba(74,124,245,.03); }
+.ap-cell:hover::after { opacity: 1; }
+.ap-icon {
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: rgba(74,124,245,.1);
+  border: 1px solid rgba(74,124,245,.2);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.125rem;
+  color: var(--accent);
+  transition: background .22s, border-color .22s;
+}
+.ap-cell:hover .ap-icon { background: rgba(74,124,245,.18); border-color: rgba(74,124,245,.35); }
+.ap-cell h3 { font-size: clamp(1.05rem, 2.5vw, 1.2rem); font-weight: 700; margin-bottom: .625rem; }
+.ap-cell p { font-size: clamp(.82rem, 1.8vw, .88rem); color: var(--ink-2); line-height: 1.7; }
 
 /* ── PROCESS ────────────────────────────── */
-.process-list { display: flex; flex-direction: column; gap: 0; }
+.process-list { display: flex; flex-direction: column; }
 .proc-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -292,17 +327,25 @@ nav.stuck {
   padding: clamp(1.5rem, 3.5vw, 2.25rem) 0;
   border-bottom: 1px solid var(--border);
   align-items: start;
+  position: relative;
 }
 .proc-row:first-child { border-top: 1px solid var(--border); }
 .proc-meta {
-  display: flex; align-items: baseline; gap: 1rem;
+  display: flex; align-items: center; gap: .875rem;
 }
-.proc-step-n {
+.proc-dot {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(74,124,245,.1);
+  border: 1px solid rgba(74,124,245,.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.proc-dot span {
   font-family: 'JetBrains Mono', monospace;
-  font-size: .6rem; letter-spacing: .1em; color: var(--accent); white-space: nowrap;
+  font-size: .58rem; font-weight: 500; color: var(--accent); letter-spacing: .05em;
 }
-.proc-row h3 { font-size: clamp(.95rem, 2.2vw, 1.1rem); font-weight: 700; letter-spacing: -.025em; }
-.proc-row p { font-size: clamp(.82rem, 1.8vw, .88rem); color: var(--ink-2); line-height: 1.65; }
+.proc-row h3 { font-size: clamp(.95rem, 2.2vw, 1.05rem); font-weight: 700; letter-spacing: -.025em; }
+.proc-row p { font-size: clamp(.82rem, 1.8vw, .87rem); color: var(--ink-2); line-height: 1.65; }
 
 /* ── CTA BLOCK ──────────────────────────── */
 .cta-block { padding: clamp(5rem, 10vw, 9rem) 0; text-align: center; }
@@ -364,18 +407,18 @@ footer {
 .menu-nav { display: flex; flex-direction: column; }
 .menu-nav a {
   font-family: 'Instrument Sans', sans-serif;
-  font-size: clamp(1.6rem, 7vw, 2.1rem);
-  font-weight: 700; letter-spacing: -.04em;
-  color: var(--ink-3);
-  padding: .85rem 0;
-  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: clamp(1.35rem, 5.5vw, 1.75rem);
+  font-weight: 700; letter-spacing: -.035em;
+  color: rgba(255,255,255,.45);
+  padding: .9rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
   display: flex; align-items: center; justify-content: space-between;
-  transition: color .15s;
+  transition: color .18s, padding-left .22s cubic-bezier(.16,1,.3,1);
 }
 .menu-nav a:last-child { border-bottom: none; }
-.menu-nav a:hover, .menu-nav a:active { color: var(--ink); }
-.menu-nav a svg { opacity: 0; transition: opacity .15s; flex-shrink: 0; }
-.menu-nav a:hover svg, .menu-nav a:active svg { opacity: 1; }
+.menu-nav a:hover, .menu-nav a:active { color: var(--ink); padding-left: .25rem; }
+.menu-nav a svg { opacity: 0; transform: translateX(-4px); transition: opacity .18s, transform .22s cubic-bezier(.16,1,.3,1); flex-shrink: 0; }
+.menu-nav a:hover svg, .menu-nav a:active svg { opacity: 1; transform: translateX(0); }
 .menu-foot {
   flex-shrink: 0;
   padding: 2rem var(--pad);
@@ -621,14 +664,23 @@ footer {
       </div>
       <div class="approach-grid rev d1">
         <div class="ap-cell">
+          <div class="ap-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="5" r="2.5"/><path d="M3 14c0-2.76 2.24-5 5-5s5 2.24 5 5"/></svg>
+          </div>
           <h3>Independent</h3>
           <p>One experienced operator. No junior layers. You speak with — and get the work from — the same person, from first conversation through final handoff.</p>
         </div>
         <div class="ap-cell">
+          <div class="ap-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 8h12M8 2l4 6-4 6"/></svg>
+          </div>
           <h3>Right-sized</h3>
           <p>Scoped to the actual problem. We size engagements to what the work requires. If it's small, we say so. If it's complex, we scope it honestly.</p>
         </div>
         <div class="ap-cell">
+          <div class="ap-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 9l3 3 7-7"/></svg>
+          </div>
           <h3>Outcome-led</h3>
           <p>The work is a result, not a deliverable. Engagements end with a working system in production, fully owned by your team.</p>
         </div>
@@ -649,28 +701,28 @@ footer {
       <div class="process-list">
         <div class="proc-row rev">
           <div class="proc-meta">
-            <span class="proc-step-n mono">01</span>
+            <div class="proc-dot"><span>01</span></div>
             <h3>Consult</h3>
           </div>
           <p>A 30-minute discovery call to align on the problem and determine if we're the right fit.</p>
         </div>
         <div class="proc-row rev">
           <div class="proc-meta">
-            <span class="proc-step-n mono">02</span>
+            <div class="proc-dot"><span>02</span></div>
             <h3>Brief</h3>
           </div>
           <p>We deliver a precise scope, timeline, and fixed price based on our conversation.</p>
         </div>
         <div class="proc-row rev">
           <div class="proc-meta">
-            <span class="proc-step-n mono">03</span>
+            <div class="proc-dot"><span>03</span></div>
             <h3>Build</h3>
           </div>
           <p>Execution in weeks, not quarters. Transparent progress and iterative reviews throughout.</p>
         </div>
         <div class="proc-row rev">
           <div class="proc-meta">
-            <span class="proc-step-n mono">04</span>
+            <div class="proc-dot"><span>04</span></div>
             <h3>Handoff</h3>
           </div>
           <p>Deployment to your infrastructure. Full code ownership transferred. Zero lock-in.</p>
