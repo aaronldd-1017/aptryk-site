@@ -33,11 +33,12 @@
 
 /* ── RESET ──────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; background: var(--bg); }
+html { scroll-behavior: smooth; background: #010109; }
 body {
   font-family: 'Inter', system-ui, sans-serif;
   font-size: 1rem; line-height: 1.65;
-  color: var(--ink-2); background: var(--bg);
+  color: var(--ink-2);
+  background: radial-gradient(ellipse 120% 60% at 30% -2%, #06041a 0%, #010109 52%);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -46,40 +47,49 @@ button { font: inherit; background: none; border: none; cursor: pointer; color: 
 img { display: block; }
 
 /* ── ATMOSPHERE ─────────────────────────── */
+.starfield {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+}
 .atm {
   position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
 }
 .atm-orb {
   position: absolute; border-radius: 50%;
-  filter: blur(90px);
-  animation: float 24s ease-in-out infinite alternate;
+  filter: blur(160px);
+  animation: float 28s ease-in-out infinite alternate;
 }
 .atm-orb-a {
-  width: min(700px, 90vw); height: min(600px, 80vw);
-  left: -15%; top: -20%;
-  background: radial-gradient(circle at 40% 40%, rgba(74,124,245,.28), transparent 65%);
-  animation-duration: 22s;
+  width: min(900px, 130vw); height: min(750px, 110vw);
+  left: -20%; top: -25%;
+  background: radial-gradient(circle at 40% 40%, rgba(48,28,135,.07), transparent 60%);
+  animation-duration: 26s;
 }
 .atm-orb-b {
-  width: min(550px, 80vw); height: min(500px, 70vw);
-  right: -12%; top: 5%;
-  background: radial-gradient(circle at 60% 40%, rgba(99,102,241,.18), transparent 65%);
-  animation-duration: 28s; animation-delay: -8s;
+  width: min(700px, 110vw); height: min(620px, 95vw);
+  right: -18%; top: 8%;
+  background: radial-gradient(circle at 55% 40%, rgba(72,28,115,.05), transparent 60%);
+  animation-duration: 34s; animation-delay: -10s;
 }
 .atm-orb-c {
-  width: min(500px, 75vw); height: min(450px, 65vw);
-  left: 10%; bottom: -15%;
-  background: radial-gradient(circle at 50% 50%, rgba(74,124,245,.1), transparent 65%);
-  animation-duration: 32s; animation-delay: -15s;
+  width: min(650px, 100vw); height: min(580px, 90vw);
+  left: 5%; bottom: -20%;
+  background: radial-gradient(circle at 50% 50%, rgba(32,18,95,.04), transparent 60%);
+  animation-duration: 40s; animation-delay: -18s;
+}
+.atm-orb-d {
+  width: min(550px, 85vw); height: min(500px, 80vw);
+  right: 5%; bottom: 15%;
+  background: radial-gradient(circle at 50% 50%, rgba(55,22,100,.03), transparent 58%);
+  animation-duration: 44s; animation-delay: -28s;
 }
 @keyframes float {
   from { transform: translate(0, 0) scale(1); }
-  to   { transform: translate(2%, 3%) scale(1.04); }
+  to   { transform: translate(1.5%, 2.5%) scale(1.03); }
 }
 .grain {
   position: fixed; inset: 0; pointer-events: none; z-index: 1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 300px; opacity: .03; mix-blend-mode: overlay;
+  background-size: 300px; opacity: .045; mix-blend-mode: screen;
 }
 nav, main, footer { position: relative; z-index: 2; }
 
@@ -612,10 +622,12 @@ footer {
 </head>
 <body>
 
+<canvas id="stars" class="starfield" aria-hidden="true"></canvas>
 <div class="atm" aria-hidden="true">
   <div class="atm-orb atm-orb-a"></div>
   <div class="atm-orb atm-orb-b"></div>
   <div class="atm-orb atm-orb-c"></div>
+  <div class="atm-orb atm-orb-d"></div>
 </div>
 <div class="grain" aria-hidden="true"></div>
 
@@ -983,6 +995,31 @@ burger.addEventListener('click', openMenu);
 document.getElementById('menuX').addEventListener('click', closeMenu);
 menu.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', closeMenu));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeMenu(); closeModal(); } });
+
+// Seeded star field
+(function(){
+  var c=document.getElementById('stars');
+  if(!c)return;
+  var ctx=c.getContext('2d'),s=54321;
+  function rng(){s=(s*1664525+1013904223)&0xffffffff;return(s>>>0)/4294967295;}
+  function draw(){
+    c.width=innerWidth;c.height=innerHeight;
+    ctx.clearRect(0,0,c.width,c.height);
+    s=54321;
+    var n=Math.min(Math.floor(c.width*c.height/5200),240);
+    for(var i=0;i<n;i++){
+      var x=rng()*c.width,y=rng()*c.height,t=rng();
+      var sz=t<.75?.5:t<.93?.9:1.4;
+      var a=.06+rng()*(sz>1?.58:sz>.7?.38:.24);
+      var bl=Math.floor(215+rng()*40),gr=Math.floor(218+rng()*37);
+      ctx.beginPath();ctx.arc(x,y,sz,0,6.283);
+      ctx.fillStyle='rgba(220,'+gr+','+bl+','+a.toFixed(2)+')';
+      ctx.fill();
+    }
+  }
+  draw();
+  addEventListener('resize',draw,{passive:true});
+})();
 </script>
 </body>
 </html>
