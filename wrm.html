@@ -112,7 +112,8 @@ a{color:inherit;text-decoration:none}
 .spotlight-arrow{color:var(--soft);flex-shrink:0;position:relative;z-index:1;transition:transform var(--t-fast),color var(--t-fast)}
 .spotlight:hover .spotlight-arrow{transform:translateX(3px);color:var(--accent)}
 .spotlight-arrow svg{width:18px;height:18px}
-.vitals{gap:.75rem}
+.vitals{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;margin:0 -1rem;padding:.1rem 1rem .3rem;gap:.5rem}
+.vitals::-webkit-scrollbar{display:none}
 .vital{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:1rem 1.1rem 1.05rem;cursor:pointer;transition:transform var(--t-fast),border-color var(--t-fast),box-shadow var(--t-fast);text-align:left;display:flex;flex-direction:column;gap:.35rem;position:relative;overflow:hidden}
 .vital:hover{border-color:var(--line-2);transform:translateY(-1px);box-shadow:var(--shadow)}
 .vital-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
@@ -146,7 +147,10 @@ a{color:inherit;text-decoration:none}
 .vital:hover{border-color:var(--line-2);transform:translateY(-2px);box-shadow:var(--shadow)}
 .vital.hot:hover{border-color:var(--line-2)}
 
-.streams{gap:1rem}
+.streams{display:block;gap:0}
+.stream-card{display:none;border-radius:var(--r-lg)}
+.stream-card.show-mobile{display:flex;flex-direction:column}
+.stream-tabs{display:none}
 .stream-head{display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.1rem;border-bottom:1px solid var(--line)}
 .stream-title{font-family:var(--display);font-weight:700;font-size:.85rem;color:var(--ink)}
 .stream-link{font-family:var(--mono);font-size:.55rem;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:.2rem}
@@ -502,19 +506,13 @@ a{color:inherit;text-decoration:none}
 ============================================================ */
 @media(max-width:840px){
 
-  /* ══════════════════════════════════════════════════════════
-     CRITICAL LAYOUT OVERRIDES — !important guards on the 8
-     properties that have documented base-style conflicts.
-     Everything else follows normal cascade.
-  ══════════════════════════════════════════════════════════ */
-  .rail{display:none !important}
-  .topbar{flex-direction:row !important;height:auto !important}
-  .dock{display:flex !important;overflow:visible !important}
-  .vitals{display:flex !important;grid-template-columns:none !important}
-  .streams{display:block !important}
-  .tb-search{flex:none !important;max-width:none !important}
-  .main{overflow-x:hidden !important}
-  .head-actions .btn{flex:none !important;width:auto !important}
+  /* ── MOBILE SHELL ── */
+  .rail{display:none}
+  .topbar{flex-direction:row;height:auto}
+  .dock{display:flex;overflow:visible}
+  .tb-search{flex:none;max-width:none}
+  .main{overflow-x:hidden}
+  .head-actions .btn{flex:none;width:auto}
 
   /* ── APP SHELL ── */
   .app{grid-template-columns:1fr}
@@ -586,15 +584,6 @@ a{color:inherit;text-decoration:none}
   .spotlight-detail{font-size:.75rem;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
   /* ── VITALS: horizontal scroll strip ── */
-  .vitals{
-    gap:.5rem;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-    margin:0 -1rem;
-    padding:.1rem 1rem .3rem
-  }
-  .vitals::-webkit-scrollbar{display:none}
   .vital{flex:0 0 138px;scroll-snap-align:start;padding:.8rem .9rem;border-radius:var(--r-sm);min-width:0}
   .vital-value{font-size:1.5rem}
   .vital-label{font-size:.5rem}
@@ -602,11 +591,8 @@ a{color:inherit;text-decoration:none}
   .vital-arrow{display:none}
 
   /* ── STREAMS: tabbed, one at a time ── */
-  .streams{gap:0}
-  .stream-card{border-radius:var(--r-lg);min-height:200px;display:none}
-  .stream-card.show-mobile{display:flex}
-  #streamTabs{display:flex !important}
-  .stream-tabs{gap:.3rem;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:.2rem;margin-bottom:.65rem}
+  .stream-card{min-height:200px}
+  .stream-tabs{display:flex;gap:.3rem;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-sm);padding:.2rem;margin-bottom:.65rem}
   .stream-tab{flex:1;padding:.5rem .75rem;font-family:var(--display);font-size:.8rem;font-weight:600;color:var(--mid);background:transparent;border:none;border-radius:5px;cursor:pointer;transition:all var(--t-fast)}
   .stream-tab.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
   .stream-tab-count{font-family:var(--mono);font-size:.58rem;font-weight:700;color:var(--soft);margin-left:.3rem}
@@ -736,9 +722,10 @@ a{color:inherit;text-decoration:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.fab-pulse{display:none}}
 /* ── Rules that must NOT override mobile — scoped to desktop ── */
 @media(min-width:841px){
+  .vitals{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;overflow-x:visible;scroll-snap-type:none;-webkit-overflow-scrolling:auto;margin:0;padding:0}
   .streams{display:grid;grid-template-columns:1.5fr 1fr;gap:1rem}
   .stream-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);display:flex;flex-direction:column;min-height:260px}
-  .vitals{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+  .stream-tabs{display:none}
 }
 .stream-meta-text{font-family:var(--mono);font-size:.55rem;font-weight:500;color:var(--faint);letter-spacing:.06em;flex-shrink:0}
 .vital-arrow{position:absolute;top:1rem;right:1rem;color:var(--soft);opacity:0;transform:translate(-4px,4px);transition:all var(--t-fast)}
@@ -844,7 +831,7 @@ a{color:inherit;text-decoration:none}
 <div class="spotlight-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
 </button>
 <div class="vitals" id="wrmVitals"></div>
-<div class="stream-tabs" id="streamTabs" role="tablist" style="display:none">
+<div class="stream-tabs" id="streamTabs" role="tablist">
 <button class="stream-tab active" data-stream-tab="upnext" role="tab">Up next<span class="stream-tab-count" id="streamTabUpCount"></span></button>
 <button class="stream-tab" data-stream-tab="recent" role="tab">Recent<span class="stream-tab-count" id="streamTabRecCount"></span></button>
 </div>
