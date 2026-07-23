@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
 <title>APTRYK W/R/M Platform — What Really Matters</title>
 <meta name="theme-color" content="#000008"/>
-<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
@@ -24,7 +24,6 @@ a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent-soft-2);color:var(--ink)}
 ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--mid)}
 .app{display:grid;grid-template-columns:var(--rail-w) 1fr;min-height:100vh;min-height:100svh}
-@media(max-width:840px){.app{grid-template-columns:1fr}}
 .rail{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;height:100svh;padding:1rem .65rem;z-index:30}
 .rail-brand{display:flex;align-items:center;gap:.55rem;padding:.4rem .55rem;height:48px;margin-bottom:1rem;border-radius:var(--r);cursor:pointer;transition:background var(--t-fast)}
 .rail-brand:hover{background:var(--surface-2)}
@@ -373,7 +372,6 @@ a{color:inherit;text-decoration:none}
 .dr-task-add input{flex:1;background:transparent;border:none;outline:none;font-family:var(--display);font-size:.85rem;font-weight:500;color:var(--ink)}
 .toast{position:fixed;bottom:max(20px,calc(20px + var(--safe-b)));left:50%;transform:translateX(-50%) translateY(80px);z-index:200;padding:.7rem 1.1rem;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r);box-shadow:var(--shadow-lg);font-family:var(--display);font-size:.85rem;font-weight:600;color:var(--ink);opacity:0;pointer-events:none;transition:all var(--t-base) var(--ease-out)}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-@media(max-width:840px){.toast{bottom:max(96px,calc(96px + var(--safe-b)))}}
 
 
 .eng-touch{font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--soft);letter-spacing:.04em}
@@ -400,16 +398,6 @@ a{color:inherit;text-decoration:none}
 .modal,.drawer,.cmd,.mnav,.toast,.view{will-change:transform,opacity;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 /* Snappier view transition */
 @keyframes viewFadeFast{from{opacity:0;transform:translate3d(0,3px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
-@media(max-width:840px){
-  /* Tighten toast distance from dock for cleaner reveal */
-  .toast{transition:all 160ms cubic-bezier(.16,1,.3,1)}
-  /* Bigger tap targets on critical actions */
-  .dock-item{min-height:56px}
-  .stream-row{min-height:48px;padding:.65rem .85rem}
-  .eng-card{min-height:64px}
-  /* Smooth scrolling */
-  .pipe-board,.eng-list,.modal-body,.drawer-body{-webkit-overflow-scrolling:touch}
-}
 
 /* Desktop — refined hover and press states for the same app feel */
 @media(min-width:841px){
@@ -513,20 +501,30 @@ a{color:inherit;text-decoration:none}
    proper bottom-sheet entry, no horizontal overflow anywhere.
 ============================================================ */
 @media(max-width:840px){
-  /* ── LAYOUT ── */
+
+  /* ══════════════════════════════════════════════════════════
+     CRITICAL LAYOUT OVERRIDES — !important guards on the 8
+     properties that have documented base-style conflicts.
+     Everything else follows normal cascade.
+  ══════════════════════════════════════════════════════════ */
+  .rail{display:none !important}
+  .topbar{flex-direction:row !important;height:auto !important}
+  .dock{display:flex !important;overflow:visible !important}
+  .vitals{display:flex !important;grid-template-columns:none !important}
+  .streams{display:block !important}
+  .tb-search{flex:none !important;max-width:none !important}
+  .main{overflow-x:hidden !important}
+  .head-actions .btn{flex:none !important;width:auto !important}
+
+  /* ── APP SHELL ── */
   .app{grid-template-columns:1fr}
-  .rail{display:none}
   .menu-btn{display:flex}
-  .dock{display:flex}
-  /* overflow-x:hidden is the safety net against any rogue element bleeding out */
-  .main{padding:.85rem 1rem calc(86px + var(--safe-b));max-width:100%;overflow-x:hidden}
+  .main{padding:.85rem 1rem calc(86px + var(--safe-b));max-width:100%}
   input,textarea,select{font-size:16px !important}
 
-  /* ── TOPBAR: single compact row, glass blur ── */
+  /* ── TOPBAR: single-row glass bar ── */
   .topbar{
-    flex-direction:row;
     align-items:center;
-    height:auto;
     min-height:52px;
     padding:calc(.55rem + var(--safe-t)) .85rem .55rem;
     gap:.55rem;
@@ -534,18 +532,15 @@ a{color:inherit;text-decoration:none}
     -webkit-backdrop-filter:blur(20px);
     backdrop-filter:blur(20px)
   }
-  /* On desktop tb-row-top is display:contents — keep same on mobile so items sit directly in topbar flex row */
   .tb-row-top{display:contents}
   .tb-tagline{display:none}
   .menu-btn{width:38px;height:38px;flex-shrink:0;border-radius:10px}
   .menu-btn svg{width:18px;height:18px}
   .tb-brand{font-size:.9rem;gap:.35rem;flex-shrink:0;letter-spacing:-.01em}
   .tb-brand-sub,.tb-brand-dot{display:none}
-  /* Push search + theme to the right */
   .tb-spacer{flex:1;display:block}
-  /* Search becomes a compact icon button on mobile */
   .tb-search{
-    flex:none;width:38px;height:38px;
+    width:38px;height:38px;
     border-radius:10px;padding:0;
     justify-content:center;
     background:var(--surface-2);
@@ -556,7 +551,7 @@ a{color:inherit;text-decoration:none}
   #tbThemeBtn{display:flex;width:38px;height:38px;border-radius:10px}
   .tb-icons{gap:.3rem}
 
-  /* ── PAGE HEAD: inline layout — title left, action right ── */
+  /* ── PAGE HEAD: title-left / action-right inline row ── */
   .head{
     flex-direction:row;
     flex-wrap:wrap;
@@ -569,13 +564,9 @@ a{color:inherit;text-decoration:none}
   .head-eyebrow{display:none}
   .head-left{flex:1;min-width:0;overflow:hidden}
   .head-title{font-size:1.4rem;margin-bottom:.1rem;letter-spacing:-.025em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .head-sub{
-    font-size:.8rem;line-height:1.4;max-width:none;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-    word-break:break-word
-  }
+  .head-sub{font-size:.8rem;line-height:1.4;max-width:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
   .head-actions{flex:none;align-self:center}
-  .head-actions .btn{flex:none;padding:.48rem .85rem;font-size:.8rem;letter-spacing:-.005em}
+  .head-actions .btn{padding:.48rem .85rem;font-size:.8rem}
 
   /* ── GREETING ── */
   .wrm-greet{flex-direction:column;align-items:stretch;gap:.75rem}
@@ -596,8 +587,6 @@ a{color:inherit;text-decoration:none}
 
   /* ── VITALS: horizontal scroll strip ── */
   .vitals{
-    display:flex !important;
-    grid-template-columns:none;
     gap:.5rem;
     overflow-x:auto;
     scroll-snap-type:x mandatory;
@@ -613,7 +602,7 @@ a{color:inherit;text-decoration:none}
   .vital-arrow{display:none}
 
   /* ── STREAMS: tabbed, one at a time ── */
-  .streams{display:block !important;gap:0}
+  .streams{gap:0}
   .stream-card{border-radius:var(--r-lg);min-height:200px;display:none}
   .stream-card.show-mobile{display:flex}
   #streamTabs{display:flex !important}
@@ -623,40 +612,31 @@ a{color:inherit;text-decoration:none}
   .stream-tab-count{font-family:var(--mono);font-size:.58rem;font-weight:700;color:var(--soft);margin-left:.3rem}
   .stream-tab.active .stream-tab-count{color:var(--accent)}
 
-  /* ── DOCK: glass, overflow:visible so FAB floats above ── */
+  /* ── DOCK: glass bar, FAB lifts above via negative margin-top ── */
   .dock{
-    display:flex;
     height:calc(68px + var(--safe-b));
     padding:.35rem .2rem calc(.3rem + var(--safe-b));
     gap:0;
     justify-content:space-around;
     align-items:center;
-    overflow:visible;
     background:rgba(0,0,8,.9);
     -webkit-backdrop-filter:blur(20px);
     backdrop-filter:blur(20px);
     border-top:1px solid rgba(255,255,255,.06)
   }
-  .dock-item{flex:1;width:auto;max-width:none;min-width:0;padding:.3rem .1rem;gap:.18rem;border-radius:8px}
+  .dock-item{flex:1;width:auto;max-width:none;min-width:0;padding:.3rem .1rem;gap:.18rem;border-radius:8px;min-height:56px}
   .dock-item svg{width:20px;height:20px;flex-shrink:0;stroke-width:2}
   .dock-item span{font-size:.6rem;font-weight:600;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52px}
   .dock-item.active{color:var(--accent)}
   .dock-item.active span{color:var(--accent);font-weight:700}
-  /* FAB lifts above the dock — gradient matches brand system */
   .dock-fab{
-    flex:0 0 auto;
-    width:58px;height:58px;
-    border-radius:50%;
-    background:var(--grad);
-    color:#fff;
+    flex:0 0 auto;width:58px;height:58px;border-radius:50%;
+    background:var(--grad);color:#fff;
     display:flex;align-items:center;justify-content:center;
     margin-top:-18px;
     box-shadow:0 8px 22px var(--accent-glow),0 3px 8px rgba(0,0,0,.3);
     transition:transform var(--t-fast),box-shadow var(--t-fast);
-    position:relative;
-    border:2.5px solid var(--bg);
-    z-index:2;
-    flex-shrink:0
+    position:relative;border:2.5px solid var(--bg);z-index:2;flex-shrink:0
   }
   .dock-fab:active{transform:scale(.91)}
   .dock-fab svg{width:22px;height:22px;stroke-width:2.5}
@@ -666,7 +646,10 @@ a{color:inherit;text-decoration:none}
   @keyframes dockFabPulse{0%{transform:scale(1);opacity:.45}75%,100%{transform:scale(1.32);opacity:0}}
   .fab{display:none}
 
-  /* ── DRAWER: bottom sheet with spring easing ── */
+  /* ── SMOOTH SCROLLING on long lists ── */
+  .pipe-board,.eng-list,.modal-body,.drawer-body{-webkit-overflow-scrolling:touch}
+
+  /* ── DRAWER: bottom sheet, spring easing ── */
   .drawer{
     position:fixed;left:0;right:0;bottom:0;top:auto;
     width:100vw;max-height:92svh;height:auto;
@@ -682,33 +665,24 @@ a{color:inherit;text-decoration:none}
   .drawer-title{order:2;font-size:1rem;padding-top:.5rem}
   .drawer-actions{order:1;justify-content:flex-end;align-self:flex-end;margin-top:.35rem}
 
-  /* ── MODAL: proper bottom sheet — enters from full off-screen ── */
+  /* ── MODAL: true bottom sheet, enters from off-screen ── */
   .modal-overlay{padding:0;align-items:flex-end;overflow:hidden}
-  .modal{
-    width:100%;max-width:100%;
-    max-height:92svh;
-    border-radius:20px 20px 0 0;
-    animation:mobileSheetUp 360ms cubic-bezier(.32,.72,0,1)
-  }
+  .modal{width:100%;max-width:100%;max-height:92svh;border-radius:20px 20px 0 0;animation:mobileSheetUp 360ms cubic-bezier(.32,.72,0,1)}
   @keyframes mobileSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
   .modal-head{padding:.7rem 1.1rem;position:relative}
   .modal-head::before{content:'';position:absolute;top:.38rem;left:50%;transform:translateX(-50%);width:36px;height:4px;border-radius:2px;background:var(--line-2)}
   .modal-title{padding-top:.3rem;font-size:1rem}
 
-  /* ── CMD PALETTE: drops in from top edge ── */
+  /* ── CMD PALETTE: drops from top ── */
   .cmd-overlay{padding:0;align-items:flex-start}
-  .cmd{
-    max-width:100%;
-    border-radius:0 0 var(--r-lg) var(--r-lg);
-    animation:cmdDropIn 280ms cubic-bezier(.32,.72,0,1)
-  }
+  .cmd{max-width:100%;border-radius:0 0 var(--r-lg) var(--r-lg);animation:cmdDropIn 280ms cubic-bezier(.32,.72,0,1)}
   @keyframes cmdDropIn{from{transform:translateY(-100%);opacity:.6}to{transform:translateY(0);opacity:1}}
 
-  /* ── TOAST: clears dock ── */
-  .toast{bottom:max(82px,calc(78px + var(--safe-b)));font-size:.82rem;padding:.6rem 1rem}
+  /* ── TOAST: sits above dock ── */
+  .toast{bottom:max(82px,calc(78px + var(--safe-b)));font-size:.82rem;padding:.6rem 1rem;transition:all 160ms cubic-bezier(.16,1,.3,1)}
 
   /* ── ENGAGEMENT CARDS ── */
-  .eng-card{padding:.8rem .9rem;gap:.6rem;min-height:58px}
+  .eng-card{padding:.8rem .9rem;gap:.6rem;min-height:64px}
   .eng-avatar{width:34px;height:34px;border-radius:8px;font-size:.68rem}
   .eng-name{font-size:.88rem}
   .eng-detail{font-size:.7rem;gap:.25rem .5rem}
@@ -718,7 +692,7 @@ a{color:inherit;text-decoration:none}
   .chips::-webkit-scrollbar{display:none}
   .chip{flex-shrink:0;font-size:.7rem;padding:.32rem .6rem}
 
-  /* ── EMPTY STATES: contained, no text bleed ── */
+  /* ── EMPTY STATES: contained, text stays inside card ── */
   .eng-empty{padding:2.5rem 1.25rem;overflow:hidden;border-radius:var(--r-lg)}
   .eng-empty h3{font-size:1rem;word-break:break-word;overflow-wrap:break-word;hyphens:auto;line-height:1.3}
   .eng-empty h3 em{display:inline}
@@ -726,7 +700,7 @@ a{color:inherit;text-decoration:none}
   .eng-empty-icon{width:42px;height:42px;margin-bottom:.85rem}
   .eng-empty-icon svg{width:18px;height:18px}
 
-  /* ── PIPELINE: stacked vertical, natural scroll ── */
+  /* ── PIPELINE: stacked vertical, natural page scroll ── */
   .pipe-indicator{display:none}
   .pipe-board{display:flex;flex-direction:column;gap:.6rem;overflow-x:visible;padding-bottom:0}
   .pipe-col{scroll-snap-align:none;min-height:auto;padding:.8rem .85rem .6rem}
@@ -736,8 +710,9 @@ a{color:inherit;text-decoration:none}
   .pipe-card{padding:.6rem .75rem}
   .pipe-card-name{font-size:.84rem}
   .pipe-card-meta{font-size:.7rem}
+  .stream-row{min-height:48px;padding:.65rem .85rem}
 
-  /* ── DEC / MONEY / CAPTURES: base mobile tweaks ── */
+  /* ── MONEY / DECISIONS / CAPTURES ── */
   .dec-card{padding:.85rem 1rem}
   .dec-card-title{font-size:.95rem}
   .dr-grid{grid-template-columns:1fr 1fr;gap:.4rem}
