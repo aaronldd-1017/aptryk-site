@@ -1143,7 +1143,23 @@ const DEF={engagements:[],activity:[],captures:[],decisions:[],money:{proposals:
 let S=JSON.parse(JSON.stringify(DEF));
 
 function loadState(){
-  try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);S={...DEF,...p,money:{...DEF.money,...(p.money||{})}}}}catch(e){}
+  try{
+    const r=localStorage.getItem(KEY);
+    if(r){
+      const p=JSON.parse(r);
+      S={...DEF,...p,money:{...DEF.money,...(p.money||{})}};
+      // ── Legacy migration ──────────────────────────────────────
+      // v2 activity used `ts` for timestamp; v3 uses `t`
+      S.activity=S.activity.map(a=>({...a,t:a.t??a.ts??now()}));
+      // v2 money items used `title` for the item name; v3 uses `name`
+      ['proposals','invoices'].forEach(k=>{
+        if(!S.money[k])S.money[k]=[];
+        S.money[k]=S.money[k].map(m=>({...m,name:m.name||m.title||''}));
+      });
+      // Ensure all engagements have required v3 fields
+      S.engagements=S.engagements.map(e=>({tasks:[],links:[],pinned:false,...e}));
+    }
+  }catch(e){}
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function log(type,label,engId){
@@ -1255,7 +1271,7 @@ function renderUpnext(){
 function renderRecent(){
   const el=$('#bodyRecent');if(!el)return;
   const acts=S.activity.slice(0,6);
-  el.innerHTML=acts.length?acts.map(a=>`<button class="stream-row" onclick="${a.engId?`openDrawer('${a.engId}')`:''}""><span class="stream-dot ${a.type==='created'?'accent':a.type==='decision'?'info':''}"></span><span class="stream-text">${a.label}</span><span class="stream-meta">${ago(a.t)}</span></button>`).join(''):'<div class="stream-empty"><strong>No moves yet.</strong><br>State changes appear here.</div>';
+  el.innerHTML=acts.length?acts.map(a=>`<button class="stream-row" onclick="${a.engId?`openDrawer('${a.engId}')`:''}" ><span class="stream-dot ${a.type==='created'?'accent':a.type==='decision'?'info':''}"></span><span class="stream-text">${a.label}</span><span class="stream-meta">${ago(a.t)}</span></button>`).join(''):'<div class="stream-empty"><strong>No moves yet.</strong><br>State changes appear here.</div>';
 }
 function updateStreamCts(){
   const up=S.engagements.filter(e=>['active','proposal'].includes(e.stage)).length;
