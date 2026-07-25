@@ -1,0 +1,68 @@
+<!-- APTRYK consult form — drop into any page on your Cloudflare Pages site.
+     Posts to /api/consult (the Pages Function). Styles are scoped to .apk-form. -->
+
+<style>
+  .apk-form { max-width: 480px; font-family: system-ui, sans-serif; display: flex; flex-direction: column; gap: 12px }
+  .apk-form label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #9598b0; display: block; margin-bottom: 5px }
+  .apk-form input, .apk-form select, .apk-form textarea {
+    width: 100%; box-sizing: border-box; padding: 11px 13px; font-size: 16px;
+    background: #0d0d1a; color: #edf0ff; border: 1.5px solid rgba(255,255,255,.09);
+    border-radius: 9px; outline: none; transition: border-color .15s;
+  }
+  .apk-form input:focus, .apk-form select:focus, .apk-form textarea:focus { border-color: #4a7cf5 }
+  .apk-form textarea { min-height: 96px; resize: vertical; line-height: 1.5 }
+  .apk-form .apk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+  @media (max-width: 480px) { .apk-form .apk-row { grid-template-columns: 1fr } }
+  .apk-form button {
+    padding: 13px; border: none; border-radius: 10px; cursor: pointer;
+    background: linear-gradient(135deg, #4a7cf5, #6366f1); color: #fff;
+    font-size: 15px; font-weight: 700; letter-spacing: -.01em;
+  }
+  .apk-form .apk-hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden }
+</style>
+
+<form class="apk-form" method="POST" action="/api/consult">
+  <div>
+    <label for="apk-name">Name *</label>
+    <input id="apk-name" name="name" type="text" required autocomplete="name" placeholder="Your name"/>
+  </div>
+  <div class="apk-row">
+    <div>
+      <label for="apk-email">Email *</label>
+      <input id="apk-email" name="email" type="email" required autocomplete="email" placeholder="you@company.com"/>
+    </div>
+    <div>
+      <label for="apk-phone">Phone</label>
+      <input id="apk-phone" name="phone" type="tel" autocomplete="tel" placeholder="Optional"/>
+    </div>
+  </div>
+  <div class="apk-row">
+    <div>
+      <label for="apk-company">Company</label>
+      <input id="apk-company" name="company" type="text" autocomplete="organization" placeholder="Optional"/>
+    </div>
+    <div>
+      <label for="apk-service">Interested in</label>
+      <select id="apk-service" name="service">
+        <option value="">Choose…</option>
+        <option>Website build</option>
+        <option>Brand & design</option>
+        <option>In-house tools / CRM</option>
+        <option>Consulting & advisement</option>
+        <option>Something else</option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <label for="apk-message">What are you working on?</label>
+    <textarea id="apk-message" name="message" placeholder="A few sentences is perfect."></textarea>
+  </div>
+
+  <!-- Honeypot: hidden from humans, bots fill it, function drops it -->
+  <div class="apk-hp" aria-hidden="true">
+    <label for="apk-website">Website</label>
+    <input id="apk-website" name="website" type="text" tabindex="-1" autocomplete="off"/>
+  </div>
+
+  <button type="submit">Request a consult →</button>
+</form>
