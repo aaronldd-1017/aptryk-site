@@ -737,13 +737,56 @@ document.getElementById('fType').addEventListener('change', e => {
 });
 
 // Form submit
-document.getElementById('bookForm').addEventListener('submit', e => {
+document.getElementById('bookForm').addEventListener('submit', async e => {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
-  btn.textContent = 'Confirming…'; btn.disabled = true;
-  setTimeout(() => goToStep(4), 900);
-});
+  const name = document.getElementById('fName').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const problem = document.getElementById('fProblem').value.trim();
 
+  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !problem) {
+    btn.textContent = 'Fill name, email & problem first';
+    setTimeout(() => { btn.textContent = 'Confirm booking'; }, 2200);
+    return;
+  }
+
+  btn.textContent = 'Confirming…';
+  btn.disabled = true;
+
+  let handoff = {};
+  try { handoff = JSON.parse(sessionStorage.getItem('aptryk_consult_handoff') || '{}'); } catch (_) {}
+
+  const format = document.getElementById('fType').value === 'phone' ? 'Phone call' : 'Video (Google Meet)';
+  const bookingWhen = (selectedDate
+    ? selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' })
+    : '') + (selectedTime ? ' at ' + selectedTime : '');
+
+  const payload = {
+    name,
+    email,
+    phone: document.getElementById('fPhone').value.trim() || handoff.phone || '',
+    problem,
+    stack: document.getElementById('fStack').value.trim() || handoff.stack || '',
+    winDefinition: handoff.outcome || '',
+    dreamAutomation: handoff.problem || '',
+    bookingTime: bookingWhen,
+    bookingFormat: format,
+    source: 'booking',
+  };
+
+  try {
+    await fetch('https://aptryk-intake.aaronldd.workers.dev/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.error('Booking intake error:', err);
+  }
+
+  try { sessionStorage.removeItem('aptryk_consult_handoff'); } catch (_) {}
+  goToStep(4);
+});
 renderCal();
 
 // Seeded star field
