@@ -298,6 +298,7 @@ button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline
   .rail-item { justify-content:center; padding:9px }
 }
 @media (min-width:1440px) { .main { padding:28px 32px 48px } }
+@media (min-width:1280px) { .main > .view { max-width:1180px; margin-inline:auto } }
 
 .rail-brand { display:flex; align-items:center; gap:8px; padding:6px 8px; margin-bottom:12px; border-radius:var(--r); cursor:pointer; transition:background var(--t1) }
 .rail-brand:hover { background:var(--s2) }
@@ -496,8 +497,8 @@ button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline
 @media (min-width:841px) {
   .vitals { grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:24px }
   .stream-tabs { display:none }
-  .streams-wrap { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:12px }
-  .stream-card, .stream-card.active { display:flex }
+  .streams-wrap { display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:12px; align-items:start }
+  .stream-card, .stream-card.active { display:flex; flex-direction:column; background:var(--s1); border:1px solid var(--bd); border-radius:var(--r-lg) }
 }
 
 /* ─── LIST CARDS (clients + engagements share the skeleton) ─────── */
@@ -2285,6 +2286,8 @@ function importLead(L) {
   const email = String(L.email || '').trim().slice(0, 160);
   const grab = k => String(L[k] || '').trim().slice(0, 1500);
   const profileNotes = [
+    grab('bookingTime') && '📅 Booking: ' + grab('bookingTime'),
+    grab('bookingFormat') && 'Format: ' + grab('bookingFormat'),
     grab('industry') && 'Industry: ' + grab('industry'),
     grab('teamSize') && 'Team size: ' + grab('teamSize'),
     grab('pains') && 'Pain points: ' + grab('pains'),
@@ -2309,11 +2312,16 @@ function importLead(L) {
     if (profileNotes) c.notes = (c.notes ? c.notes + '\n\n' : '') + '— Consult ' + fmtDate(L.t || now()) + ' —\n' + profileNotes;
     c.updatedAt = now();
   }
-  const engName = grab('snapshot') ? grab('snapshot').slice(0, 80) + ' — ' + name : 'Consult: ' + name;
-  const e = { id: uid(), name: engName, clientId: c.id, stage: 'inbound', budget: '',
+  const isBooking = !!grab('bookingTime');
+  const engName = isBooking
+    ? '📞 Discovery call — ' + name
+    : (grab('snapshot') ? grab('snapshot').slice(0, 80) + ' — ' + name : 'Consult: ' + name);
+  const e = { id: uid(), name: engName, clientId: c.id, stage: isBooking ? 'discovery' : 'inbound', budget: '',
     notes: profileNotes, tasks: [], links: [], pinned: false, createdAt: L.t || now(), updatedAt: now() };
   S.engagements.unshift(e);
-  log('created', `Inbound consult from <strong>${esc(name)}</strong>`, e.id);
+  log('created', isBooking
+    ? `<strong>${esc(name)}</strong> booked a discovery call`
+    : `Inbound consult from <strong>${esc(name)}</strong>`, e.id);
   if (L.id) { S.leadIds.push(L.id); if (S.leadIds.length > 500) S.leadIds = S.leadIds.slice(-500) }
   return true;
 }
