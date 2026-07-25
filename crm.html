@@ -883,6 +883,7 @@ button:focus-visible, a:focus-visible { outline:2px solid var(--accent); outline
       </button>
       <div class="tb-actions">
         <button class="tb-btn tb-search-icon" onclick="openCmd()" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+        <span id="syncDot" title="Sync status" style="width:7px;height:7px;border-radius:50%;background:var(--ink5);flex-shrink:0;margin:0 3px;transition:background .3s"></span>
         <button class="tb-new" onclick="openQa()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>New</button>
         <button class="tb-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Toggle theme"></button>
       </div>
@@ -1253,7 +1254,195 @@ function loadState() {
   } catch(e) {}
 }
 
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)) } catch(e) {} }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)) } catch(e) {}; syncPush() }
+
+/* ═══════════════════════════════════════════════════════════════
+   SHARED-STATE SYNC ENGINE  (D1 via the intake worker)
+   - localStorage is a fast local cache for instant open + offline read
+   - D1 is the source of truth shared by every device / owner
+   - save() diffs current state vs a shadow snapshot and pushes only
+     changed records, stamped with updatedAt; server keeps last-write-wins
+   - a poll + on-focus pull keeps every screen live
+   ═══════════════════════════════════════════════════════════════ */
+const INTAKE = {
+  url: 'https://aptryk-intake.aaronldd.workers.dev',
+  key: 'apk_foX6mBWMX4DxT6yCRyEKDF6Gewmc2Ub',
+};
+const SYNC = {
+  url: INTAKE.url + '/crm',
+  key: INTAKE.key,
+  enabled() { return this.key && !this.key.includes('PASTE') },
+  shadow: {},          // id -> updatedAt of last-known-synced record
+  queue: [],           // pending mutations awaiting a successful push
+  pushing: false,
+  pullTimer: null,
+};
+
+/* Map a state collection to its server table + row shape */
+const SYNC_TABLES = ['clients','engagements','reminders','captures','money','activity'];
+function rowFor(table, o) {
+  if (table === 'clients') return { id:o.id, name:o.name, company:o.company||'', email:o.email||'', phone:o.phone||'', tags:o.tags||[], notes:o.notes||'', pinned:o.pinned?1:0, created_at:o.createdAt, updated_at:o.updatedAt };
+  if (table === 'engagements') return { id:o.id, name:o.name, client_id:o.clientId||null, stage:o.stage, budget:o.budget||'', notes:o.notes||'', tasks:o.tasks||[], links:o.links||[], pinned:o.pinned?1:0, created_at:o.createdAt, updated_at:o.updatedAt };
+  if (table === 'reminders') return { id:o.id, text:o.text, due:o.due, done:o.done?1:0, created_at:o.createdAt, updated_at:o.updatedAt };
+  if (table === 'captures') return { id:o.id, text:o.text, done:o.done?1:0, created_at:o.t||o.createdAt, updated_at:o.updatedAt||o.t };
+  if (table === 'activity') return { id:o.id, type:o.type, label:o.label, ref_id:o.refId||null, t:o.t };
+  return null;
+}
+function moneyRow(kind, o) {
+  return { id:o.id, kind, name:o.name, client:o.client||'', amount:o.amount||'', status:o.status||'draft', created_at:o.createdAt, updated_at:o.updatedAt };
+}
+
+/* Walk state, compare to shadow, enqueue anything new/changed/removed */
+function collectMutations() {
+  const muts = [];
+  const seen = new Set();
+  const consider = (table, id, updatedAt, rowBuilder) => {
+    seen.add(table + ':' + id);
+    if (SYNC.shadow[table + ':' + id] !== updatedAt) {
+      muts.push({ table, op:'upsert', row: rowBuilder() });
+      SYNC.shadow[table + ':' + id] = updatedAt;
+    }
+  };
+  S.clients.forEach(c => consider('clients', c.id, c.updatedAt, () => rowFor('clients', c)));
+  S.engagements.forEach(e => consider('engagements', e.id, e.updatedAt, () => rowFor('engagements', e)));
+  S.reminders.forEach(r => consider('reminders', r.id, r.updatedAt, () => rowFor('reminders', r)));
+  S.captures.forEach(c => consider('captures', c.id, c.updatedAt||c.t, () => rowFor('captures', c)));
+  S.money.proposals.forEach(m => consider('money', m.id, m.updatedAt, () => moneyRow('proposals', m)));
+  S.money.invoices.forEach(m => consider('money', m.id, m.updatedAt, () => moneyRow('invoices', m)));
+  S.activity.forEach(a => { const k='activity:'+a.id; if(!SYNC.shadow[k]){ muts.push({table:'activity',op:'upsert',row:rowFor('activity',a)}); SYNC.shadow[k]=a.t } seen.add(k) });
+  // deletions: anything in shadow no longer present
+  for (const k of Object.keys(SYNC.shadow)) {
+    if (seen.has(k)) continue;
+    const [table, id] = k.split(':');
+    if (SYNC_TABLES.includes(table)) muts.push({ table, op:'delete', row:{ id } });
+    delete SYNC.shadow[k];
+  }
+  return muts;
+}
+
+async function syncPush() {
+  if (!SYNC.enabled()) return;
+  const muts = collectMutations();
+  if (muts.length) SYNC.queue.push(...muts);
+  if (SYNC.pushing || !SYNC.queue.length) return;
+  SYNC.pushing = true;
+  const batch = SYNC.queue.splice(0, SYNC.queue.length);
+  try {
+    const res = await fetch(SYNC.url + '/mutate', {
+      method:'POST',
+      headers:{ 'Authorization':'Bearer '+SYNC.key, 'Content-Type':'application/json' },
+      body: JSON.stringify({ mutations: batch }),
+    });
+    if (!res.ok) throw new Error('mutate ' + res.status);
+    _syncBadge(true);
+  } catch (err) {
+    SYNC.queue.unshift(...batch);   // put them back; retry next tick
+    _syncBadge(false);
+  } finally {
+    SYNC.pushing = false;
+    if (SYNC.queue.length) setTimeout(syncPush, 1500);
+  }
+}
+
+/* Pull server state and merge in (server wins per record via updatedAt) */
+let _pulling = false;
+async function syncPull() {
+  if (!SYNC.enabled() || _pulling) return;
+  _pulling = true;
+  try {
+    const res = await fetch(SYNC.url + '/state', { headers:{ 'Authorization':'Bearer '+SYNC.key } });
+    if (!res.ok) throw new Error('state ' + res.status);
+    const remote = await res.json();
+    const changed = mergeRemote(remote);
+    if (changed) { save_localOnly(); refresh() }
+    _syncBadge(true);
+  } catch (err) { _syncBadge(false) }
+  finally { _pulling = false }
+}
+
+/* Merge helper: for each collection, take the newer of local/remote by id.
+   Rebuilds shadow so a subsequent push doesn't echo what we just received. */
+function mergeRemote(remote) {
+  let changed = false;
+  const mergeList = (localArr, remoteArr, table, stamp) => {
+    const byId = new Map();
+    localArr.forEach(o => byId.set(o.id, o));
+    remoteArr.forEach(ro => {
+      const lo = byId.get(ro.id);
+      if (!lo || (stamp(ro) > stamp(lo))) { byId.set(ro.id, ro); changed = true; }
+    });
+    // drop local records the server no longer has (deleted elsewhere)
+    localArr.forEach(o => {
+      if (!remoteArr.find(ro => ro.id === o.id) && SYNC.shadow[table+':'+o.id] !== undefined) {
+        byId.delete(o.id); changed = true;
+      }
+    });
+    const merged = [...byId.values()];
+    merged.forEach(o => { SYNC.shadow[table+':'+o.id] = stamp(o) });
+    return merged;
+  };
+  const uStamp = o => o.updatedAt || 0;
+  S.clients     = mergeList(S.clients,     remote.clients||[],     'clients',     uStamp);
+  S.engagements = mergeList(S.engagements, remote.engagements||[], 'engagements', uStamp);
+  S.reminders   = mergeList(S.reminders,   remote.reminders||[],   'reminders',   uStamp);
+  S.captures    = mergeList(S.captures,    remote.captures||[],    'captures',    o => o.updatedAt||o.t||0);
+  S.money.proposals = mergeList(S.money.proposals, (remote.money&&remote.money.proposals)||[], 'money', uStamp);
+  S.money.invoices  = mergeList(S.money.invoices,  (remote.money&&remote.money.invoices)||[],  'money', uStamp);
+  // activity: union by id, newest first, cap 300
+  const actIds = new Set(S.activity.map(a=>a.id));
+  (remote.activity||[]).forEach(a => { if(!actIds.has(a.id)){ S.activity.push(a); SYNC.shadow['activity:'+a.id]=a.t; changed = true } });
+  S.activity.sort((a,b)=>b.t-a.t); S.activity = S.activity.slice(0,300);
+  return changed;
+}
+
+function save_localOnly() { try { localStorage.setItem(KEY, JSON.stringify(S)) } catch(e) {} }
+
+/* Tiny connection indicator in the topbar */
+function _syncBadge(ok) {
+  const el = $('#syncDot'); if (!el) return;
+  el.style.background = ok ? 'var(--green)' : 'var(--amber)';
+  el.title = ok ? 'Synced' : 'Offline — changes saved locally, will sync when reconnected';
+}
+
+function startSync() {
+  if (!SYNC.enabled()) return;
+  firstSync();
+  SYNC.pullTimer = setInterval(syncPull, 20000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) syncPull() });
+  window.addEventListener('online', () => { _syncBadge(true); syncPush(); syncPull() });
+  window.addEventListener('offline', () => _syncBadge(false));
+}
+
+/* First sync of the session: pull server truth, merge it in, THEN push
+   any local records the server didn't have. That push IS the migration —
+   whatever was only ever in this browser's localStorage goes up to D1
+   exactly once, and from then on both owners share one board. */
+async function firstSync() {
+  const hadLocal = S.clients.length + S.engagements.length + S.reminders.length +
+                   S.captures.length + S.money.proposals.length + S.money.invoices.length;
+  await syncPull();
+  // After merge, shadow holds everything the server knows. Any local
+  // record whose shadow key is still missing is local-only → push it.
+  const migrated = collectMutations();
+  if (migrated.length) {
+    SYNC.queue.push(...migrated);
+    await syncPush();
+    if (hadLocal) toast('Synced your data to the shared board');
+  }
+}
+
+/* Seed shadow from whatever's in the local cache at boot. The first
+   syncPull reconciles with the server; anything genuinely local-only
+   (e.g. created while the last session was offline) still has a shadow
+   entry so it pushes on the next save. We deliberately DON'T seed here
+   so brand-new local records created before first pull get pushed —
+   instead we let the first pull populate shadow, then push diffs. */
+function seedShadow() {
+  // Intentionally light: mark existing activity as known so we don't
+  // re-push a long history, but leave data records unshadowed so a
+  // first-run migration pushes them up exactly once.
+  S.activity.forEach(a => { SYNC.shadow['activity:'+a.id] = a.t; });
+}
 
 /* All labels passed to log() must be pre-escaped — never raw user text */
 function log(type, html, refId) {
@@ -1704,11 +1893,11 @@ function renderCaptures() {
 function addCap() {
   const inp = $('#capInput'); const text = inp.value.trim();
   if (!text) return;
-  S.captures.unshift({ id:uid(), text, done:false, t:now() });
+  S.captures.unshift({ id:uid(), text, done:false, t:now(), updatedAt:now() });
   log('capture', `Captured <strong>${esc(text.slice(0,60))}${text.length>60?'…':''}</strong>`);
   inp.value = ''; save(); renderCaptures(); updateBadges();
 }
-function toggleCap(id) { const c = S.captures.find(x=>x.id===id); if(!c)return; c.done=!c.done; save(); renderCaptures(); updateBadges() }
+function toggleCap(id) { const c = S.captures.find(x=>x.id===id); if(!c)return; c.done=!c.done; c.updatedAt=now(); save(); renderCaptures(); updateBadges() }
 function deleteCap(id) { S.captures = S.captures.filter(x=>x.id!==id); save(); renderCaptures(); updateBadges() }
 
 /* ─── REMINDERS ──────────────────────────────────── */
@@ -1735,7 +1924,7 @@ function renderReminders() {
 }
 function toggleRem(id) {
   const r = S.reminders.find(x=>x.id===id); if(!r)return;
-  r.done = !r.done;
+  r.done = !r.done; r.updatedAt = now();
   if (r.done) log('reminder', `Done: <strong>${esc(r.text.slice(0,60))}</strong>`);
   save(); refresh();
 }
@@ -1752,7 +1941,7 @@ function saveRem() {
   if (!text) { $('#rText').focus(); return }
   const dueRaw = $('#rDue').value;
   const due = dueRaw ? new Date(dueRaw).getTime() : null;
-  S.reminders.unshift({ id:uid(), text, due, done:false, createdAt:now() });
+  S.reminders.unshift({ id:uid(), text, due, done:false, createdAt:now(), updatedAt:now() });
   log('reminder', `Reminder set: <strong>${esc(text.slice(0,60))}</strong>`);
   save(); closeRemModal(); refresh(); toast('Reminder set');
 }
@@ -2273,11 +2462,6 @@ function handleIntake() {
    1. Deploy worker.js to aptryk-intake (adds /inbox + /ack endpoints)
    2. Paste the same INTAKE_KEY secret below
    Leads then appear automatically every time the CRM opens. */
-const INTAKE = {
-  url: 'https://aptryk-intake.aaronldd.workers.dev',
-  key: 'apk_foX6mBWMX4DxT6yCRyEKDF6Gewmc2Ub',
-};
-
 function importLead(L) {
   const name = String(L.name || '').trim().slice(0, 120);
   if (!name) return false;
@@ -2285,37 +2469,72 @@ function importLead(L) {
   if (L.id && S.leadIds.includes(L.id)) return false;
   const email = String(L.email || '').trim().slice(0, 160);
   const grab = k => String(L[k] || '').trim().slice(0, 1500);
-  const profileNotes = [
+  const isBooking = !!grab('bookingTime');
+  const hasSnapshot = !!grab('snapshot');
+
+  // The consult's computed verdict — the payoff of the 8 questions.
+  const verdictBlock = hasSnapshot ? [
+    '━━ APTRYK SNAPSHOT ━━',
+    'Recommended: ' + grab('snapshot'),
+    grab('snapshotProposal') && 'Likely proposal: ' + grab('snapshotProposal'),
+    grab('snapshotTimeline') && 'Suggested timeline: ' + grab('snapshotTimeline'),
+    grab('snapshotPace') && 'Engagement type: ' + grab('snapshotPace'),
+  ].filter(Boolean).join('\n') : '';
+
+  const intakeBlock = [
     grab('bookingTime') && '📅 Booking: ' + grab('bookingTime'),
     grab('bookingFormat') && 'Format: ' + grab('bookingFormat'),
     grab('industry') && 'Industry: ' + grab('industry'),
     grab('teamSize') && 'Team size: ' + grab('teamSize'),
     grab('pains') && 'Pain points: ' + grab('pains'),
     grab('currentTools') && 'Current stack: ' + grab('currentTools'),
-    grab('timeline') && 'Timeline: ' + grab('timeline'),
+    grab('timeline') && 'Timeline (their words): ' + grab('timeline'),
     grab('winDefinition') && 'Their win: ' + grab('winDefinition'),
     grab('dreamAutomation') && 'Dream automation: ' + grab('dreamAutomation'),
     grab('extraNotes') && 'Extra: ' + grab('extraNotes'),
   ].filter(Boolean).join('\n');
+
+  const profileNotes = [verdictBlock, intakeBlock].filter(Boolean).join('\n\n');
+  const funnelTag = isBooking ? 'booked-call' : 'consult';
   let c = S.clients.find(x =>
     (email && (x.email || '').toLowerCase() === email.toLowerCase()) ||
     x.name.toLowerCase() === name.toLowerCase());
   if (!c) {
     c = { id: uid(), name, company: grab('company').slice(0, 120), email, phone: grab('phone').slice(0, 40),
-      tags: ['lead'], notes: profileNotes, pinned: false, createdAt: L.t || now(), updatedAt: now() };
+      tags: ['lead', funnelTag], notes: profileNotes, pinned: false, createdAt: L.t || now(), updatedAt: now() };
     S.clients.unshift(c);
     log('client', `Lead captured: <strong>${esc(name)}</strong>`, c.id);
   } else {
     if (email && !c.email) c.email = email;
     if (!c.phone && grab('phone')) c.phone = grab('phone').slice(0, 40);
     if (!c.company && grab('company')) c.company = grab('company').slice(0, 120);
-    if (profileNotes) c.notes = (c.notes ? c.notes + '\n\n' : '') + '— Consult ' + fmtDate(L.t || now()) + ' —\n' + profileNotes;
+    if (!Array.isArray(c.tags)) c.tags = [];
+    if (!c.tags.includes('lead')) c.tags.push('lead');
+    if (!c.tags.includes(funnelTag)) c.tags.push(funnelTag);
+    if (profileNotes) c.notes = (c.notes ? c.notes + '\n\n' : '') +
+      '— ' + (isBooking ? 'Booking' : 'Consult') + ' ' + fmtDate(L.t || now()) + ' —\n' + profileNotes;
     c.updatedAt = now();
   }
-  const isBooking = !!grab('bookingTime');
+
+  // Engagement dedup: if this person already has an OPEN engagement from
+  // the other funnel, enrich it rather than spawning a duplicate. A consult
+  // that later books should upgrade the same card to a discovery call.
+  const openEng = S.engagements.find(e =>
+    e.clientId === c.id && ['inbound','discovery','proposal'].includes(e.stage));
+
+  if (isBooking && openEng) {
+    openEng.name = '📞 Discovery call — ' + name;
+    openEng.stage = 'discovery';
+    openEng.notes = (openEng.notes ? openEng.notes + '\n\n' : '') + profileNotes;
+    openEng.updatedAt = now();
+    log('stage', `<strong>${esc(name)}</strong> booked a call (consult → discovery)`, openEng.id);
+    if (L.id) { S.leadIds.push(L.id); if (S.leadIds.length > 500) S.leadIds = S.leadIds.slice(-500) }
+    return true;
+  }
+
   const engName = isBooking
     ? '📞 Discovery call — ' + name
-    : (grab('snapshot') ? grab('snapshot').slice(0, 80) + ' — ' + name : 'Consult: ' + name);
+    : (hasSnapshot ? grab('snapshot').slice(0, 80) + ' — ' + name : 'Consult: ' + name);
   const e = { id: uid(), name: engName, clientId: c.id, stage: isBooking ? 'discovery' : 'inbound', budget: '',
     notes: profileNotes, tasks: [], links: [], pinned: false, createdAt: L.t || now(), updatedAt: now() };
   S.engagements.unshift(e);
@@ -2353,6 +2572,8 @@ async function syncLeads() {
 function init() {
   loadState();
   handleIntake();
+  seedShadow();
+  startSync();
   syncLeads();
   setInterval(syncLeads, 60000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) syncLeads() });
