@@ -1,0 +1,2602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>Aptryk CRM</title>
+<meta name="theme-color" content="#171A21"/>
+<meta name="description" content="Internal CRM for Aptryk."/>
+<meta name="apple-mobile-web-app-title" content="Aptryk"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23171A21'/%3E%3Cpath d='M256 96 416 256 256 416 96 256Z' fill='none' stroke='%234A7CF5' stroke-width='28' stroke-linejoin='round'/%3E%3Cpath d='M256 176 336 256 256 336 176 256Z' fill='%234A7CF5'/%3E%3C/svg%3E"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23171A21'/%3E%3Cpath d='M256 96 416 256 256 416 96 256Z' fill='none' stroke='%234A7CF5' stroke-width='28' stroke-linejoin='round'/%3E%3Cpath d='M256 176 336 256 256 336 176 256Z' fill='%234A7CF5'/%3E%3C/svg%3E"/>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Aptryk%20CRM%22%2C%22short_name%22%3A%22Aptryk%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23171A21%22%2C%22theme_color%22%3A%22%23171A21%22%2C%22start_url%22%3A%22.%22%2C%22scope%22%3A%22.%22%2C%22description%22%3A%22Internal%20CRM%20for%20Aptryk.%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%253E%253Crect%20width%3D%27512%27%20height%3D%27512%27%20rx%3D%2796%27%20fill%3D%27%2523171A21%27%2F%253E%253Cpath%20d%3D%27M256%2096%20416%20256%20256%20416%2096%20256Z%27%20fill%3D%27none%27%20stroke%3D%27%25234A7CF5%27%20stroke-width%3D%2728%27%20stroke-linejoin%3D%27round%27%2F%253E%253Cpath%20d%3D%27M256%20176%20336%20256%20256%20336%20176%20256Z%27%20fill%3D%27%25234A7CF5%27%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%2C%22purpose%22%3A%22any%22%7D%5D%7D"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   APTRYK CRM — internal, desktop
+
+   ONE SENTENCE
+   A single sheet of dark blue-grey paper with a quiet grid, where the
+   only colour is Aptryk blue marking where you are and red marking
+   what is late.
+
+   THE FIVE LAWS (each is enforced by harness.py, not by good intentions)
+
+   1. ONE SURFACE. The whole app sits on --paper. No pane, panel, card or
+      row gets its own opaque background. Depth comes from translucent
+      white washes and hairlines. Only things that genuinely float —
+      menus, dialogs, toasts — may lift onto --float with a shadow.
+
+   2. NO FILLED HIGHLIGHTS. Selection and active state are a 3px accent
+      bar in the gutter plus a wash under 8% opacity. A saturated block
+      behind text is forbidden; the harness fails any selection background
+      over 12% alpha.
+
+   3. EVERY VALUE IS A TOKEN. No literal colour, size, radius or space
+      appears in a rule below. The harness reads computed styles and fails
+      on any orphan. This is the law that actually prevents drift — every
+      regression in this project was a hand-typed value.
+
+   4. SMALL VOCABULARY. 7 font sizes, 4 weights, 3 radii, 3 shadows,
+      5 ink values, 3 hue families. Sprawl is how an interface becomes
+      pieces; the budget is checked per theme.
+
+   5. CONTROLS ARE VISIBLE AT REST. Hover may enrich an affordance. It
+      may never be the only way to discover one.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ─── TOKENS ─────────────────────────────────────────────────────────
+   The complete vocabulary. Nothing below this block invents a value. */
+:root {
+  /* neutrals used for washes — declared so the linter can resolve them */
+  --white: #FFFFFF;
+  --black: #000000;
+
+  /* type */
+  --ff: 'Inter', system-ui, -apple-system, sans-serif;
+  --ff-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --fs-xs: 11px; --fs-sm: 12px; --fs: 13px; --fs-md: 15px;
+  --fs-lg: 18px; --fs-xl: 22px; --fs-2xl: 28px;
+  --fw: 400; --fw-md: 500; --fw-sb: 600; --fw-b: 700;
+
+  /* space — every padding, gap and margin comes from here */
+  --s1: 2px; --s2: 4px; --s3: 6px; --s4: 8px; --s5: 12px;
+  --s6: 16px; --s7: 20px; --s8: 24px; --s9: 32px; --s10: 48px;
+
+  /* radius — controls and floating things only; structure is square */
+  --r-sm: 6px; --r: 8px; --r-pill: 999px;
+
+  /* elevation — only for things above the plane */
+  --sh-sm: 0 1px 3px rgba(0,0,0,.30);
+  --sh: 0 8px 24px rgba(0,0,0,.42);
+  --sh-lg: 0 24px 56px rgba(0,0,0,.55);
+
+  /* geometry */
+  --nav-w: 208px; --nav-rail: 52px; --side-w: 400px;
+  --bar-h: 52px; --foot-h: 28px; --row-h: 40px; --ctl-h: 32px;
+  --pad: 24px;
+
+  --t: 130ms;                                  /* state change */
+  --t-slow: 240ms;                             /* entrances */
+  --ease: cubic-bezier(.2,.7,.3,1);            /* everything */
+  --ease-out: cubic-bezier(.16,1,.3,1);        /* things arriving */
+}
+[data-density="compact"] { --row-h: 32px; --pad: 16px; --ctl-h: 28px }
+
+/* ─── THEME: APTRYK ──────────────────────────────────────────────────
+   Blue-black, lifted well off the near-black of aptryk.com because this
+   is read all day rather than scrolled once. Accent is the site's exact
+   #4A7CF5. */
+[data-theme="aptryk"] {
+  --paper:  #171A21;
+  --float:  #21252E;
+  --sunk:   rgba(0,0,0,.22);
+  --wash:   rgba(255,255,255,.035);
+  --wash-2: rgba(255,255,255,.070);
+  --line:   rgba(255,255,255,.075);
+  --line-2: rgba(255,255,255,.140);
+
+  --ink:   #ECEFF7;
+  --ink-2: #A8AFC2;
+  --ink-3: #8B93A8;
+
+  --edge:        #5F87F0;   /* 1px focus border — accent, quieted */
+  --halo:        rgba(74,124,245,.20);  /* soft focus ring only */
+  --select:      rgba(255,255,255,.17);  /* text selection — never accent */
+  --accent:      #4A7CF5;   /* brand value: bars, marks, dots */
+  --accent-fill: #3F6BE0;   /* 4.8:1 with white — filled controls */
+  --accent-hi:   #4C77E8;   /* the same fill, one step up, for hover */
+  --accent-txt:  #92B0FA;   /* 4.5:1+ on paper — coloured text */
+  --on-accent:   #FFFFFF;
+
+  --alert:     #F0736B;
+  --alert-txt: #F0736B;
+  --ok:        #55C98C;
+}
+
+/* ─── THEME: LIGHT ───────────────────────────────────────────────────
+   Same components, inverted. Exists to prove no component assumes a dark
+   background — the real test of whether the token layer is a layer. */
+[data-theme="light"] {
+  --paper:  #FBFBFD;
+  --float:  #FFFFFF;
+  --sunk:   rgba(0,0,0,.040);
+  --wash:   rgba(0,0,0,.030);
+  --wash-2: rgba(0,0,0,.060);
+  --line:   rgba(0,0,0,.090);
+  --line-2: rgba(0,0,0,.150);
+
+  --ink:   #12151C;
+  --ink-2: #454B5C;
+  --ink-3: #5B6273;
+
+  --edge:        #4C71DE;
+  --halo:        rgba(53,96,220,.16);
+  --select:      rgba(20,24,40,.13);
+  --accent:      #3560DC;
+  --accent-fill: #3560DC;
+  --accent-hi:   #2C50B8;
+  --accent-txt:  #2C50B8;
+  --on-accent:   #FFFFFF;
+
+  --alert:     #C03028;
+  --alert-txt: #B32B24;
+  --ok:        #177A45;
+}
+
+/* ─── BASE ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+/* Author display rules outrank the UA [hidden] rule, so state this once,
+   loudly, rather than remembering it at every call site. */
+[hidden] { display: none !important }
+html, body {
+  height: 100%; background: var(--paper); color: var(--ink);
+  font-family: var(--ff); font-size: var(--fs); line-height: 1.5;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+button, input, select, textarea { font: inherit; color: inherit; background: none; border: none; outline: none }
+button { cursor: pointer; text-align: left }
+/* Chrome is not text. Clicking a row, a nav item or a header should select
+   the record, never the label underneath it. */
+.nav, .bar, .cols, .sum, .foot, .tabs, .metrics, .row, .group, .head,
+.btn, .act, .rail-btn, .track, .who, .kind, .tag, .sec-h, .block-h,
+.empty, .void { user-select: none }
+/* Everything you might genuinely want to copy stays selectable. */
+.side-b, .page, .field, .area, .sel, .log, .mini-m,
+input, textarea { user-select: text }
+a { color: inherit; text-decoration: none }
+svg { display: block }
+::selection { background: var(--select); color: var(--ink) }
+::-webkit-scrollbar { width: 10px; height: 10px }
+::-webkit-scrollbar-track { background: none }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: var(--r-pill);
+  border: 3px solid transparent; background-clip: content-box;
+  transition: background var(--t) }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-4); background-clip: content-box }
+.rows:hover::-webkit-scrollbar-thumb, .side-b:hover::-webkit-scrollbar-thumb,
+.page:hover::-webkit-scrollbar-thumb { background: var(--line-2); background-clip: content-box }
+:focus-visible { outline: 2px solid var(--edge); outline-offset: 2px; border-radius: var(--r-sm) }
+/* Fields draw their own focus ring as an inset shadow. Without this they
+   get both, which reads as a doubled outline with a gap between. */
+.field:focus-visible, .sel:focus-visible, .area:focus-visible,
+.side-title:focus-visible, .field:focus, .sel:focus, .area:focus,
+.side-title:focus { outline: none }
+
+/* ─── DESKTOP GATE ───────────────────────────────────────────────── */
+.gate { display: none }
+@media (max-width: 1099px), (pointer: coarse) {
+  .app, .float-layer { display: none !important }
+  .gate { display: flex; flex-direction: column; justify-content: center;
+    height: 100%; padding: 0 var(--s9); max-width: 520px; margin: 0 auto }
+  .gate h1 { font-size: var(--fs-2xl); font-weight: var(--fw-b);
+    letter-spacing: -.02em; margin-bottom: var(--s5) }
+  .gate p { color: var(--ink-2); font-size: var(--fs-md); line-height: 1.6; margin-bottom: var(--s4) }
+}
+
+/* ─── SHELL ──────────────────────────────────────────────────────────
+   Three regions on ONE sheet. Separation is a hairline and space. */
+.app {
+  height: 100%; display: grid;
+  grid-template-columns: var(--nav-w) minmax(0,1fr) var(--side-w);
+  grid-template-rows: var(--bar-h) minmax(0,1fr) var(--foot-h);
+  grid-template-areas: "bar bar bar" "nav main side" "foot foot foot";
+}
+.app.rail { --nav-w: var(--nav-rail) }
+.app.solo { grid-template-columns: var(--nav-w) minmax(0,1fr) 0 }
+.app.solo .side { display: none }
+
+/* ─── TOP BAR ────────────────────────────────────────────────────── */
+.bar { grid-area: bar; display: flex; align-items: center; gap: var(--s5);
+  padding: 0 var(--pad); border-bottom: 1px solid var(--line) }
+.rail-btn { width: 30px; height: 30px; border-radius: var(--r-sm);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink-3); flex-shrink: 0; transition: background var(--t), color var(--t) }
+.rail-btn:hover { background: var(--wash-2); color: var(--ink) }
+.rail-btn svg { width: 16px; height: 16px;
+  transition: transform var(--t) var(--ease) }
+.rail-btn:hover svg { transform: scale(1.06) }
+.rail-btn:active svg { transform: scale(.94) }
+.brand { display: flex; align-items: center; gap: var(--s4); flex-shrink: 0 }
+.brand svg { width: 22px; height: 22px; color: var(--accent) }
+.brand b { font-size: var(--fs-md); font-weight: var(--fw-b); letter-spacing: .04em }
+.bar-gap { flex: 1 }
+.bar-end { display: flex; align-items: center; gap: var(--s4); flex-shrink: 0 }
+
+/* ─── MASTER SEARCH ─────────────────────────────────────────────────── */
+.search-btn { position: relative; overflow: hidden; padding-right: var(--s5) }
+.search-btn svg { transition: transform var(--t) var(--ease), color var(--t) }
+.search-btn kbd { transition: transform var(--t) var(--ease), opacity var(--t),
+  background var(--t), color var(--t) }
+.search-btn:hover { background: var(--wash-2); color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-2) }
+.search-btn:hover svg { transform: scale(1.14) rotate(-8deg); color: var(--accent-txt) }
+.search-btn:hover kbd { transform: translateX(-1px); background: var(--wash-2); color: var(--ink-2) }
+.search-btn:active { transform: translateY(.5px) }
+/* a light sweeps across the glass on hover — one pass, no loop */
+.search-btn::after { content: ''; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 38%, var(--wash-2) 50%, transparent 62%);
+  transform: translateX(-120%); pointer-events: none }
+.search-btn:hover::after { transform: translateX(120%); transition: transform 620ms var(--ease) }
+
+/* ─── CONTROLS ───────────────────────────────────────────────────── */
+.btn {
+  height: var(--ctl-h); padding: 0 var(--s5); display: inline-flex;
+  align-items: center; justify-content: center; gap: var(--s3);
+  border-radius: var(--r); font-size: var(--fs); font-weight: var(--fw-md);
+  color: var(--ink-2); box-shadow: inset 0 0 0 1px var(--line-2);
+  white-space: nowrap; transition: background var(--t), color var(--t);
+}
+.btn:hover { background: var(--wash); color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-2) }
+.btn:active { transform: translateY(.5px) }
+/* Icons scale with their label. See note above: px icons beside token
+   text is what made the small buttons look off. */
+.btn svg { width: 1.05em; height: 1.05em; flex-shrink: 0 }
+.btn-primary { background: var(--accent-fill); color: var(--on-accent);
+  box-shadow: none; font-weight: var(--fw-sb) }
+.btn-primary:hover { background: var(--accent-hi); color: var(--on-accent) }
+.btn-quiet { box-shadow: none; color: var(--ink-3) }
+.btn-quiet:hover { background: var(--wash-2); color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line-2) }
+.btn-quiet:hover svg { color: var(--ink-2) }
+.btn-quiet kbd { transition: background var(--t), color var(--t) }
+.btn-quiet:hover kbd { background: var(--wash-2); color: var(--ink-2) }
+.btn-sm { height: 28px; padding: 0 var(--s4); font-size: var(--fs-sm) }
+.btn-ico { width: var(--ctl-h); padding: 0 }
+.btn-ico.btn-sm { width: 28px }
+.btn-alert { color: var(--alert-txt) }
+.btn-alert:hover { background: var(--wash-2); color: var(--alert-txt) }
+
+/* The sync chip is a word, not a light. The dot idiom is gone from the
+   whole interface — it named a category and told you nothing else. */
+.sync-w { font-size: var(--fs-sm); color: var(--ink-2) }
+.sync-w.bad { color: var(--alert-txt) }
+.sync-w.ok { color: var(--ink-2) }
+
+/* Kind mark: House work is ours, Client work is theirs. A one-glyph
+   distinction that never needs a colour. */
+.kind { font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3) }
+.kind.house { color: var(--accent-txt) }
+
+.field, .sel {
+  width: 100%; height: var(--ctl-h); padding: 0 var(--s4);
+  border-radius: var(--r-sm); background: var(--sunk); color: var(--ink);
+  font-size: var(--fs); box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow var(--t), background var(--t);
+}
+.field::placeholder { color: var(--ink-3) }
+.field:hover, .sel:hover { background: var(--wash);
+  box-shadow: inset 0 0 0 1px var(--line-2) }
+.field:focus, .sel:focus { background: var(--wash);
+  box-shadow: inset 0 0 0 1px var(--edge), 0 0 0 3px var(--halo) }
+.sel { cursor: pointer; appearance: none; padding-right: var(--s8) }
+.sel option { background: var(--float); color: var(--ink) }
+.area { width: 100%; padding: var(--s4); border-radius: var(--r-sm);
+  background: var(--sunk); color: var(--ink); font-family: var(--ff);
+  font-size: var(--fs); line-height: 1.6; min-height: 76px; resize: vertical;
+  box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow var(--t), background var(--t) }
+.area:hover { background: var(--wash); box-shadow: inset 0 0 0 1px var(--line-2) }
+.area:focus { background: var(--wash);
+  box-shadow: inset 0 0 0 1px var(--edge), 0 0 0 3px var(--halo) }
+
+.tabs { display: inline-flex; align-items: center; gap: var(--s1);
+  background: var(--sunk); padding: 3px; border-radius: var(--r) }
+.tabs button { height: 26px; padding: 0 var(--s5); border-radius: var(--r-sm);
+  font-size: var(--fs-sm); font-weight: var(--fw-md); color: var(--ink-3);
+  transition: background var(--t), color var(--t) }
+.tabs button:hover { color: var(--ink) }
+.tabs button.on { background: var(--wash-2); color: var(--ink); font-weight: var(--fw-sb) }
+
+kbd { font-family: var(--ff-mono); font-size: var(--fs-xs); color: var(--ink-3);
+  background: var(--wash); padding: var(--s1) var(--s3); border-radius: var(--r-sm) }
+
+/* ─── NAV ────────────────────────────────────────────────────────── */
+.nav { grid-area: nav; display: flex; flex-direction: column; overflow-y: auto;
+  padding: var(--s4) var(--s5) 0; border-right: 1px solid var(--line) }
+.nav-h { font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3); padding: var(--s6) var(--s4) var(--s3) }
+.nav-i { position: relative; width: 100%; display: flex; align-items: center;
+  gap: var(--s4); height: 32px; padding: 0 var(--s4); border-radius: var(--r);
+  color: var(--ink-2); font-size: var(--fs); font-weight: var(--fw-md);
+  transition: background var(--t), color var(--t) }
+.nav-i::before { content: ''; position: absolute; left: calc(var(--s5) * -1);
+  top: 50%; transform: translateY(-50%); height: 0; width: 3px;
+  border-radius: 0 var(--r-pill) var(--r-pill) 0; background: none;
+  transition: height var(--t) var(--ease), background var(--t) }
+.nav-i:hover::before { height: 36%; background: var(--line-2) }
+.nav-i.on::before { height: 56% }
+.nav-i svg { transition: transform var(--t) var(--ease), color var(--t) }
+.nav-i:hover svg { transform: translateX(1px) }
+.nav-i svg { width: 1.05em; height: 1.05em; flex-shrink: 0 }
+.nav-i span.t { flex: 1; min-width: 0; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap }
+.nav-i:hover { background: var(--wash); color: var(--ink) }
+/* Law 2: active state is an accent bar and accent ink. No filled block. */
+.nav-i.on { color: var(--accent-txt); font-weight: var(--fw-sb) }
+.nav-i.on::before { background: var(--accent) }
+.nav-i.on svg { color: var(--accent-txt) }
+.nav-n { font-family: var(--ff-mono); font-size: var(--fs-xs);
+  color: var(--ink-3); font-variant-numeric: tabular-nums }
+.nav-i.on .nav-n { color: var(--accent-txt) }
+.nav-n.due { color: var(--alert-txt); font-weight: var(--fw-sb) }
+.nav-foot { margin-top: auto; padding-bottom: var(--s4) }
+.app.rail .nav-h { height: 1px; overflow: hidden; color: transparent;
+  padding: 0; margin: var(--s5) auto var(--s4); width: 16px; background: var(--line) }
+.app.rail .nav { padding-left: var(--s3); padding-right: var(--s3) }
+.app.rail .nav-i { justify-content: center; padding: 0; height: 36px }
+.app.rail .nav-i::before { left: calc(var(--s3) * -1) }
+.app.rail .nav-i span.t, .app.rail .nav-i .nav-n, .app.rail .rail-t { display: none }
+.app.rail .nav-i::after { content: attr(data-t); position: absolute;
+  left: calc(100% + var(--s4)); top: 50%; transform: translateY(-50%);
+  background: var(--float); color: var(--ink); font-size: var(--fs-sm);
+  padding: var(--s3) var(--s4); border-radius: var(--r-sm); white-space: nowrap;
+  box-shadow: var(--sh-sm); opacity: 0; pointer-events: none; z-index: 5 }
+.app.rail .nav-i:hover::after { opacity: 1 }
+
+/* ─── MAIN ───────────────────────────────────────────────────────── */
+.main { grid-area: main; display: flex; flex-direction: column;
+  min-width: 0; overflow: hidden }
+.head { flex-shrink: 0; padding: var(--s7) var(--pad) 0 }
+.title { font-size: var(--fs-xl); font-weight: var(--fw-b);
+  letter-spacing: -.028em; line-height: 1.15; font-feature-settings: 'ss01','cv05' }
+.blurb { font-size: var(--fs); color: var(--ink-3); margin-top: var(--s2);
+  max-width: 68ch; line-height: 1.5 }
+
+/* Metrics read as a line of facts, not a row of tiles. Each is a button
+   that filters the list — a number you cannot act on is decoration. */
+.metrics { display: flex; flex-wrap: wrap; gap: var(--s8); margin-top: var(--s6) }
+.metric { text-align: left; border-radius: var(--r-sm); padding: var(--s3) var(--s3); min-height: 44px;
+  margin-left: calc(var(--s3) * -1); transition: background var(--t) }
+.metric:hover { background: var(--wash) }
+.metric.on { background: var(--wash-2) }
+.metric-k { font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3) }
+.metric { transition: background var(--t) var(--ease) }
+.metric-v { transition: transform var(--t) var(--ease), color var(--t) }
+.metric:hover .metric-v { transform: translateY(-1px) }
+.metric.on .metric-v { color: var(--accent-txt) }
+.metric-v { font-family: var(--ff-mono); font-size: var(--fs-lg);
+  font-weight: var(--fw-md); color: var(--ink); font-variant-numeric: tabular-nums;
+  line-height: 1.25; letter-spacing: -.02em; margin-top: var(--s1) }
+.metric-v.due { color: var(--alert-txt) }
+.metric-v.act { color: var(--accent-txt) }
+
+.tools { display: flex; align-items: center; gap: var(--s4);
+  padding: var(--s6) var(--pad) var(--s5); flex-shrink: 0 }
+.find { position: relative; flex: 1; max-width: 320px }
+.find svg { position: absolute; left: var(--s4); top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px; color: var(--ink-3); pointer-events: none }
+.find .field { padding-left: var(--s9) }
+.find svg { transition: color var(--t) }
+.find:hover svg, .find:focus-within svg { color: var(--ink-2) }
+.find:focus-within .field { background: var(--wash) }
+.tools-gap { flex: 1 }
+
+/* ─── TABLE ──────────────────────────────────────────────────────── */
+.cols { display: grid; gap: var(--s6); align-items: center; flex-shrink: 0;
+  padding: 0 var(--pad); height: 32px; border-bottom: 1px solid var(--line);
+  font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3) }
+.cols button { display: inline-flex; align-items: center; gap: var(--s2); height: 30px;
+  color: var(--ink-3); font: inherit; letter-spacing: inherit; text-transform: inherit }
+.cols button:hover { color: var(--ink) }
+.cols button.on { color: var(--ink) }
+.cols svg { width: 1.05em; height: 1.05em }
+.num { text-align: right; justify-content: flex-end }
+
+.rows { flex: 1; overflow-y: auto; overflow-x: hidden; min-height: 0;
+  display: flex; flex-direction: column; padding-bottom: var(--s5) }
+.rows > *, .page > * { animation: settle var(--t-slow) var(--ease-out) both }
+@keyframes settle { from { opacity: 0; transform: translateY(3px) } }
+
+.row { position: relative; width: 100%; display: grid; gap: var(--s6);
+  align-items: center; padding: 0 var(--pad); height: var(--row-h);
+  color: var(--ink-2); font-size: var(--fs); cursor: pointer;
+  transition: background var(--t) }
+.row::before { content: ''; position: absolute; left: 0; top: 50%; height: 0;
+  transform: translateY(-50%); width: 3px;
+  border-radius: 0 var(--r-pill) var(--r-pill) 0; background: none;
+  transition: height var(--t) var(--ease), background var(--t) }
+/* Hovering shows a short stub of the bar you are about to commit to. */
+.row:hover::before { height: 40%; background: var(--line-2) }
+.row.on::before, .row.due::before { height: calc(100% - var(--s6)) }
+.row + .row::after { content: ''; position: absolute; left: var(--pad); right: var(--pad);
+  top: 0; height: 1px; background: var(--line); opacity: 0; transition: opacity var(--t) }
+.rows:hover .row + .row::after { opacity: 1 }
+.row:hover { background: var(--wash) }
+/* Rows show focus with the gutter mark and wash, like selection — an
+   outline on top of that is a third indicator for the same fact, and it
+   lingers after a right-click. */
+.row:focus-visible { outline: none; background: var(--wash-2) }
+.row:focus-visible::before { height: calc(100% - var(--s6)); width: 5px;
+  background: var(--edge) }
+.row.on:focus-visible::before { background: var(--accent) }
+.row:hover::after, .row:hover + .row::after { opacity: 0 !important }
+.row.on { background: var(--wash-2) }
+.row.on::before { background: var(--accent) }
+.row.due::before { background: var(--alert) }
+.row.on.due::before { background: var(--accent) }
+.cell { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.strong { color: var(--ink); font-weight: var(--fw-md) }
+.mono { font-family: var(--ff-mono); font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums; color: var(--ink-2) }
+.mono.strong { color: var(--ink) }
+.quiet { color: var(--ink-3) }
+.late { color: var(--alert-txt) }
+.good { color: var(--ok) }
+
+/* ─── THE TRACK ──────────────────────────────────────────────────────
+   One designed idiom for every kind of state in the app, replacing the
+   coloured dots. A dot tells you a category; a track tells you WHERE
+   something is in its life and how far it has left to go — the same
+   information, plus the thing you actually wanted to know.
+
+   Segments read left to right: passed steps are solid ink, the current
+   step is accent and wider, steps ahead are hollow. Used for the work
+   lifecycle (4 steps), signal warmth (3) and money (3), so learning it
+   once teaches the whole interface.
+
+   It also earns its place on the ink budget: the label is plain --ink-2
+   in every state, so meaning never rests on colour alone. */
+.track { display: inline-flex; align-items: center; gap: var(--s3); white-space: nowrap }
+.track-g { display: inline-flex; align-items: center; gap: 2px; flex-shrink: 0 }
+.track-g i { width: 7px; height: 3px; border-radius: var(--r-pill);
+  background: var(--wash-2);
+  transition: background var(--t) var(--ease), width var(--t) var(--ease) }
+.track-g i.was { background: var(--ink-3) }
+.track-g i.is  { width: 15px; background: var(--accent) }
+.track.warn .track-g i.is { background: var(--alert) }
+.track.done .track-g i { background: var(--ink-3) }
+.track.done .track-g i.is { width: 15px }
+.track-t { font-size: var(--fs-sm); color: var(--ink-2) }
+.track.done .track-t { color: var(--ink-3) }
+
+
+.tag { display: inline-flex; align-items: center; height: 20px; padding: 0 var(--s4);
+  border-radius: var(--r-pill); background: var(--wash-2);
+  font-size: var(--fs-xs); color: var(--ink-2) }
+.who { display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; flex-shrink: 0; border-radius: var(--r-pill);
+  background: var(--wash-2); font-size: var(--fs-xs); font-weight: var(--fw-sb);
+  color: var(--ink-2) }
+.who.nil { color: var(--ink-3); box-shadow: inset 0 0 0 1px var(--line-2); background: none }
+.meter { height: 3px; border-radius: var(--r-pill); background: var(--wash-2);
+  overflow: hidden; min-width: 40px }
+.meter i { display: block; height: 100%; background: var(--accent) }
+
+/* Row controls exist at rest in the DOM and are revealed on hover, never
+   created on hover — the slot is always reserved so nothing shifts. */
+.acts { display: flex; align-items: center; gap: var(--s1); justify-content: flex-end;
+  opacity: 0; transition: opacity var(--t) }
+.row:hover .acts, .row.on .acts, .acts:focus-within { opacity: 1 }
+.act { width: 26px; height: 26px; border-radius: var(--r-sm);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink-3); transition: background var(--t), color var(--t) }
+.act svg { width: 14px; height: 14px }
+.act:hover { background: var(--wash-2); color: var(--ink) }
+
+.group { display: grid; grid-template-columns: 1fr auto; gap: var(--s5);
+  align-items: center; padding: var(--s7) var(--pad) var(--s3) }
+.group-t { display: flex; align-items: baseline; gap: var(--s4);
+  font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-2); min-width: 0 }
+/* The lifecycle explains itself in place, so nobody has to be told what
+   Shape or Run means. */
+.group-n { font-size: var(--fs-sm); font-weight: var(--fw); letter-spacing: 0;
+  text-transform: none; color: var(--ink-3); min-width: 0; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap }
+
+.sum { flex-shrink: 0; display: grid; gap: var(--s6); align-items: center;
+  padding: 0 var(--pad); height: 36px; border-top: 1px solid var(--line);
+  font-size: var(--fs-sm); color: var(--ink-3); font-variant-numeric: tabular-nums }
+.sum:empty { display: none }
+
+.void { flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center; padding: var(--s10) var(--pad) }
+.void > svg { width: 22px; height: 22px; color: var(--ink-3); margin-bottom: var(--s5) }
+.void h3 { font-size: var(--fs-lg); font-weight: var(--fw-sb); margin-bottom: var(--s3) }
+.void p { color: var(--ink-3); max-width: 44ch; line-height: 1.6; margin-bottom: var(--s6) }
+
+/* ─── SIDE PANE ──────────────────────────────────────────────────── */
+.side { grid-area: side; display: flex; flex-direction: column; min-width: 0;
+  border-left: 1px solid var(--line); position: relative }
+.grip { position: absolute; left: -3px; top: 0; bottom: 0; width: 6px; cursor: col-resize }
+.grip:hover { background: var(--wash-2) }
+.side-h { padding: var(--s7) var(--pad) var(--s5); flex-shrink: 0 }
+.side-top { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s4) }
+.eyebrow { font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3) }
+.side-x { margin-left: auto; display: flex; gap: var(--s1) }
+.side-title { font-size: var(--fs-xl); font-weight: var(--fw-b); letter-spacing: -.02em;
+  line-height: 1.25; color: var(--ink); width: 100%; padding: var(--s2) var(--s3);
+  margin-left: calc(var(--s3) * -1); border-radius: var(--r-sm);
+  transition: background var(--t) }
+.side-title:hover { background: var(--wash) }
+.side-title:focus { background: var(--wash);
+  box-shadow: inset 0 0 0 1px var(--edge), 0 0 0 3px var(--halo) }
+.side-sub { margin-top: var(--s4); display: flex; align-items: center; gap: var(--s4);
+  flex-wrap: wrap; font-size: var(--fs-sm); color: var(--ink-3) }
+.side-b { flex: 1; overflow-y: auto; min-height: 0; padding: 0 var(--pad) var(--s8) }
+.sec { padding: var(--s6) 0 var(--s2) }
+.sec + .sec { border-top: 1px solid var(--line) }
+.sec-h { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s4); margin-bottom: var(--s5); font-size: var(--fs-xs);
+  font-weight: var(--fw-sb); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-3) }
+.kv { display: grid; grid-template-columns: 88px minmax(0,1fr); align-items: center;
+  gap: var(--s5); padding: var(--s2) 0 }
+.kv-k { font-size: var(--fs-sm); color: var(--ink-3) }
+.hint { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.5;
+  padding: var(--s2) 0 var(--s3) }
+.mini { display: flex; flex-direction: column; gap: var(--s1) }
+.mini-r { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--s5);
+  align-items: center; padding: var(--s3) var(--s4); border-radius: var(--r-sm);
+  background: var(--wash); font-size: var(--fs) }
+.mini-r:hover { background: var(--wash-2) }
+.mini-m { min-width: 0; display: flex; align-items: center; gap: var(--s4);
+  color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.mini-m a { display: inline-flex; align-items: center; min-height: 24px;
+  color: var(--accent-txt) }
+.mini-m a:hover { text-decoration: underline }
+.mini-x { width: 24px; height: 24px; display: inline-flex; align-items: center;
+  justify-content: center; border-radius: var(--r-sm); color: var(--ink-3); flex-shrink: 0 }
+.mini-x svg { width: 13px; height: 13px }
+.mini-x:hover { background: var(--wash-2); color: var(--alert-txt) }
+.mini-nil { padding: var(--s5); border-radius: var(--r-sm); background: var(--wash);
+  color: var(--ink-3); font-size: var(--fs-sm); text-align: center }
+.tick svg { transition: opacity var(--t) var(--ease), transform var(--t) var(--ease) }
+.tick.on svg { transform: scale(1) }
+.tick svg { transform: scale(.6) }
+.tick { width: 16px; height: 16px; flex-shrink: 0; border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--line-2); display: inline-flex;
+  align-items: center; justify-content: center; cursor: pointer;
+  transition: background var(--t), box-shadow var(--t) }
+.tick svg { width: 10px; height: 10px; color: var(--on-accent); opacity: 0 }
+.tick:hover { box-shadow: inset 0 0 0 2px var(--accent) }
+.tick.on { background: var(--accent-fill); box-shadow: inset 0 0 0 2px var(--accent-fill) }
+.tick.on svg { opacity: 1 }
+.done .mini-m { color: var(--ink-3); text-decoration: line-through }
+.log { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--s5);
+  padding: var(--s3) 0; font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.5 }
+.log b { color: var(--ink-2); font-weight: var(--fw-md) }
+.side-f { flex-shrink: 0; display: flex; gap: var(--s4); align-items: center;
+  padding: var(--s5) var(--pad); border-top: 1px solid var(--line) }
+.side-f .btn-alert { margin-left: auto }
+
+/* ─── PAGE (settings) ────────────────────────────────────────────── */
+.page { flex: 1; overflow-y: auto; min-height: 0; padding: 0 var(--pad) var(--s10) }
+.page-w { max-width: 760px }
+.block { padding: var(--s7) 0 }
+.block + .block { border-top: 1px solid var(--line) }
+.block-h { display: flex; align-items: center; justify-content: space-between;
+  gap: var(--s5); margin-bottom: var(--s3) }
+.block-t { font-size: var(--fs-md); font-weight: var(--fw-sb) }
+.block-d { font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.6;
+  margin-bottom: var(--s6); max-width: 64ch }
+.swatches { display: flex; gap: var(--s5); flex-wrap: wrap }
+.swatch { border-radius: var(--r); overflow: hidden; width: 168px;
+  box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow var(--t) }
+.swatch:hover { box-shadow: inset 0 0 0 1px var(--line-2) }
+.swatch.on { box-shadow: inset 0 0 0 2px var(--accent) }
+.swatch-p { height: 52px; display: flex }
+.swatch-p i { flex: 1 }
+.swatch-b { padding: var(--s4) var(--s5); font-size: var(--fs-sm); min-height: 40px;
+  font-weight: var(--fw-md); display: flex; align-items: center; gap: var(--s3) }
+.swatch-b svg { width: 1.05em; height: 1.05em; color: var(--accent-txt) }
+
+/* ─── FOOT ───────────────────────────────────────────────────────── */
+.foot { grid-area: foot; display: flex; align-items: center; gap: var(--s6);
+  padding: 0 var(--pad); border-top: 1px solid var(--line);
+  font-size: var(--fs-sm); color: var(--ink-3) }
+.foot-gap { flex: 1 }
+
+/* ─── FLOATING ───────────────────────────────────────────────────── */
+.menu { position: fixed; z-index: 40; min-width: 190px; background: var(--float);
+  border-radius: var(--r); box-shadow: var(--sh); padding: var(--s2); display: none }
+.menu.on { display: block; animation: rise var(--t) var(--ease-out) both }
+@keyframes rise { from { opacity: 0; transform: translateY(-4px) scale(.985) } }
+.menu button { width: 100%; display: flex; align-items: center; gap: var(--s4);
+  height: 30px; padding: 0 var(--s4); border-radius: var(--r-sm);
+  font-size: var(--fs); color: var(--ink-2) }
+.menu button svg { width: 14px; height: 14px }
+.menu button:hover { background: var(--wash-2); color: var(--ink) }
+.menu button.bad { color: var(--alert-txt) }
+.menu hr { border: none; height: 1px; background: var(--line); margin: var(--s2) 0 }
+.menu-h { font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3); padding: var(--s4) var(--s4) var(--s2) }
+
+.scrim { position: fixed; inset: 0; z-index: 50; display: none;
+  background: rgba(0,0,0,.55); align-items: flex-start; justify-content: center;
+  padding-top: 12vh }
+.scrim.on { display: flex; animation: veil var(--t) var(--ease) both }
+@keyframes veil { from { opacity: 0 } }
+.scrim.mid { align-items: center; padding-top: 0 }
+.palette { width: 560px; max-width: 92vw; background: var(--float);
+  border-radius: var(--r); box-shadow: var(--sh-lg); display: flex;
+  flex-direction: column; max-height: 60vh; overflow: hidden;
+  animation: drop var(--t-slow) var(--ease-out) both }
+@keyframes drop { from { opacity: 0; transform: translateY(-12px) scale(.97) } }
+.palette-i svg { transition: color var(--t) }
+.palette-i:focus-within svg { color: var(--accent-txt) }
+.palette-i { display: flex; align-items: center; gap: var(--s5);
+  padding: var(--s5) var(--s6); border-bottom: 1px solid var(--line) }
+.palette-i svg { width: 15px; height: 15px; color: var(--ink-3) }
+.palette-i input { flex: 1; font-size: var(--fs-md) }
+.palette-i input::placeholder { color: var(--ink-3) }
+.palette-r { overflow-y: auto; min-height: 0; padding: var(--s2) }
+.pitem { width: 100%; display: grid; grid-template-columns: 62px minmax(0,1fr) auto;
+  gap: var(--s5); align-items: center; height: 36px; padding: 0 var(--s5);
+  border-radius: var(--r-sm); color: var(--ink-2); font-size: var(--fs) }
+.pitem { transition: background var(--t) }
+.pitem.on { background: var(--wash-2); color: var(--ink) }
+.pitem.on .pkind { color: var(--accent-txt) }
+.pkind { font-size: var(--fs-xs); font-weight: var(--fw-sb); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink-3) }
+.psub { font-size: var(--fs-sm); color: var(--ink-3) }
+.pnil { padding: var(--s7); text-align: center; color: var(--ink-3) }
+
+.dialog { width: 400px; max-width: 92vw; background: var(--float);
+  border-radius: var(--r); box-shadow: var(--sh-lg); padding: var(--s7);
+  animation: drop var(--t-slow) var(--ease-out) both }
+.dialog h3 { font-size: var(--fs-lg); font-weight: var(--fw-sb); margin-bottom: var(--s3) }
+.dialog p { color: var(--ink-2); line-height: 1.6; margin-bottom: var(--s7) }
+.dialog-a { display: flex; gap: var(--s4); justify-content: flex-end }
+
+.toast { position: fixed; bottom: var(--s10); left: 50%;
+  transform: translateX(-50%) translateY(10px); z-index: 60; display: flex;
+  align-items: center; gap: var(--s5); background: var(--float);
+  border-radius: var(--r); box-shadow: var(--sh); padding: var(--s5) var(--s6);
+  font-size: var(--fs); color: var(--ink); opacity: 0; pointer-events: none;
+  transition: opacity var(--t) var(--ease), transform var(--t) var(--ease) }
+.toast.on { opacity: 1; transform: translateX(-50%); pointer-events: auto }
+.toast button { color: var(--accent-txt); font-weight: var(--fw-sb) }
+
+.tip { position: relative }
+.tip::after { content: attr(data-tip); position: absolute; bottom: calc(100% + var(--s3));
+  left: 50%; transform: translateX(-50%); background: var(--float); color: var(--ink);
+  font-size: var(--fs-xs); padding: var(--s2) var(--s4); border-radius: var(--r-sm);
+  white-space: nowrap; box-shadow: var(--sh-sm); opacity: 0; pointer-events: none;
+  z-index: 30 }
+.tip:hover::after { opacity: 1 }
+/* Anything in the top bar has no room above it — flip the tip below. */
+.bar .tip::after { bottom: auto; top: calc(100% + var(--s3)) }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important;
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important }
+}
+</style>
+</head>
+<body data-theme="aptryk" data-density="default">
+
+<div class="gate">
+  <h1>Aptryk CRM is a desktop app.</h1>
+  <p>Three panes, nothing behind an overlay, the list and the record visible at once. It does not fold down into a phone layout, on purpose.</p>
+  <p>Open it on a display at least 1100px wide.</p>
+</div>
+
+<div class="app" id="app">
+
+  <header class="bar">
+    <button class="rail-btn tip" data-tip="Toggle sidebar" aria-label="Toggle sidebar"
+      id="railBtn" onclick="App.rail()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16" stroke-width="1.8"/><rect id="railFill" x="3.9" y="4.9" width="4.2" height="14.2" rx="1.2" fill="currentColor" stroke="none" opacity=".9"/></svg>
+    </button>
+    <div class="brand">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 1.8 22.2 12 12 22.2 1.8 12 12 1.8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 7.5 16.5 12 12 16.5 7.5 12 12 7.5Z" fill="currentColor"/></svg>
+      <b>APTRYK</b>
+    </div>
+    <div class="bar-gap"></div>
+    <div class="bar-end">
+      <button class="btn btn-quiet search-btn" onclick="Palette.open()" aria-label="Search everything">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        Search <kbd>&#8984;K</kbd>
+      </button>
+      <button class="btn" id="syncBtn" onclick="Sync.pull(true)" title="Sync with the server">
+        <span class="sync-w" id="syncTxt">Synced</span>
+      </button>
+      <button class="btn btn-primary" id="newBtn" onclick="App.create()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        <span id="newTxt">New</span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="nav" id="nav"></nav>
+
+  <section class="main">
+    <div class="head" id="head"></div>
+    <div class="tools" id="tools"></div>
+    <div class="cols" id="cols"></div>
+    <div class="rows" id="rows"></div>
+    <div class="sum" id="sum"></div>
+    <div class="page" id="page" hidden></div>
+  </section>
+
+  <aside class="side" id="side">
+    <div class="grip" id="grip" title="Drag to resize"></div>
+    <div id="sideIn" style="display:flex;flex-direction:column;height:100%"></div>
+  </aside>
+
+  <footer class="foot">
+    <span id="footL"></span><span class="foot-gap"></span><span id="footR"></span>
+  </footer>
+</div>
+
+<div class="float-layer">
+  <div class="menu" id="menu"></div>
+
+  <div class="scrim" id="paletteWrap" onclick="if(event.target===this)Palette.close()">
+    <div class="palette">
+      <div class="palette-i">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="paletteIn" placeholder="Search accounts, projects, people &mdash; or jump to a view" autocomplete="off" spellcheck="false"/>
+      </div>
+      <div class="palette-r" id="paletteRes"></div>
+    </div>
+  </div>
+
+  <div class="scrim mid" id="dialogWrap" onclick="if(event.target===this)Dialog.done(false)">
+    <div class="dialog">
+      <h3 id="dialogT">Are you sure?</h3>
+      <p id="dialogM"></p>
+      <div class="dialog-a">
+        <button class="btn" onclick="Dialog.done(false)">Cancel</button>
+        <button class="btn btn-alert" id="dialogOk" onclick="Dialog.done(true)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toastM"></span><button id="toastA" hidden></button></div>
+</div>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   APTRYK CRM — internal CRM for a software + consulting team
+   Desktop client. Mobile is a separate application by design.
+   ══════════════════════════════════════════════════════════════════════ */
+
+const $ = s => document.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2, 9);
+const now = () => Date.now();
+const DAY = 86400000;
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+  .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const initials = n => String(n||'').trim().split(/\s+/).slice(0,2)
+  .map(w => w[0]||'').join('').toUpperCase() || '—';
+const num = v => { const n = parseFloat(String(v ?? '').replace(/[^0-9.\-]/g,''));
+  return isFinite(n) ? n : 0 };
+const money = v => '$' + Math.round(num(v)).toLocaleString('en-US');
+const short = v => { const n = num(v);
+  return Math.abs(n) >= 1e6 ? '$' + (n/1e6).toFixed(1) + 'M'
+    : Math.abs(n) >= 1000 ? '$' + Math.round(n/1000) + 'k' : '$' + Math.round(n) };
+const days = t => Math.floor((now() - (t||0)) / DAY);
+const ago = t => {
+  if (t == null || !isFinite(t)) return '—';
+  const s = Math.max(0, (now() - t) / 1000);
+  if (s < 3600) return Math.max(1, ~~(s/60)) + 'm';
+  if (s < 86400) return ~~(s/3600) + 'h';
+  if (s < 604800) return ~~(s/86400) + 'd';
+  if (s < 2592000) return ~~(s/604800) + 'w';
+  return new Date(t).toLocaleDateString('en',{month:'short',day:'numeric'});
+};
+const onDate = t => (t==null||!isFinite(t)) ? '—'
+  : new Date(t).toLocaleDateString('en',{month:'short',day:'numeric'});
+const dateVal = t => { if (t==null||!isFinite(t)) return '';
+  const d = new Date(t - new Date(t).getTimezoneOffset()*60000);
+  return d.toISOString().slice(0,10) };
+const debounce = (fn,ms) => { let h; return (...a)=>{clearTimeout(h);h=setTimeout(()=>fn(...a),ms)} };
+
+/* ─── DOMAIN ─────────────────────────────────────────────────────── */
+/* ─── THE LIFECYCLE ──────────────────────────────────────────────────
+   A sales CRM models deals moving toward a close. Aptryk solves problems
+   and builds systems, so "closed won" is the wrong terminal state: a
+   system you ship does not end, it RUNS. Four states, and every one is a
+   verb describing what the team is doing right now.
+
+     SHAPE  — the problem is not yet understood. Scoping, proposing.
+     BUILD  — we are making it.
+     RUN    — it is live and we are operating or maintaining it.
+     CLOSED — finished, cancelled or handed over.
+
+   Run is the state a standard pipeline has no word for, and it is where
+   retainers, subscriptions and every maintained system actually live. */
+const STAGES = ['planning','building','running','done'];
+const STAGE_T = { planning:'Planning', building:'Building', running:'Running', done:'Done' };
+const STAGE_WHY = {
+  planning:'Working out what to build and what it costs',
+  building:'Being made right now',
+  running:'Live — we keep it working',
+  done:'Finished or stopped',
+};
+const LIVE = new Set(['planning','building','running']);
+
+/* A signal is anything that might become work — inbound, a referral, or a
+   problem we noticed ourselves. Warmth, not a sales stage. */
+const LEADS = ['new','warm','ready'];
+const LEAD_T = { new:'New', warm:'Warm', ready:'Ready' };
+
+/* Aptryk builds its own products as well as client work, so work carries a
+   KIND. House work has no org and is not billable, but can still earn. */
+const KINDS = ['client','internal'];
+const KIND_T = { client:'Client work', internal:'Our own' };
+
+/* How it earns. Once, or every month. */
+const CADENCE = ['none','weekly','monthly','quarterly'];
+const CADENCE_T = { none:'No check-ins', weekly:'Weekly', monthly:'Monthly', quarterly:'Quarterly' };
+const CADENCE_DAYS = { weekly:7, monthly:30, quarterly:91 };
+
+const TYPES = ['once','monthly'];
+const TYPE_T = { once:'One-off', monthly:'Monthly' };
+const RECUR = new Set(['monthly']);
+const STALE = 14, QUIET = 30, RENEW_IN = 45;
+
+/* ─── STATE ──────────────────────────────────────────────────────── */
+const KEY = 'aptryk:crm';
+const BLANK = { clients:[], engagements:[], leads:[], reminders:[], captures:[],
+  money:{proposals:[],invoices:[]}, activity:[], team:[], meId:null };
+let S = structuredClone(BLANK);
+
+function load() {
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem(KEY) || 'null') } catch(e) {}
+  S = { ...structuredClone(BLANK), ...(p||{}),
+        money:{ ...BLANK.money, ...((p&&p.money)||{}) } };
+  for (const k of ['clients','engagements','leads','reminders','captures','activity','team'])
+    if (!Array.isArray(S[k])) S[k] = [];
+  for (const k of ['proposals','invoices']) if (!Array.isArray(S.money[k])) S.money[k] = [];
+  migrate();
+  if (!S.team.length) S.team.push({ id:uid(), name:'You', email:'' });
+  if (!S.meId || !S.team.find(m=>m.id===S.meId)) S.meId = S.team[0].id;
+}
+
+/* Additive and idempotent: existing records load untouched and gain
+   defaults, so an older client keeps working against the same data. */
+function migrate() {
+  const stamp = o => { if (o.updatedAt==null) o.updatedAt = o.createdAt ?? o.t ?? now();
+    if (o.createdAt==null) o.createdAt = o.t ?? o.updatedAt; return o };
+  [S.clients,S.engagements,S.leads,S.reminders,S.captures,
+   S.money.proposals,S.money.invoices].forEach(l => l.forEach(stamp));
+  S.activity.forEach(a => { if (a.t==null) a.t = a.createdAt ?? now() });
+  S.clients.forEach(c => {
+    c.contacts = Array.isArray(c.contacts) ? c.contacts : [];
+    c.tags = Array.isArray(c.tags) ? c.tags : [];
+    if (c.owner === undefined) c.owner = null;
+    if (c.industry === undefined) c.industry = '';
+    if (!c.contacts.length && (c.email||c.phone))
+      c.contacts.push({ id:uid(), name:c.name||'', role:'', email:c.email||'', phone:c.phone||'' });
+  });
+  S.engagements.forEach(e => {
+    e.tasks = Array.isArray(e.tasks) ? e.tasks : [];
+    e.links = Array.isArray(e.links) ? e.links : [];
+    // Old vocabulary maps forward. A shipped one-off is Closed; a shipped
+    // retainer or subscription is Running, which is the whole point of the
+    // new state — the old model had nowhere to put it.
+    const OLD_TYPE = { project:'once', retainer:'monthly', subscription:'monthly' };
+    if (OLD_TYPE[e.type]) e.type = OLD_TYPE[e.type];
+    if (!TYPES.includes(e.type)) e.type = 'once';
+    const OLD_STAGE = { inbound:'planning', discovery:'planning', proposal:'planning',
+      active:'building', shape:'planning', build:'building', run:'running', closed:'done' };
+    if (OLD_STAGE[e.stage]) e.stage = OLD_STAGE[e.stage];
+    if (e.stage === 'shipped') e.stage = RECUR.has(e.type) ? 'running' : 'done';
+    if (!STAGES.includes(e.stage)) e.stage = 'building';
+    if (e.kind === 'house') e.kind = 'internal';
+    if (!KINDS.includes(e.kind)) e.kind = 'client';
+    if (e.lead === undefined) e.lead = null;
+    if (e.mrr === undefined) e.mrr = '';
+    if (e.renewalAt === undefined) e.renewalAt = null;
+    if (!CADENCE.includes(e.cadence)) e.cadence = 'none';
+    if (e.checkedAt === undefined) e.checkedAt = null;
+    if (!e.clientId && e.client) {
+      const nm = String(e.client).trim();
+      let a = S.clients.find(c => c.name.toLowerCase() === nm.toLowerCase());
+      if (!a && nm) { a = { id:uid(), name:nm, industry:'', tags:[], contacts:[], owner:null,
+        notes:'', createdAt:e.createdAt||now(), updatedAt:now() }; S.clients.push(a) }
+      if (a) e.clientId = a.id;
+    }
+  });
+  S.leads.forEach(l => {
+    const OLD = { qualified:'ready', open:'new' };
+    if (OLD[l.stage]) l.stage = OLD[l.stage];
+    if (!LEADS.includes(l.stage)) l.stage = 'new';
+    if (l.owner===undefined) l.owner=null;
+  });
+}
+
+/* ─── IDENTITY ─────────────────────────────────────────────────────────
+   Behind Cloudflare Access, the signed-in identity is exposed at
+   /cdn-cgi/access/get-identity. Reading it turns "pick yourself from a
+   roster" — an honour system — into real attribution: the log records who
+   actually did something rather than who claimed to.
+
+   It fails soft on purpose. Opened from a file, or from a URL not behind
+   Access, the fetch fails and the roster picker stays exactly as it was. */
+const Identity = {
+  resolved: null,
+  async claim() {
+    let who = null;
+    // No origin, no identity service. Asking anyway logs a network error.
+    if (!/^https?:$/.test(location.protocol)) return;
+    try {
+      const res = await fetch('/cdn-cgi/access/get-identity', { credentials: 'include' });
+      if (res.ok) {
+        const j = await res.json();
+        const email = (j.email || '').trim();
+        if (email) who = { email, name: (j.name || '').trim() || email.split('@')[0] };
+      }
+    } catch (e) { /* not behind Access — the roster stays in charge */ }
+    if (!who) return;
+    this.resolved = who;
+    // Adopt an existing roster entry rather than duplicating a person.
+    let m = S.team.find(x => (x.email || '').toLowerCase() === who.email.toLowerCase())
+         || S.team.find(x => (x.name || '').toLowerCase() === who.name.toLowerCase());
+    if (!m) { m = { id: uid(), name: who.name, email: who.email }; S.team.push(m) }
+    else if (!m.email) m.email = who.email;
+    // The placeholder created on first run is not a person.
+    S.team = S.team.filter(x => x.id === m.id || x.name !== 'You' || x.email);
+    S.meId = m.id;
+    saveLocal();
+    if (typeof App !== 'undefined' && App.render) App.render();
+  },
+};
+
+const saveLocal = () => { try { localStorage.setItem(KEY, JSON.stringify(S)) } catch(e){} };
+const save = () => { saveLocal(); Sync.push() };
+
+const acct = id => S.clients.find(c=>c.id===id) || null;
+const mem = id => S.team.find(m=>m.id===id) || null;
+const memName = id => (mem(id)||{}).name || '';
+const projOf = id => S.engagements.filter(e=>e.clientId===id);
+const openOf = id => projOf(id).filter(e=>LIVE.has(e.stage));
+const acctName = e => (acct(e.clientId)||{}).name || '';
+const openVal = e => LIVE.has(e.stage) ? num(e.budget) : 0;
+const acctVal = id => openOf(id).reduce((s,e)=>s+openVal(e),0);
+const acctMrr = id => projOf(id).filter(e=>RECUR.has(e.type)&&LIVE.has(e.stage))
+  .reduce((s,e)=>s+num(e.mrr),0);
+/* Running systems are allowed to be quiet — that is what running means.
+   Only Shape and Build going silent is a problem. */
+const stalled = e => (e.stage==='planning'||e.stage==='building') && days(e.updatedAt) >= STALE;
+const quiet = c => days(c.updatedAt) >= QUIET && !openOf(c.id).length;
+const eod = () => { const d=new Date(); d.setHours(23,59,59,999); return d.getTime() };
+const late = r => !r.done && r.due && r.due < now();
+const dueToday = r => !r.done && r.due && r.due >= now() && r.due <= eod();
+const renewing = e => RECUR.has(e.type) && e.renewalAt && LIVE.has(e.stage)
+  && e.renewalAt - now() < RENEW_IN*DAY;
+
+/* A running system with a cadence is overdue a look when more days have
+   passed than the cadence allows. Never checked counts as overdue — that
+   is the point of committing to a cadence. */
+const checkDue = e => e.stage === 'running' && e.cadence && e.cadence !== 'none'
+  && days(e.checkedAt ?? e.updatedAt) >= CADENCE_DAYS[e.cadence];
+const checkIn = (e, note) => {
+  e.checkedAt = now(); e.updatedAt = now();
+  log(`Checked in on <b>${esc(e.name || 'work')}</b>${note ? ' — ' + esc(note) : ''}`, e.id);
+  save();
+};
+
+/* ─── LOG + UNDO ───────────────────────────────────────────────────────
+   The log records what happened; a record you cannot act on is just a
+   receipt. Every logged action carries a `rev` describing how to reverse
+   it, so the Log becomes the undo history for the whole workspace.
+
+   rev = { c: collection path, id, before: record|null, at: index }
+     before === null  →  it was created, so undo deletes it
+     before === {...} →  it was changed or deleted, so undo restores it
+
+   Only LOGGED actions are reversible, which is the right scope: typing in
+   a notes field should not fill the history, and it does not. */
+const COLL = {
+  clients: () => S.clients, engagements: () => S.engagements, leads: () => S.leads,
+  reminders: () => S.reminders, captures: () => S.captures, activity: () => S.activity,
+  proposals: () => S.money.proposals, invoices: () => S.money.invoices,
+};
+
+const risksFor = id => {
+  const out = [];
+  const jobs = projOf(id);
+  if (days(acct(id) ? acct(id).updatedAt : 0) >= QUIET)
+    out.push({ k:'quiet', t:'Not heard from in ' + days(acct(id).updatedAt) + ' days',
+               to:['clients', id] });
+  const stuck = jobs.filter(stalled);
+  if (stuck.length)
+    out.push({ k:'stuck', t:stuck.length + ' job' + (stuck.length>1?'s':'') + ' stuck',
+               to:['work', stuck[0].id] });
+  const late = jobs.filter(checkDue);
+  if (late.length)
+    out.push({ k:'check', t:late.length + ' overdue a check-in', to:['work', late[0].id] });
+  const name = acct(id) ? (acct(id).name || '') : '';
+  const unpaid = S.money.invoices.filter(i => i.status === 'overdue'
+    && (i.client || '').toLowerCase() === name.toLowerCase());
+  if (unpaid.length)
+    out.push({ k:'unpaid', t:unpaid.length + ' unpaid invoice' + (unpaid.length>1?'s':''),
+               to:['money', unpaid[0].id] });
+  const noOwner = acct(id) && !acct(id).owner && jobs.length;
+  if (noOwner) out.push({ k:'owner', t:'Nobody owns this client', to:['clients', id] });
+  return out;
+};
+/* One signal is normal business. Two at once is a client you are losing. */
+const AT_RISK = 2;
+const atRisk = c => risksFor(c.id).length >= AT_RISK;
+
+function log(label, refId, rev) {
+  S.activity.unshift({ id:uid(), label, refId:refId||null, who:S.meId, t:now(),
+                       rev: rev || null });
+  if (S.activity.length > 300) S.activity.length = 300;
+}
+
+const Undo = {
+  can: a => !!(a && a.rev && !a.rev.used && COLL[a.rev.c]),
+  run(id) {
+    const a = S.activity.find(x => x.id === id);
+    if (!this.can(a)) return;
+    const list = COLL[a.rev.c]();
+    const cur = list.findIndex(o => o.id === a.rev.id);
+    if (a.rev.before === null) {
+      // it was created — remove it again
+      if (cur !== -1) list.splice(cur, 1);
+    } else if (cur !== -1) {
+      // it was changed — put the old values back
+      list[cur] = { ...structuredClone(a.rev.before), updatedAt: now() };
+    } else {
+      // it was deleted — put it back where it was
+      list.splice(Math.min(a.rev.at ?? 0, list.length), 0,
+                  { ...structuredClone(a.rev.before), updatedAt: now() });
+    }
+    a.rev.used = true;
+    log('Undid: ' + a.label, a.rev.id);
+    save();
+    if (typeof App !== 'undefined') App.render();
+    if (typeof toast === 'function') toast('Undone');
+  },
+};
+
+/* ─── SYNC ───────────────────────────────────────────────────────────
+   Unchanged wire contract: same worker, same endpoints, same table and
+   column names, so this runs beside older clients on the same data.
+   fromRow() is the inverse of row(); without it the pull path wrote
+   snake_case straight into state, which detached every project from its
+   account and made remote changes lose every merge. */
+const API = {
+  /* Same-origin path behind Cloudflare Access. Because it is relative, the
+     browser sends the Access session cookie with every request and no
+     secret needs to live in this file. */
+  url: '/api',
+  /* Only used in legacy cross-origin mode. Leave empty once `url` is a
+     path — an unused secret in a shipped file is still a leaked secret. */
+  key: '',
+};
+
+const Sync = {
+  base: API.url + '/crm', key: API.key,
+  /* Same-origin means Access is the gate and the cookie is the credential. */
+  sameOrigin: API.url.startsWith('/'),
+  shadow: {}, queue: [], busy: false, back: 1500, state: 'idle',
+  extendedFields: false,   /* flip once D1 has the new columns */
+
+  on() {
+    const served = /^https?:$/.test(location.protocol);
+    if (this.sameOrigin) return served;      // relative URL needs an origin
+    return !!this.key && !this.key.includes('PASTE');
+  },
+  /* Send credentials the way this deployment expects, and never send a
+     bearer token to an origin that does not need one. */
+  head(extra) {
+    const h = Object.assign({}, extra || {});
+    if (!this.sameOrigin && this.key) h['Authorization'] = 'Bearer ' + this.key;
+    return h;
+  },
+  fetchOpts(o) {
+    return Object.assign({ credentials: this.sameOrigin ? 'include' : 'omit' }, o || {});
+  },
+  badge(s) {
+    this.state = s;
+    const txt = $('#syncTxt');
+    if (!txt) return;
+    txt.className = 'sync-w' + (s==='fail'?' bad':s==='ok'?' ok':'');
+    txt.textContent = s==='ok'?'Synced':s==='busy'?'Syncing':s==='fail'?'Offline':'Local';
+  },
+  row(t, o) {
+    const m = {
+      clients: () => ({ id:o.id, name:o.name, company:o.company||'',
+        email:(o.contacts||[])[0]?.email||'', phone:(o.contacts||[])[0]?.phone||'',
+        tags:o.tags||[], notes:o.notes||'' }),
+      engagements: () => ({ id:o.id, name:o.name, client_id:o.clientId||null,
+        stage:o.stage, budget:o.budget||'', notes:o.notes||'',
+        tasks:o.tasks||[], links:o.links||[] }),
+      reminders: () => ({ id:o.id, text:o.text, due:o.due??null, done:o.done?1:0 }),
+      captures:  () => ({ id:o.id, text:o.text, done:o.done?1:0 }),
+      activity:  () => ({ id:o.id, label:o.label, ref_id:o.refId||null, t:o.t??now() }),
+    }[t];
+    if (!m) return null;
+    const r = m();
+    if (t !== 'activity') { r.created_at = o.createdAt ?? now();
+      r.updated_at = o.updatedAt ?? r.created_at }
+    if (this.extendedFields) {
+      if (t==='clients') { r.owner=o.owner||null; r.contacts=o.contacts||[] }
+      if (t==='engagements') { r.type=o.type; r.lead=o.lead||null;
+        r.mrr=o.mrr||''; r.renewal_at=o.renewalAt??null }
+    }
+    return r;
+  },
+  moneyRow(kind, o) { return { id:o.id, kind, name:o.name, client:o.client||'',
+    amount:o.amount||'', status:o.status||'draft',
+    created_at:o.createdAt??now(), updated_at:o.updatedAt??now() } },
+
+  fromRow(t, r) {
+    if (!r || typeof r !== 'object') return null;
+    if (r.updatedAt !== undefined || r.createdAt !== undefined) return r;
+    const j = (v,f) => { if (v==null) return f; if (typeof v!=='string') return v;
+      try { return JSON.parse(v) ?? f } catch(e) { return f } };
+    const created = r.created_at ?? r.t ?? now();
+    const o = { ...r, createdAt:created, updatedAt:r.updated_at ?? created };
+    delete o.created_at; delete o.updated_at;
+    if (t==='clients') { o.tags=j(r.tags,[]); o.contacts=j(r.contacts,[]);
+      if (!o.contacts.length && (r.email||r.phone))
+        o.contacts=[{id:uid(),name:r.name||'',role:'',email:r.email||'',phone:r.phone||''}];
+      if (o.owner===undefined) o.owner=null; if (o.industry===undefined) o.industry='' }
+    if (t==='engagements') { o.clientId=r.client_id??null; delete o.client_id;
+      o.tasks=j(r.tasks,[]); o.links=j(r.links,[]);
+      o.type=TYPES.includes(r.type)?r.type:'once'; o.lead=r.lead??null;
+      o.kind=KINDS.includes(r.kind)?r.kind:(o.clientId?'client':'client');
+      if (!STAGES.includes(o.stage)) {
+        const OLD={inbound:'planning',discovery:'planning',proposal:'planning',
+          active:'building',shape:'planning',build:'building',run:'running',closed:'done'};
+        o.stage = OLD[o.stage] || (o.stage==='shipped'
+          ? (RECUR.has(o.type)?'running':'done') : 'building');
+      }
+      o.mrr=r.mrr??''; o.renewalAt=r.renewal_at??null; delete o.renewal_at }
+    if (t==='reminders') { o.done=!!r.done; o.due=r.due??null }
+    if (t==='captures') { o.done=!!r.done; o.t=created }
+    if (t==='activity') { o.refId=r.ref_id??null; delete o.ref_id; o.t=r.t??created }
+    return o;
+  },
+  stampOf: o => o.updatedAt ?? o.createdAt ?? o.t ?? 0,
+
+  collect() {
+    const out = [], seen = new Set();
+    const take = (t,o,b) => { const k=t+':'+o.id; seen.add(k);
+      const st = Sync.stampOf(o);
+      if (Sync.shadow[k] !== st) { out.push({table:t,op:'upsert',row:b()}); Sync.shadow[k]=st } };
+    S.clients.forEach(o=>take('clients',o,()=>Sync.row('clients',o)));
+    S.engagements.forEach(o=>take('engagements',o,()=>Sync.row('engagements',o)));
+    S.reminders.forEach(o=>take('reminders',o,()=>Sync.row('reminders',o)));
+    S.captures.forEach(o=>take('captures',o,()=>Sync.row('captures',o)));
+    S.money.proposals.forEach(o=>take('money',o,()=>Sync.moneyRow('proposals',o)));
+    S.money.invoices.forEach(o=>take('money',o,()=>Sync.moneyRow('invoices',o)));
+    S.activity.forEach(a=>{ const k='activity:'+a.id; seen.add(k);
+      if (Sync.shadow[k]===undefined) { out.push({table:'activity',op:'upsert',row:Sync.row('activity',a)});
+        Sync.shadow[k]=a.t } });
+    for (const k of Object.keys(Sync.shadow)) {
+      if (seen.has(k)) continue;
+      const [t,id] = k.split(':');
+      out.push({ table:t, op:'delete', row:{id} }); delete Sync.shadow[k];
+    }
+    return out;
+  },
+
+  async push() {
+    if (!this.on()) { this.badge('idle'); return }
+    const m = this.collect(); if (m.length) this.queue.push(...m);
+    if (this.busy || !this.queue.length) return;
+    this.busy = true; this.badge('busy');
+    const batch = this.queue.splice(0);
+    try {
+      const res = await fetch(this.base+'/mutate', this.fetchOpts({ method:'POST',
+        headers: this.head({ 'Content-Type':'application/json' }),
+        body: JSON.stringify({ mutations: batch }) }));
+      if (!res.ok) throw new Error(res.status);
+      this.back = 1500; this.badge('ok');
+    } catch(e) {
+      this.queue.unshift(...batch);            // never lose a mutation
+      this.back = Math.min(this.back*2, 30000); this.badge('fail');
+    } finally {
+      this.busy = false;
+      if (this.queue.length) setTimeout(()=>this.push(), this.back);
+    }
+  },
+
+  pulling: false,
+  async pull(manual) {
+    if (!this.on() || this.pulling) return;
+    this.pulling = true; if (manual) this.badge('busy');
+    try {
+      const res = await fetch(this.base+'/state', this.fetchOpts({ headers: this.head() }));
+      if (!res.ok) throw new Error(res.status);
+      if (this.merge(await res.json())) { saveLocal(); App.render() }
+      this.badge('ok');
+      if (manual) toast('Up to date');
+    } catch(e) { this.badge('fail'); if (manual) toast('Could not reach the server — working locally') }
+    finally { this.pulling = false }
+  },
+
+  merge(remote) {
+    let changed = false;
+    const ml = (local, incoming, table) => {
+      const by = new Map(local.map(o=>[o.id,o]));
+      (incoming||[]).forEach(raw => {
+        const o = Sync.fromRow(table, raw);
+        if (!o || !o.id) return;
+        const cur = by.get(o.id);
+        if (!cur || Sync.stampOf(o) > Sync.stampOf(cur)) { by.set(o.id,o); changed = true }
+      });
+      local.forEach(o => { const k = table+':'+o.id;
+        if (!(incoming||[]).some(r=>r.id===o.id) && Sync.shadow[k]!==undefined) {
+          by.delete(o.id); changed = true } });
+      const out = [...by.values()];
+      out.forEach(o => Sync.shadow[table+':'+o.id] = Sync.stampOf(o));
+      return out;
+    };
+    S.clients = ml(S.clients, remote.clients, 'clients');
+    S.engagements = ml(S.engagements, remote.engagements, 'engagements');
+    S.reminders = ml(S.reminders, remote.reminders, 'reminders');
+    S.captures = ml(S.captures, remote.captures, 'captures');
+    // money arrives flat with a kind column, or grouped. Accept both rather
+    // than silently dropping every invoice.
+    const rm = remote.money, flat = Array.isArray(rm) ? rm : null;
+    S.money.proposals = ml(S.money.proposals,
+      flat ? flat.filter(m=>m.kind==='proposals') : (rm&&rm.proposals), 'money');
+    S.money.invoices = ml(S.money.invoices,
+      flat ? flat.filter(m=>m.kind==='invoices') : (rm&&rm.invoices), 'money');
+    const seen = new Set(S.activity.map(a=>a.id));
+    (remote.activity||[]).forEach(raw => {
+      const a = Sync.fromRow('activity', raw);
+      if (!a || !a.id || seen.has(a.id)) return;
+      S.activity.push(a); seen.add(a.id); Sync.shadow['activity:'+a.id]=a.t; changed=true;
+    });
+    S.activity.sort((a,b)=>(b.t||0)-(a.t||0));
+    if (S.activity.length > 300) S.activity.length = 300;
+    return changed;
+  },
+
+  seed() {
+    const m = (t,l) => l.forEach(o => Sync.shadow[t+':'+o.id] = Sync.stampOf(o));
+    m('clients',S.clients); m('engagements',S.engagements); m('reminders',S.reminders);
+    m('captures',S.captures); m('money',S.money.proposals); m('money',S.money.invoices);
+    S.activity.forEach(a => Sync.shadow['activity:'+a.id] = a.t);
+  },
+  start() {
+    if (!this.on()) { this.badge('idle'); return }
+    this.pull();
+    setInterval(()=>{ if(!document.hidden) this.pull() }, 45000);
+    addEventListener('focus', ()=>this.pull());
+  },
+};
+
+/* ─── ICONS ──────────────────────────────────────────────────────── */
+const ic = (d, w = 2, span = 18) => {
+  const k = (16 / span).toFixed(4);      // normalise to a 16-unit optical box
+  const body = k === '1.0000' ? d
+    : `<g transform="translate(12 12) scale(${k}) translate(-12 -12)"
+         vector-effect="non-scaling-stroke">${d}</g>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}"
+    stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">${body}</svg>`;
+};
+const I = {
+  now:    ic('<circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/>', 2, 18),
+  work:   ic('<path d="M4 7.5h16V20H4z"/><path d="M9 7.5V4h6v3.5"/><path d="M4 12.5h16"/>', 2, 16),
+  org:    ic('<path d="M3 21V8l6-4 6 4v13"/><path d="M15 21V11l6 4v6"/>', 2, 18),
+  signal: ic('<path d="M4 20a16 16 0 0 1 16-16"/><path d="M4 20a10 10 0 0 1 10-10"/><path d="M4.5 20a3.5 3.5 0 0 1 3.5-3.5"/>', 2, 16),
+  money:  ic('<path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>', 2, 20),
+  bell:   ic('<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>', 2, 18),
+  note:   ic('<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/>', 2, 18),
+  log:    ic('<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', 2, 18),
+  gear:   ic('<circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>', 2, 20),
+  plus:   ic('<path d="M12 5v14M5 12h14"/>', 2.2, 14),
+  more:   ic('<circle cx="12" cy="5" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1.5" fill="currentColor" stroke="none"/>', 2, 16),
+  pen:    ic('<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>', 2, 18),
+  bin:    ic('<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>', 2, 17),
+  x:      ic('<path d="M18 6 6 18M6 6l12 12"/>', 2.2, 12),
+  tick:   ic('<path d="M20 6 9 17l-5-5"/>', 3, 11),
+  up:     ic('<path d="m18 15-6-6-6 6"/>', 2.4, 6),
+  down:   ic('<path d="m6 9 6 6 6-6"/>', 2.4, 6),
+  left:   ic('<path d="m15 18-6-6 6-6"/>', 2.4, 6),
+  go:     ic('<path d="M5 12h14M13 6l6 6-6 6"/>', 2, 12),
+  link:   ic('<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>', 2, 14),
+  user:   ic('<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-6.4 7.5-6.4s7.5 2.8 7.5 6.4"/>', 2, 16),
+  sync:   ic('<path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/>', 2, 18),
+  save:   ic('<path d="M12 3v13M6 11l6 6 6-6M4 21h16"/>', 2, 18),
+};
+
+/* ─── THE TRACK ──────────────────────────────────────────────────────
+   One designed idiom for every state in the app, replacing the coloured
+   dots. A dot names a category; a track shows WHERE something sits in its
+   life and how far it has left — the same information plus the thing you
+   actually wanted to know. Learn it once, read it everywhere: work
+   lifecycle (4 steps), signal warmth (3), money (3). */
+function track(steps, at, label, tone){
+  const i = steps.indexOf(at);
+  const g = steps.map((_,n) => `<i class="${n < i ? 'was' : n === i ? 'is' : ''}"></i>`).join('');
+  return `<span class="track ${tone||''}" title="${esc(label)}">
+    <span class="track-g">${g}</span><span class="track-t">${esc(label)}</span></span>`;
+}
+const stageTrack = e => track(STAGES, e.stage, STAGE_T[e.stage],
+  e.stage === 'closed' ? 'done' : stalled(e) ? 'warn' : '');
+const signalTrack = l => track(LEADS, l.stage, LEAD_T[l.stage],
+  l.stage === 'ready' ? 'done' : '');
+const PAY_STEPS = ['draft','sent','paid'];
+const PAY_AT = { draft:'draft', sent:'sent', overdue:'sent', paid:'paid',
+                 accepted:'paid', declined:'draft' };
+const PAY_T  = { draft:'Draft', sent:'Sent', overdue:'Unpaid', paid:'Paid',
+                 accepted:'Accepted', declined:'Declined' };
+const payTrack = m => track(PAY_STEPS, PAY_AT[m.status] || 'draft', PAY_T[m.status] || 'Draft',
+  m.status === 'overdue' ? 'warn' : (m.status === 'paid' || m.status === 'declined') ? 'done' : '');
+
+/* ─── SHARED CELLS ───────────────────────────────────────────────── */
+const who = id => { const m = mem(id);
+  return m ? `<span class="who" title="${esc(m.name)}">${esc(initials(m.name))}</span>`
+           : `<span class="who nil" title="Nobody yet">${I.user}</span>` };
+const cash = v => `<span class="mono ${num(v)?'strong':'quiet'}">${num(v)?money(v):'—'}</span>`;
+const kindMark = e => e.kind === 'internal'
+  ? `<span class="kind house">Ours</span>` : `<span class="kind">Client</span>`;
+
+const rowActs = (kind,id) => `<div class="acts">
+  <button class="act tip" data-tip="Open" aria-label="Open"
+    onclick="event.stopPropagation();App.open('${id}')">${I.pen}</button>
+  <button class="act tip" data-tip="More" aria-label="More actions"
+    onclick="event.stopPropagation();Menu.forRow(event,'${kind}','${id}')">${I.more}</button>
+</div>`;
+
+const kv = (k,v,hint) => `<div class="kv"><span class="kv-k">${k}</span><span>${v}</span>`
+  + (hint ? `<span></span><span class="hint">${hint}</span>` : '') + `</div>`;
+const inp = (val,h,ph='') => `<input class="field" value="${esc(val??'')}" placeholder="${esc(ph)}" onchange="${h}"/>`;
+const sel = (val,opts,h) => `<select class="sel" onchange="${h}">` +
+  opts.map(([v,l])=>`<option value="${esc(v)}"${v===(val??'')?' selected':''}>${esc(l)}</option>`).join('') + '</select>';
+const dateF = (val,h) => `<input class="field" type="date" value="${dateVal(val)}" onchange="${h}"/>`;
+const memSel = (val,h) => sel(val||'', [['','Nobody yet'],...S.team.map(m=>[m.id,m.name])], h);
+const nilBox = t => `<div class="mini-nil">${esc(t)}</div>`;
+
+/* ─── VIEWS ──────────────────────────────────────────────────────────
+   Naming rule: every nav item is a noun the team says out loud, and every
+   entity appears exactly ONCE. The previous build listed the same record
+   under Projects, Pipeline and Revenue — three names for one thing, which
+   was most of why the labelling felt confusing. Work now has lenses
+   instead of clones. */
+const V = {
+
+  now: {
+    t:'Now', icon:I.now, grp:'Workspace', noCreate:true,
+    blurb:'What the team should deal with today, most urgent first.',
+    cols:'minmax(0,2.4fr) 168px 100px 106px 72px',
+    head:[{t:'Needs attention'},{t:'Why'},{t:'Owner'},{t:'When'},{t:'',n:1}],
+    tabs:[['all','Everyone'],['mine','Mine']],
+    metrics(l){ const u=l.filter(o=>o.due).length; return [
+      {k:'Open',v:l.length,f:null},
+      {k:'Urgent',v:u,tone:u?'due':'',f:'urgent'},
+      {k:'At risk',v:short(l.reduce((s,o)=>s+(o.val||0),0)),tone:'act',f:null}] },
+    rows(){
+      const mine = App.tab==='mine', out=[];
+      const own = o => o.owner ?? o.lead ?? null;
+      const keep = o => !mine || own(o)===S.meId;
+      S.reminders.filter(late).forEach(r=>out.push({id:'r'+r.id,due:1,at:r.due,
+        what:r.text,why:'Reminder overdue',owner:null,when:days(r.due)+'d late',
+        val:0,to:['reminders',r.id]}));
+      S.reminders.filter(dueToday).forEach(r=>out.push({id:'r'+r.id,at:r.due,
+        what:r.text,why:'Due today',owner:null,when:'Today',val:0,to:['reminders',r.id]}));
+      S.money.invoices.filter(i=>i.status==='overdue').forEach(i=>out.push({id:'i'+i.id,due:1,
+        at:i.updatedAt,what:i.name,why:'Invoice unpaid',owner:null,
+        when:days(i.updatedAt)+'d',val:num(i.amount),to:['money',i.id]}));
+      S.engagements.filter(e=>checkDue(e)&&keep(e)).forEach(e=>out.push({id:'k'+e.id,
+        at:e.checkedAt??e.updatedAt, what:e.name, why:'Check-in due', owner:e.lead,
+        when: e.checkedAt ? days(e.checkedAt)+'d since' : 'Never checked',
+        val:num(e.mrr), to:['work',e.id]}));
+      S.engagements.filter(e=>renewing(e)&&keep(e)).forEach(e=>out.push({id:'w'+e.id,at:e.renewalAt,
+        what:e.name,why:'Renews soon',owner:e.lead,
+        when:onDate(e.renewalAt),val:num(e.mrr),to:['work',e.id]}));
+      S.engagements.filter(e=>stalled(e)&&keep(e)).forEach(e=>out.push({id:'e'+e.id,at:e.updatedAt,
+        what:e.name,why:'Stuck in '+STAGE_T[e.stage],owner:e.lead,
+        when:days(e.updatedAt)+'d quiet',val:openVal(e),to:['work',e.id]}));
+      S.leads.filter(l=>!l.owner&&l.stage!=='ready').forEach(l=>out.push({id:'l'+l.id,
+        at:l.createdAt,what:l.name||'Unnamed lead',why:'No owner',owner:null,
+        when:ago(l.createdAt),val:0,to:['leads',l.id]}));
+      // A client showing several problems at once outranks any single one.
+      S.clients.filter(c=>keep(c)).forEach(c=>{
+        const r = risksFor(c.id);
+        if (r.length >= AT_RISK) out.push({id:'c'+c.id, due:1, at:c.updatedAt,
+          what:c.name, why:r.slice(0,2).map(x=>x.t.toLowerCase()).join(', '),
+          owner:c.owner, when:r.length+' signals', val:acctVal(c.id), to:['clients',c.id]});
+        else if (quiet(c)) out.push({id:'c'+c.id, at:c.updatedAt,
+          what:c.name, why:'Not heard from', owner:c.owner,
+          when:days(c.updatedAt)+'d', val:0, to:['clients',c.id]});
+      });
+      return out.sort((a,b)=>(b.due?1:0)-(a.due?1:0)||(a.at||0)-(b.at||0));
+    },
+    filters:{ urgent:o=>o.due },
+    cell:o=>[`<span class="strong">${esc(o.what)}</span>`,
+      `<span class="quiet">${esc(o.why)}</span>`, who(o.owner),
+      `<span class="${o.due?'late':'quiet'}">${esc(o.when)}</span>`,
+      `<div class="acts"><button class="act tip" data-tip="Open" aria-label="Open"
+        onclick="event.stopPropagation();App.goTo('${o.to[0]}','${o.to[1]}')">${I.go}</button></div>`],
+    flag:o=>o.due,
+    find:id=>V.now.rows().find(r=>r.id===id),
+    side:o=>o?V[o.to[0]].side(V[o.to[0]].find(o.to[1])):'',
+    sum:l=>[`${l.length} open`,'','',`${l.filter(o=>o.due).length} urgent`,''],
+    nil:{i:I.tick,h:'Nothing needs you.',p:'No overdue reminders, unpaid invoices, stuck work or leads without an owner.'},
+    count:()=>V.now.rows().filter(r=>r.due).length, alert:true,
+  },
+
+  /* WORK — one entity, four lenses. Replaces Projects + Pipeline +
+     Revenue→Recurring, which were the same records under three names. */
+  work: {
+    t:'Work', icon:I.work, grp:'Workspace', noun:'job', nouns:'jobs',
+    blurb:'Everything we are building or running — for clients and for ourselves.',
+    cols:'minmax(0,2fr) minmax(0,1fr) 148px 80px 96px 62px 72px',
+    head:[{t:'Work',s:'name'},{t:'Client'},{t:'Stage'},{t:'Progress'},{t:'Value',n:1,s:'val'},
+          {t:'Last seen',n:1,s:'seen'},{t:'',n:1}],
+    sorts:{ name:(a,b)=>(a.name||'').localeCompare(b.name||''),
+      val:(a,b)=>(RECUR.has(b.type)?num(b.mrr):openVal(b))-(RECUR.has(a.type)?num(a.mrr):openVal(a)),
+      seen:(a,b)=>(b.updatedAt||0)-(a.updatedAt||0) },
+    defSort:'seen',
+    tabs:[['live','Active'],['stage','By stage'],['running','Running'],['house','Ours'],['all','All']],
+    /* Only the lifecycle lens is grouped. Sorting a grouped list would
+       shuffle the headers out of their sections. */
+    grouped:()=>App.tab==='stage',
+    metrics:l=>[
+      {k:'Active',v:l.filter(e=>LIVE.has(e.stage)).length,f:null},
+      {k:'Value',v:short(l.filter(e=>!RECUR.has(e.type)).reduce((s,e)=>s+openVal(e),0)),tone:'act',f:null},
+      {k:'Monthly',v:short(l.filter(e=>RECUR.has(e.type)&&LIVE.has(e.stage)).reduce((s,e)=>s+num(e.mrr),0)),f:'monthly'},
+      {k:'Stuck',v:l.filter(stalled).length,tone:l.filter(stalled).length?'due':'',f:'stalled'},
+      {k:'Check-ins due',v:l.filter(checkDue).length,
+       tone:l.filter(checkDue).length?'due':'',f:'checkdue'}],
+    filters:{ stalled, monthly:e=>RECUR.has(e.type), checkdue:checkDue },
+    rows(){
+      let l = S.engagements;
+      if (App.tab==='live') l = l.filter(e=>LIVE.has(e.stage));
+      if (App.tab==='house') l = l.filter(e=>e.kind==='internal');
+      if (App.tab==='running') l = l.filter(e=>e.stage==='running');
+      if (App.tab!=='stage') return [...l];
+      const out = [];
+      STAGES.forEach(st=>{
+        const inS = l.filter(e=>e.stage===st).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+        if (!inS.length && App.q) return;
+        out.push({group:true,id:'g'+st,label:STAGE_T[st],n:inS.length,note:STAGE_WHY[st],
+          val:inS.reduce((s,e)=>s+(RECUR.has(e.type)?num(e.mrr):num(e.budget)),0)});
+        out.push(...inS);
+      });
+      return out;
+    },
+    find:id=>S.engagements.find(e=>e.id===id),
+    cell(e){ const t=e.tasks||[], d=t.filter(x=>x.done).length;
+      return [`<span class="strong">${esc(e.name||'Untitled')}</span>`,
+      e.kind==='internal' ? kindMark(e) : `<span class="quiet">${esc(acctName(e)||'—')}</span>`,
+      stageTrack(e),
+      e.stage==='running'
+        ? (e.cadence==='none' ? '<span class="quiet">—</span>'
+           : `<span class="${checkDue(e)?'late':'quiet'}">${
+               e.checkedAt ? ago(e.checkedAt)+' ago' : 'Never'}</span>`)
+        : (t.length?`<span class="meter" title="${d} of ${t.length} done"><i style="width:${Math.round(d/t.length*100)}%"></i></span>`:'<span class="quiet">—</span>'),
+      RECUR.has(e.type)?cash(e.mrr):cash(openVal(e)),
+      `<span class="mono ${stalled(e)?'late':'quiet'}">${ago(e.updatedAt)}</span>`,
+      rowActs('work',e.id)] },
+    flag:e=>stalled(e)||checkDue(e),
+    sum:l=>[`${l.length} items`,'',`${l.filter(stalled).length} stuck`,
+      `${l.filter(checkDue).length} to check`,
+      cash(l.reduce((s,e)=>s+(RECUR.has(e.type)?num(e.mrr):openVal(e)),0)),'',''],
+    nil:{i:I.work,h:'No work yet.',p:'Work is anything we build or run — a client job, an internal tool, a product we maintain.'},
+    make:()=>{ const e={id:uid(),name:'',clientId:null,kind:'client',stage:'planning',type:'once',
+      lead:S.meId,budget:'',mrr:'',renewalAt:null,notes:'',tasks:[],links:[],
+      createdAt:now(),updatedAt:now()}; S.engagements.unshift(e);
+      log('New work started',e.id,{c:'engagements',id:e.id,before:null}); return e },
+    count:()=>S.engagements.filter(e=>LIVE.has(e.stage)).length,
+    side:e=>Side.work(e),
+  },
+
+  clients: {
+    t:'Clients', icon:I.org, grp:'Workspace', noun:'client', nouns:'clients',
+    blurb:'The companies we work for. Their people, their work and their invoices all live here.',
+    cols:'minmax(0,2.4fr) 62px 50px 92px 84px 92px 58px 66px',
+    head:[{t:'Client',s:'name'},{t:'Owner'},{t:'Active',n:1},{t:'Value',n:1,s:'val'},
+          {t:'Monthly',n:1,s:'mrr'},{t:'Watch'},{t:'Last seen',n:1,s:'seen'},{t:'',n:1}],
+    sorts:{ name:(a,b)=>(a.name||'').localeCompare(b.name||''),
+      val:(a,b)=>acctVal(b.id)-acctVal(a.id), mrr:(a,b)=>acctMrr(b.id)-acctMrr(a.id),
+      seen:(a,b)=>(b.updatedAt||0)-(a.updatedAt||0) },
+    defSort:'seen',
+    metrics:l=>[{k:'Clients',v:l.length,f:null},
+      {k:'Value',v:short(l.reduce((s,c)=>s+acctVal(c.id),0)),tone:'act',f:null},
+      {k:'Monthly',v:short(l.reduce((s,c)=>s+acctMrr(c.id),0)),f:null},
+      {k:'At risk',v:l.filter(atRisk).length,tone:l.filter(atRisk).length?'due':'',f:'risk'}],
+    filters:{ quiet, risk:atRisk },
+    rows:()=>[...S.clients],
+    find:id=>acct(id),
+    cell(c){ const r = risksFor(c.id);
+      return [`<span class="strong">${esc(c.name||'Untitled')}</span>`, who(c.owner),
+      `<span class="mono">${openOf(c.id).length||'—'}</span>`, cash(acctVal(c.id)),
+      cash(acctMrr(c.id)),
+      r.length ? `<span class="${r.length>=AT_RISK?'late':'quiet'}">${r.length} thing${r.length>1?'s':''}</span>`
+               : `<span class="quiet">—</span>`,
+      `<span class="mono ${quiet(c)?'late':'quiet'}">${ago(c.updatedAt)}</span>`,
+      rowActs('clients',c.id)] },
+    flag:atRisk,
+    sum:l=>[`${l.length} clients`,'',`${l.reduce((s,c)=>s+openOf(c.id).length,0)}`,
+      cash(l.reduce((s,c)=>s+acctVal(c.id),0)), cash(l.reduce((s,c)=>s+acctMrr(c.id),0)),
+      `${l.filter(atRisk).length} at risk`,'',''],
+    nil:{i:I.org,h:'No clients yet.',p:'Add a company to start tracking its people, its work and its invoices.'},
+    make:()=>{ const c={id:uid(),name:'',industry:'',tags:[],contacts:[],owner:S.meId,
+      notes:'',createdAt:now(),updatedAt:now()}; S.clients.unshift(c);
+      log('New client added',c.id,{c:'clients',id:c.id,before:null}); return c },
+    count:()=>S.clients.length,
+    side:c=>Side.client(c),
+  },
+
+  /* SIGNALS — anything that might become work. Not a sales funnel: a
+     signal can be inbound, a referral, or a problem we noticed ourselves. */
+  leads: {
+    t:'Leads', icon:I.signal, grp:'Workspace', noun:'lead', nouns:'leads',
+    blurb:'People who might become clients. Claim one, warm it up, then turn it into work.',
+    cols:'minmax(0,2.1fr) 112px 136px 90px 62px 72px',
+    head:[{t:'Lead',s:'name'},{t:'Source'},{t:'Warmth'},{t:'Owner'},{t:'Age',n:1,s:'age'},{t:'',n:1}],
+    sorts:{ name:(a,b)=>(a.name||'').localeCompare(b.name||''),
+      age:(a,b)=>(b.createdAt||0)-(a.createdAt||0) },
+    defSort:'age',
+    metrics:l=>[{k:'Leads',v:l.length,f:null},
+      {k:'Ready',v:l.filter(x=>x.stage==='ready').length,f:'ready'},
+      {k:'No owner',v:l.filter(x=>!x.owner).length,
+       tone:l.filter(x=>!x.owner).length?'due':'',f:'unowned'}],
+    filters:{ ready:l=>l.stage==='ready', unowned:l=>!l.owner },
+    rows:()=>[...S.leads],
+    find:id=>S.leads.find(l=>l.id===id),
+    cell:l=>[`<span class="strong">${esc(l.name||'Unnamed')}</span>`,
+      `<span class="quiet">${esc(l.source||'—')}</span>`, signalTrack(l), who(l.owner),
+      `<span class="mono quiet">${ago(l.createdAt)}</span>`, rowActs('leads',l.id)],
+    flag:l=>!l.owner&&l.stage!=='ready',
+    sum:l=>[`${l.length} leads`,'',`${l.filter(x=>x.stage==='ready').length} ready`,'','',''],
+    nil:{i:I.signal,h:'No leads.',p:'Add someone who might become a client. When it is real, turn it into work.'},
+    make:()=>{ const l={id:uid(),name:'',company:'',email:'',phone:'',source:'noticed',
+      note:'',stage:'open',owner:S.meId,createdAt:now(),updatedAt:now()};
+      S.leads.unshift(l); log('New lead added',l.id,{c:'leads',id:l.id,before:null}); return l },
+    count:()=>S.leads.filter(l=>l.stage!=='ready').length,
+    side:l=>Side.lead(l),
+  },
+
+  money: {
+    t:'Money', icon:I.money, grp:'Operations', noun:'document', nouns:'documents',
+    blurb:'What has been quoted, what has been billed, and what is still owed.',
+    cols:'minmax(0,2.1fr) minmax(0,1fr) 136px 104px 62px 72px',
+    head:[{t:'Document'},{t:'Client'},{t:'Status'},{t:'Amount',n:1},{t:'Age',n:1},{t:'',n:1}],
+    tabs:[['invoices','Invoices'],['proposals','Quotes']],
+    metrics(l){
+      const out = l.filter(o=>o.status!=='paid'&&o.status!=='declined').reduce((s,o)=>s+num(o.amount),0);
+      const od = l.filter(o=>o.status==='overdue').reduce((s,o)=>s+num(o.amount),0);
+      return [{k:'Documents',v:l.length,f:null},{k:'Unpaid',v:short(out),tone:'act',f:null},
+        {k:'Overdue',v:short(od),tone:od?'due':'',f:'overdue'}];
+    },
+    filters:{ overdue:o=>o.status==='overdue' },
+    rows(){ const l = App.tab==='proposals' ? S.money.proposals : S.money.invoices;
+      return [...l].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)) },
+    find:id=>S.money.invoices.find(m=>m.id===id)||S.money.proposals.find(m=>m.id===id)||null,
+    cell:o=>[`<span class="strong">${esc(o.name||'Untitled')}</span>`,
+      `<span class="quiet">${esc(o.client||'—')}</span>`, payTrack(o), cash(o.amount),
+      `<span class="mono quiet">${ago(o.updatedAt)}</span>`, rowActs('money',o.id)],
+    flag:o=>o.status==='overdue',
+    sum:l=>[`${l.length} documents`,'','unpaid',
+      cash(l.filter(o=>o.status!=='paid'&&o.status!=='declined').reduce((s,o)=>s+num(o.amount),0)),'',''],
+    nil:{i:I.money,h:'Nothing billed yet.',p:'Quotes become invoices. Monthly income lives in Work, filtered to Monthly.'},
+    make(){ const k = App.tab==='proposals'?'proposals':'invoices';
+      const m={id:uid(),name:'',client:'',amount:'',status:'draft',createdAt:now(),updatedAt:now()};
+      S.money[k].unshift(m); log(`New ${k==='proposals'?'quote':'invoice'} created`,m.id,
+        {c:k,id:m.id,before:null}); return m },
+    count:()=>S.money.invoices.filter(i=>i.status==='overdue').length, alert:true,
+    side:o=>Side.payment(o),
+  },
+
+  reminders: {
+    t:'Reminders', icon:I.bell, grp:'Operations', noun:'reminder', nouns:'reminders',
+    blurb:'Follow-ups with a clock on them. Overdue ones surface in Now.',
+    cols:'28px minmax(0,3fr) 126px 62px 72px',
+    head:[{t:''},{t:'Reminder'},{t:'Due'},{t:'Set',n:1},{t:'',n:1}],
+    tabs:[['open','Open'],['all','All']],
+    metrics:l=>[{k:'Open',v:l.filter(r=>!r.done).length,f:null},
+      {k:'Overdue',v:l.filter(late).length,tone:l.filter(late).length?'due':'',f:'late'},
+      {k:'Today',v:l.filter(dueToday).length,f:'today'}],
+    filters:{ late, today:dueToday },
+    rows:()=>(App.tab==='all'?[...S.reminders]:S.reminders.filter(r=>!r.done))
+      .sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(a.due||Infinity)-(b.due||Infinity)),
+    find:id=>S.reminders.find(r=>r.id===id),
+    cell:r=>[
+      `<span class="tick ${r.done?'on':''}" role="checkbox" aria-checked="${!!r.done}"
+        aria-label="Mark done" onclick="event.stopPropagation();App.tickRem('${r.id}')">${I.tick}</span>`,
+      `<span class="${r.done?'quiet':'strong'}">${esc(r.text||'Untitled')}</span>`,
+      r.due ? (late(r)?`<span class="late">${days(r.due)}d late</span>`
+        : dueToday(r)?`<span class="strong">Today</span>`:`<span class="quiet">${onDate(r.due)}</span>`)
+        : '<span class="quiet">No date</span>',
+      `<span class="mono quiet">${ago(r.createdAt)}</span>`, rowActs('reminders',r.id)],
+    flag:late,
+    sum:l=>['',`${l.filter(r=>!r.done).length} open`,`${l.filter(late).length} overdue`,'',''],
+    nil:{i:I.bell,h:'No reminders.',p:'Set one for anything that needs chasing. Overdue ones rise to the top of Now.'},
+    make:()=>{ const r={id:uid(),text:'',due:null,done:false,createdAt:now(),updatedAt:now()};
+      S.reminders.unshift(r); return r },
+    count:()=>S.reminders.filter(r=>late(r)||dueToday(r)).length, alert:true,
+    side:r=>Side.reminder(r),
+  },
+
+  notes: {
+    t:'Notes', icon:I.note, grp:'Operations', noun:'note', nouns:'notes',
+    blurb:'A scratch inbox. A lead becomes work when a client is ready; a note becomes work when we decide to build it.',
+    cols:'28px minmax(0,3fr) 62px 72px',
+    head:[{t:''},{t:'Note'},{t:'Added',n:1},{t:'',n:1}],
+    metrics:l=>[{k:'Open',v:l.filter(c=>!c.done).length,f:null},{k:'Total',v:l.length,f:null}],
+    rows:()=>[...S.captures].sort((a,b)=>(a.done?1:0)-(b.done?1:0)||(b.t||0)-(a.t||0)),
+    find:id=>S.captures.find(c=>c.id===id),
+    cell:c=>[
+      `<span class="tick ${c.done?'on':''}" role="checkbox" aria-checked="${!!c.done}"
+        aria-label="Mark done" onclick="event.stopPropagation();App.tickCap('${c.id}')">${I.tick}</span>`,
+      `<span class="${c.done?'quiet':'strong'}">${esc(c.text||'Empty note')}</span>`,
+      `<span class="mono quiet">${ago(c.t)}</span>`, rowActs('notes',c.id)],
+    flag:()=>false,
+    sum:l=>['',`${l.filter(c=>!c.done).length} open`,'',''],
+    nil:{i:I.note,h:'Nothing captured.',p:'Drop half-formed ideas here. When one turns out to matter, make it work.'},
+    make:()=>{ const c={id:uid(),text:'',done:false,t:now(),createdAt:now(),updatedAt:now()};
+      S.captures.unshift(c); return c },
+    count:()=>S.captures.filter(c=>!c.done).length,
+    side:c=>Side.note(c),
+  },
+
+  log: {
+    t:'Log', icon:I.log, grp:'System', noCreate:true,
+    blurb:'Everything that has happened in the workspace, and the button to take it back.',
+    cols:'minmax(0,3fr) 128px 62px 84px',
+    head:[{t:'What happened'},{t:'Who'},{t:'When',n:1},{t:'',n:1}],
+    tabs:[['all','Everything'],['undoable','Can be undone']],
+    /* The workspace summary used to sit in Settings taking up half the
+       page. It belongs here: Log is the record of the workspace, so the
+       counts, the export and the reset all live beside the history. */
+    metrics:l=>[
+      {k:'Clients',v:S.clients.length,f:null},
+      {k:'Work',v:S.engagements.length,f:null},
+      {k:'Leads',v:S.leads.length,f:null},
+      {k:'Entries',v:l.length,f:null},
+      {k:'Undoable',v:l.filter(Undo.can).length,tone:'act',f:'undoable'}],
+    filters:{ undoable:Undo.can },
+    tools:()=>`<button class="btn" onclick="exportAll()">${I.save} Export workspace</button>
+      <button class="btn btn-alert" onclick="Settings.wipe()">${I.bin} Clear this device</button>`,
+    rows(){ const l=[...S.activity].sort((a,b)=>(b.t||0)-(a.t||0));
+      return App.tab==='undoable' ? l.filter(Undo.can) : l },
+    find:id=>S.activity.find(a=>a.id===id),
+    cell:a=>[`<span>${a.label}</span>`,
+      `<span style="display:flex;align-items:center;gap:8px">${who(a.who)}<span class="quiet">${esc(memName(a.who)||'—')}</span></span>`,
+      `<span class="mono quiet">${ago(a.t)}</span>`,
+      `<div class="acts">${Undo.can(a)
+        ? `<button class="btn btn-sm" onclick="event.stopPropagation();Undo.run('${a.id}')">Undo</button>`
+        : `<button class="act tip" data-tip="Remove entry" aria-label="Remove entry"
+            onclick="event.stopPropagation();App.del('log','${a.id}')">${I.bin}</button>`}</div>`],
+    flag:()=>false,
+    sum:l=>[`${l.length} entries`,'',`${l.filter(Undo.can).length} can be undone`,''],
+    nil:{i:I.log,h:'Nothing logged yet.',p:'Change something and it is recorded here — with who did it, when, and a way to take it back.'},
+    count:()=>0,
+    side:a=>Side.logEntry(a),
+  },
+
+  settings: { t:'Settings', icon:I.gear, grp:'System',
+    blurb:'Appearance, team, sync and data.', page:()=>Settings.html(), count:()=>0 },
+};
+const VK = Object.keys(V);
+
+/* ─── THEME ──────────────────────────────────────────────────────── */
+const THEMES = {
+  aptryk: { name:'Aptryk', note:'House theme', swatch:['#171A21','#21252E','#4A7CF5','#ECEFF7'] },
+  light:  { name:'Light',  note:'Same components, inverted', swatch:['#FBFBFD','#FFFFFF','#3560DC','#12151C'] },
+};
+const DENSITY = { default:'Default', compact:'Compact' };
+const Theme = {
+  get id(){ return localStorage.getItem('aptryk:theme') || 'aptryk' },
+  get density(){ return localStorage.getItem('aptryk:density') || 'default' },
+  set(id){ if(!THEMES[id]) return; localStorage.setItem('aptryk:theme',id);
+    document.body.dataset.theme = id; App.render(); toast(THEMES[id].name+' theme') },
+  setDensity(d){ if(!DENSITY[d]) return; localStorage.setItem('aptryk:density',d);
+    document.body.dataset.density = d; App.render() },
+  apply(){ document.body.dataset.theme = this.id; document.body.dataset.density = this.density },
+};
+
+/* ─── MENU ───────────────────────────────────────────────────────────
+   The discoverable home for secondary and destructive actions. Law 5:
+   nothing lives only behind a keystroke. */
+const Menu = {
+  open(x,y,items){
+    const m = $('#menu');
+    m.innerHTML = items.map(i => i.hr ? '<hr/>' : i.head
+      ? `<div class="menu-h">${esc(i.label)}</div>`
+      : `<button class="${i.bad?'bad':''}" data-i="${i.id}">${i.icon||''}<span>${esc(i.label)}</span></button>`).join('');
+    m.classList.add('on');
+    const r = m.getBoundingClientRect();
+    m.style.left = Math.min(x, innerWidth - r.width - 8) + 'px';
+    m.style.top = Math.min(y, innerHeight - r.height - 8) + 'px';
+    m.querySelectorAll('[data-i]').forEach(b => b.onclick = () => {
+      const it = items.find(i => i.id === b.dataset.i); this.close(); if (it && it.run) it.run() });
+    setTimeout(() => document.addEventListener('mousedown', e => {
+      if (!m.contains(e.target)) this.close() }, { once:true }), 0);
+  },
+  close(){ $('#menu').classList.remove('on') },
+
+  forRow(ev, kind, id){
+    ev.stopPropagation();
+    const r = ev.currentTarget.getBoundingClientRect();
+    const it = [{ id:'open', label:'Open', icon:I.pen, run:()=>App.open(id) }];
+    if (kind==='clients'){
+      it.push({ id:'nw', label:'Start work for this client', icon:I.plus, run:()=>Side.newWork(id) },
+              { hr:1 }, { head:1, label:'Belongs to' });
+      S.team.forEach(m => it.push({ id:'o'+m.id, label:m.name, icon:I.user,
+        run:()=>{ const c=acct(id); App.patch(c,{owner:m.id},
+          `<b>${esc(c.name)}</b> assigned to ${esc(m.name)}`, 'clients') } }));
+    }
+    if (kind==='work'){
+      const e = V.work.find(id);
+      it.push({ hr:1 }, { head:1, label:'Move to' });
+      STAGES.forEach(s2 => { if (e && e.stage===s2) return;
+        it.push({ id:'s'+s2, label:STAGE_T[s2], run:()=>Side.stage(id,s2) }) });
+      if (e && e.stage==='running')
+        it.push({ hr:1 }, { id:'chk', label:'Log a check-in', icon:I.tick,
+          run:()=>Side.check(id) });
+      it.push({ hr:1 }, { id:'kind',
+        label: e && e.kind==='internal' ? 'Mark as client work' : 'Mark as our own work',
+        run:()=>App.patch(e,{kind: e.kind==='internal'?'client':'internal'}) });
+    }
+    if (kind==='leads'){
+      it.push({ id:'pr', label:'Turn into work', icon:I.go, run:()=>Side.promote(id) },
+              { hr:1 }, { head:1, label:'Warmth' });
+      LEADS.forEach(s2 => it.push({ id:'l'+s2, label:LEAD_T[s2],
+        run:()=>App.patch(V.leads.find(id),{stage:s2}) }));
+    }
+    if (kind==='money'){
+      const m = V.money.find(id);
+      if (m && S.money.proposals.includes(m))
+        it.push({ id:'iv', label:'Turn into invoice', icon:I.go, run:()=>Side.toInvoice(id) });
+      if (m && S.money.invoices.includes(m) && m.status!=='paid')
+        it.push({ id:'pd', label:'Mark paid', icon:I.tick, run:()=>Side.set(id,'status','paid') });
+    }
+    if (kind==='reminders') it.push({ id:'t', label:'Toggle done', icon:I.tick, run:()=>App.tickRem(id) });
+    if (kind==='notes') it.push(
+      { id:'nw', label:'Turn into work', icon:I.go, run:()=>Side.noteToWork(id) },
+      { id:'t', label:'Toggle done', icon:I.tick, run:()=>App.tickCap(id) });
+    it.push({ hr:1 }, { id:'del', label:'Delete', icon:I.bin, bad:1,
+      run:()=>App.del(kind, id) });
+    this.open(r.right - 190, r.bottom + 6, it);
+  },
+};
+
+/* ─── APP ────────────────────────────────────────────────────────── */
+const App = {
+  view:'now', sel:{}, q:'', tab:'all', tabBy:{}, sortBy:{}, dir:{}, filter:null,
+
+  boot(){
+    Theme.apply(); load(); Sync.seed();
+    if (localStorage.getItem('aptryk:rail')) $('#app').classList.add('rail');
+    this.railIcon();
+    this.go(location.hash.slice(1) || 'now', true);
+    Sync.start(); Keys.bind(); Grip.bind();
+    Identity.claim();          // no-op unless the app is behind Access
+    addEventListener('hashchange', () => { const v = location.hash.slice(1);
+      if (v && V[v] && v !== this.view) this.go(v) });
+  },
+
+  go(view, replace){
+    if (!V[view]) view = 'now';
+    this.view = view; this.q = ''; this.filter = null;
+    const s = V[view];
+    this.tab = this.tabBy[view] || (s.tabs ? s.tabs[0][0] : 'all');
+    if (replace) history.replaceState(null,'','#'+view);
+    else if (location.hash.slice(1) !== view) history.pushState(null,'','#'+view);
+    this.render();
+    const r = $('#rows'); if (r) r.scrollTop = 0;
+  },
+  goTo(view, id){ this.go(view); this.select(id) },
+  setTab(t){ this.tab=t; this.tabBy[this.view]=t; this.sel[this.view]=null; this.filter=null; this.render() },
+  select(id){ this.sel[this.view]=id; this.render() },
+  open(id){ this.select(id);
+    requestAnimationFrame(()=>{ const t=$('#sideIn .side-title'); if(t){t.focus(); t.select&&t.select()} }) },
+  cur(){ const s=V[this.view], id=this.sel[this.view]; return id&&s.find ? s.find(id) : null },
+  setFilter(f){ this.filter = this.filter===f ? null : f; this.sel[this.view]=null; this.render() },
+  sort(k){ const v=this.view;
+    if (this.sortBy[v]===k) this.dir[v] = this.dir[v]==='asc'?'desc':'asc';
+    else { this.sortBy[v]=k; this.dir[v]='asc' }
+    this.render() },
+
+  rows(){
+    const s = V[this.view];
+    if (!s.rows) return [];
+    let l = s.rows();
+    if (this.filter && s.filters && s.filters[this.filter])
+      l = l.filter(o => o.group || s.filters[this.filter](o));
+    const q = this.q.trim().toLowerCase();
+    if (q) l = l.filter(o => o.group || [o.name,o.what,o.text,o.why,o.company,o.client,
+      o.source, acctName(o), memName(o.owner ?? o.lead)]
+      .filter(Boolean).join(' ').toLowerCase().includes(q));
+    l = l.filter((o,i) => !o.group || (l[i+1] && !l[i+1].group));
+    const k = this.sortBy[this.view] || s.defSort;
+    const grouped = typeof s.grouped === 'function' ? s.grouped() : !!s.grouped;
+    if (k && s.sorts && s.sorts[k] && !grouped){
+      l = [...l].sort(s.sorts[k]);
+      if (this.dir[this.view]==='desc') l.reverse();
+    }
+    return l;
+  },
+
+  render(){
+    const s = V[this.view], app = $('#app'), isPage = !!s.page;
+    this.nav();
+    ['tools','cols','rows','sum'].forEach(i => $('#'+i).hidden = isPage);
+    $('#page').hidden = !isPage;
+    $('#newBtn').style.display = (isPage || s.noCreate) ? 'none' : '';
+    $('#newTxt').textContent = s.noun ? 'New ' + s.noun : 'New';
+
+    $('#head').innerHTML = `<div class="title">${esc(s.t)}</div>` +
+      (s.blurb ? `<div class="blurb">${esc(s.blurb)}</div>` : '');
+
+    if (isPage){ $('#page').innerHTML = s.page(); app.classList.add('solo');
+      this.foot(0); return }
+
+    const list = this.rows(), real = list.filter(o=>!o.group);
+
+    if (s.metrics) $('#head').insertAdjacentHTML('beforeend',
+      `<div class="metrics">${s.metrics(real).map(m=>
+        m.f ? `<button class="metric ${this.filter===m.f?'on':''}"
+                 onclick="App.setFilter('${m.f}')" aria-label="Filter by ${esc(m.k)}">
+                 <div class="metric-k">${esc(m.k)}</div>
+                 <div class="metric-v ${m.tone||''}">${esc(String(m.v))}</div></button>`
+            : `<div class="metric"><div class="metric-k">${esc(m.k)}</div>
+                 <div class="metric-v ${m.tone||''}">${esc(String(m.v))}</div></div>`).join('')}</div>`);
+
+    $('#tools').innerHTML = `
+      <div class="find">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="field" id="q" placeholder="Search ${esc(s.t.toLowerCase())}" value="${esc(this.q)}"
+          aria-label="Search ${esc(s.t.toLowerCase())}" autocomplete="off" spellcheck="false"/>
+      </div>
+      ${s.tabs ? `<div class="tabs">${s.tabs.map(([v,l])=>
+        `<button class="${this.tab===v?'on':''}" onclick="App.setTab('${v}')">${esc(l)}</button>`).join('')}</div>` : ''}
+      ${this.filter ? `<button class="btn btn-sm" onclick="App.setFilter('${this.filter}')">${I.x} Clear filter</button>` : ''}
+      <div class="tools-gap"></div>
+      ${s.tools ? s.tools() : ''}
+      ${s.make ? `<button class="btn" onclick="App.create()">${I.plus} Add ${esc(s.noun||'item')}</button>` : ''}
+      <button class="btn btn-ico tip" data-tip="Refresh" aria-label="Refresh from server"
+        onclick="Sync.pull(true)">${I.sync}</button>`;
+
+    $('#cols').style.gridTemplateColumns = s.cols;
+    $('#sum').style.gridTemplateColumns = s.cols;
+    const sk = this.sortBy[this.view] || s.defSort;
+    $('#cols').innerHTML = s.head.map(h => `<div class="${h.n?'num':''}">${
+      h.s ? `<button class="${sk===h.s?'on':''}" onclick="App.sort('${h.s}')">${esc(h.t)}${
+        sk===h.s ? (this.dir[this.view]==='desc'?I.up:I.down) : ''}</button>` : esc(h.t)}</div>`).join('');
+
+    const cur = this.sel[this.view];
+    if (!real.length){
+      $('#rows').innerHTML = `<div class="void">${s.nil.i}<h3>${esc(s.nil.h)}</h3>
+        <p>${esc(s.nil.p)}</p>
+        ${s.make ? `<button class="btn btn-primary" onclick="App.create()">${I.plus} Add ${esc(s.noun||'item')}</button>` : ''}
+        ${this.q||this.filter ? `<button class="btn btn-quiet" onclick="App.clear()">Clear search</button>` : ''}</div>`;
+      $('#sum').innerHTML = '';
+    } else {
+      $('#rows').innerHTML = list.map(o => o.group
+        ? `<div class="group"><div class="group-t">${esc(o.label)}<span class="tag">${o.n}</span>
+             ${o.note?`<span class="group-n">${esc(o.note)}</span>`:''}</div>
+           <span class="mono">${o.val?money(o.val):''}</span></div>`
+        : `<div class="row ${o.id===cur?'on':''} ${s.flag&&s.flag(o)?'due':''}" role="button" tabindex="0"
+             style="grid-template-columns:${s.cols}" data-id="${o.id}"
+             onclick="App.select('${o.id}')"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();App.open('${o.id}')}"
+             oncontextmenu="event.preventDefault();this.blur();Menu.forRow(event,'${this.view}','${o.id}')"
+           >${s.cell(o).map((c,i)=>`<div class="cell ${s.head[i]&&s.head[i].n?'num':''}">${c}</div>`).join('')}</div>`).join('');
+      $('#sum').innerHTML = s.sum
+        ? s.sum(real).map((c,i)=>`<div class="${s.head[i]&&s.head[i].n?'num':''}">${c}</div>`).join('') : '';
+    }
+
+    const rec = this.cur();
+    // No selection means no side pane. An empty 400px column is a hole,
+    // not a layout.
+    app.classList.toggle('solo', !rec);
+    $('#sideIn').innerHTML = rec ? s.side(rec) : '';
+    this.foot(real.length);
+  },
+
+  nav(){
+    const g = {};
+    VK.forEach(k => (g[V[k].grp] ||= []).push(k));
+    $('#nav').innerHTML = Object.entries(g).map(([name,keys]) => `
+      <div><div class="nav-h">${esc(name)}</div>
+      ${keys.map(k => { const v=V[k], n=v.count?v.count():0;
+        return `<button class="nav-i ${this.view===k?'on':''}" data-t="${esc(v.t)}"
+          aria-label="${esc(v.t)}" onclick="App.go('${k}')">${v.icon}
+          <span class="t">${esc(v.t)}</span>
+          ${n?`<span class="nav-n ${v.alert?'due':''}">${n}</span>`:''}</button>` }).join('')}
+      </div>`).join('');
+  },
+  rail(){
+    const on = !$('#app').classList.contains('rail');
+    $('#app').classList.toggle('rail', on);
+    localStorage.setItem('aptryk:rail', on ? '1' : '');
+    this.railIcon();
+  },
+  /* The toggle draws the state it will produce: the panel's rail is filled
+     when the sidebar is open, hollow when it is collapsed. */
+  railIcon(){
+    const on = $('#app').classList.contains('rail');
+    const f = document.getElementById('railFill');
+    if (f) f.setAttribute('opacity', on ? '0' : '.9');
+    const b = document.getElementById('railBtn');
+    if (b) b.setAttribute('data-tip', on ? 'Expand sidebar' : 'Collapse sidebar');
+  },
+
+  foot(n){
+    const s = V[this.view], bits = [];
+    if (!s.page) bits.push(`${n} ${n===1 ? (s.noun||'item') : (s.nouns || (s.noun ? s.noun+'s' : 'items'))}`);
+    if (this.q) bits.push(`matching “${this.q}”`);
+    if (this.filter) bits.push(`filtered`);
+    if (Sync.queue.length) bits.push(`${Sync.queue.length} to sync`);
+    $('#footL').textContent = bits.join('  ·  ');
+    $('#footR').innerHTML = `Working as ${esc(memName(S.meId)||'—')}`;
+  },
+
+  clear(){ this.q=''; this.filter=null; this.render(); const f=$('#q'); if(f) f.focus() },
+  create(){
+    const s = V[this.view]; if (!s.make) return;
+    const r = s.make(); save(); this.select(r.id);
+    requestAnimationFrame(()=>{ const t=$('#sideIn .side-title'); if(t){t.focus(); t.select&&t.select()} });
+    toast(`New ${s.noun||'record'} — fill it in on the right`);
+  },
+  move(d){
+    const l = this.rows().filter(o=>!o.group); if (!l.length) return;
+    const i = l.findIndex(o=>o.id===this.sel[this.view]);
+    const nx = i===-1 ? 0 : Math.min(l.length-1, Math.max(0, i+d));
+    this.select(l[nx].id);
+    const el = document.querySelector(`.row[data-id="${l[nx].id}"]`);
+    if (el) el.scrollIntoView({block:'nearest'});
+  },
+  patch(rec, ch, note, coll){ if(!rec) return;
+    // Snapshot before mutating so the log entry can put it back.
+    const before = note ? structuredClone(rec) : null;
+    Object.assign(rec, ch); rec.updatedAt = now();
+    if (note) log(note, rec.id, coll ? {c:coll, id:rec.id, before} : null);
+    save(); this.render() },
+  tickRem(id){ const r=S.reminders.find(x=>x.id===id); if(!r) return;
+    this.patch(r,{done:!r.done}, `Reminder ${r.done?'reopened':'completed'}: <b>${esc(r.text)}</b>`,
+      'reminders') },
+  tickCap(id){ const c=S.captures.find(x=>x.id===id); if(!c) return; this.patch(c,{done:!c.done}) },
+
+  async del(kind, id){
+    const map = { leads:S.leads, clients:S.clients, work:S.engagements,
+      reminders:S.reminders, notes:S.captures, log:S.activity };
+    let list = map[kind], rec = list && list.find(o=>o.id===id), from = list;
+    if (!rec) for (const k of ['proposals','invoices']){
+      const h = S.money[k].find(o=>o.id===id); if (h){ rec=h; from=S.money[k]; break } }
+    if (!rec){ rec = S.engagements.find(o=>o.id===id); from = S.engagements }
+    if (!rec) return;
+    const label = rec.name || rec.text || 'this record';
+    const extra = kind==='clients' && projOf(id).length
+      ? ` Its ${projOf(id).length} job(s) stay, but lose the link.` : '';
+    if (!await Dialog.ask('Delete ' + label + '?',
+      'This removes it for everyone on the next sync.' + extra + ' You can undo from the toast.')) return;
+    const i = from.indexOf(rec);
+    const snapshot = structuredClone(rec);
+    from.splice(i,1);
+    const collName = { leads:'leads', clients:'clients', work:'engagements',
+      reminders:'reminders', notes:'captures', log:'activity' }[kind]
+      || (S.money.proposals === from ? 'proposals' : 'invoices');
+    if (kind !== 'log')
+      log(`Deleted <b>${esc(label)}</b>`, id, {c:collName, id, before:snapshot, at:i});
+    if (kind==='clients') S.engagements.forEach(e=>{ if(e.clientId===id){e.clientId=null; e.updatedAt=now()} });
+    this.sel[this.view] = null; save(); this.render();
+    toast('Deleted ' + label, 'Undo', ()=>{ from.splice(i,0,rec); save(); this.render(); toast('Restored') });
+  },
+};
+
+/* ─── GRIP / KEYS ────────────────────────────────────────────────── */
+const Grip = { bind(){
+  const g = $('#grip'); let x=0,w=0,on=false;
+  const saved = parseInt(localStorage.getItem('aptryk:sidew')||'',10);
+  if (saved>=320 && saved<=680) document.documentElement.style.setProperty('--side-w', saved+'px');
+  g.addEventListener('pointerdown', e => { on=true; x=e.clientX;
+    w=$('#side').getBoundingClientRect().width; g.setPointerCapture(e.pointerId); e.preventDefault() });
+  g.addEventListener('pointermove', e => { if(!on) return;
+    const nw = Math.min(680, Math.max(320, w + (x-e.clientX)));
+    document.documentElement.style.setProperty('--side-w', nw+'px') });
+  const end = () => { if(!on) return; on=false;
+    localStorage.setItem('aptryk:sidew', String(Math.round($('#side').getBoundingClientRect().width))) };
+  g.addEventListener('pointerup', end); g.addEventListener('pointercancel', end);
+}};
+
+/* Accelerators only. Every one has a visible control elsewhere. */
+const Keys = { bind(){
+  document.addEventListener('keydown', e => {
+    const mod = e.metaKey || e.ctrlKey;
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if (mod && e.key.toLowerCase()==='k'){ e.preventDefault(); Palette.open(); return }
+    if (Palette.isOpen()){ Palette.key(e); return }
+    if (Dialog.isOpen()){
+      if (e.key==='Escape'){ e.preventDefault(); Dialog.done(false) }
+      if (e.key==='Enter'){ e.preventDefault(); Dialog.done(true) }
+      return }
+    if (e.key==='Escape'){ Menu.close(); if (typing) document.activeElement.blur(); return }
+    if (mod && e.key.toLowerCase()==='n'){ e.preventDefault(); App.create(); return }
+    if (typing) return;
+    if (e.key==='/'){ e.preventDefault(); const f=$('#q'); if(f) f.focus(); return }
+    if (e.key==='ArrowDown'){ e.preventDefault(); App.move(1); return }
+    if (e.key==='ArrowUp'){ e.preventDefault(); App.move(-1); return }
+  });
+  document.addEventListener('input', e => {
+    if (e.target.id !== 'q') return;
+    App.q = e.target.value;
+    clearTimeout(Keys._t);
+    Keys._t = setTimeout(() => { const p = e.target.selectionStart; App.render();
+      const f = $('#q'); if (f){ f.focus(); f.setSelectionRange(p,p) } }, 120);
+  });
+}};
+
+/* ─── PALETTE / DIALOG / TOAST ───────────────────────────────────── */
+const Palette = {
+  items:[], i:0,
+  isOpen:()=>$('#paletteWrap').classList.contains('on'),
+  open(){ $('#paletteWrap').classList.add('on');
+    const el=$('#paletteIn'); el.value=''; el.focus(); this.build('') },
+  close(){ $('#paletteWrap').classList.remove('on') },
+  build(q){
+    const s = q.trim().toLowerCase(), out = [];
+    VK.forEach(k => out.push({ kind:'Go', label:V[k].t, sub:'', run:()=>App.go(k) }));
+    out.push({ kind:'Do', label:'Sync now', run:()=>Sync.pull(true) });
+    out.push({ kind:'Do', label:'Export workspace', run:exportAll });
+    Object.entries(THEMES).forEach(([id,t]) =>
+      out.push({ kind:'Theme', label:t.name, sub:t.note, run:()=>Theme.set(id) }));
+    if (s){
+      S.clients.forEach(c=>out.push({kind:'Client',label:c.name||'Untitled',sub:c.industry||'',
+        run:()=>App.goTo('clients',c.id)}));
+      S.engagements.forEach(e=>out.push({kind:'Work',label:e.name||'Untitled',
+        sub:e.kind==='internal'?'Ours':acctName(e), run:()=>App.goTo('work',e.id)}));
+      S.leads.forEach(l=>out.push({kind:'Lead',label:l.name||'Unnamed',sub:l.company||'',
+        run:()=>App.goTo('leads',l.id)}));
+      S.clients.forEach(c=>(c.contacts||[]).forEach(p=>{ if(!p.name) return;
+        out.push({kind:'Person',label:p.name,sub:c.name,run:()=>App.goTo('clients',c.id)}) }));
+    }
+    this.items = (s ? out.filter(o=>(o.label+' '+(o.sub||'')).toLowerCase().includes(s))
+                    : out.slice(0, VK.length+2)).slice(0,50);
+    this.i = 0; this.paint();
+  },
+  paint(){
+    $('#paletteRes').innerHTML = this.items.length
+      ? this.items.map((o,n)=>`<button class="pitem ${n===this.i?'on':''}" onclick="Palette.run(${n})">
+          <span class="pkind">${esc(o.kind)}</span><span class="cell">${esc(o.label)}</span>
+          <span class="psub">${esc(o.sub||'')}</span></button>`).join('')
+      : `<div class="pnil">No match.</div>`;
+    const on = document.querySelector('#paletteRes .pitem.on'); if (on) on.scrollIntoView({block:'nearest'});
+  },
+  run(n){ const o=this.items[n]; if(!o) return; this.close(); o.run() },
+  key(e){
+    if (e.key==='Escape'){ e.preventDefault(); this.close(); return }
+    if (e.key==='ArrowDown'){ e.preventDefault(); this.i=Math.min(this.items.length-1,this.i+1); this.paint(); return }
+    if (e.key==='ArrowUp'){ e.preventDefault(); this.i=Math.max(0,this.i-1); this.paint(); return }
+    if (e.key==='Enter'){ e.preventDefault(); this.run(this.i); return }
+    setTimeout(()=>this.build($('#paletteIn').value),0);
+  },
+};
+
+const Dialog = {
+  _r:null,
+  isOpen:()=>$('#dialogWrap').classList.contains('on'),
+  ask(t,m,ok='Delete'){
+    $('#dialogT').textContent=t; $('#dialogM').textContent=m; $('#dialogOk').textContent=ok;
+    $('#dialogWrap').classList.add('on');
+    setTimeout(()=>$('#dialogOk').focus(),20);
+    return new Promise(r=>{ this._r=r });
+  },
+  done(v){ $('#dialogWrap').classList.remove('on'); const r=this._r; this._r=null; if(r) r(v) },
+};
+
+let _tt;
+function toast(msg, label, run){
+  const el=$('#toast'), b=$('#toastA');
+  $('#toastM').textContent = msg;
+  if (label && run){ b.hidden=false; b.textContent=label; b.onclick=()=>{ el.classList.remove('on'); run() } }
+  else b.hidden = true;
+  el.classList.add('on'); clearTimeout(_tt);
+  _tt = setTimeout(()=>el.classList.remove('on'), run?6000:2600);
+}
+
+function exportAll(){
+  const b = new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = `aptryk-${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),800);
+  toast('Workspace exported');
+}
+
+/* ─── SIDE PANE ──────────────────────────────────────────────────────
+   Everything is edited in place. There is no modal for records: on a
+   desktop you should always see the list you are working against. */
+function anyRec(id){
+  return S.clients.find(o=>o.id===id) || S.engagements.find(o=>o.id===id)
+    || S.leads.find(o=>o.id===id) || S.reminders.find(o=>o.id===id)
+    || S.captures.find(o=>o.id===id) || S.money.proposals.find(o=>o.id===id)
+    || S.money.invoices.find(o=>o.id===id) || S.activity.find(o=>o.id===id) || null;
+}
+const foot = h => `<div class="side-f">${h}</div>`;
+const closeBtn = `<button class="act tip" data-tip="Close" aria-label="Close"
+  onclick="App.select(null)">${I.x}</button>`;
+
+const Side = {
+  set(id,k,v){ App.patch(anyRec(id), {[k]:v}) },
+  setDate(id,k,v){ const t = v ? new Date(v+'T12:00:00').getTime() : null;
+    this.set(id,k, isFinite(t)?t:null) },
+  note: debounce((id,k,v)=>{ const r=anyRec(id); if(!r) return;
+    r[k]=v; r.updatedAt=now(); save() }, 400),
+  /* A check-in is a small, honest record: someone looked, on this date.
+     It is undoable because a mis-click should not reset the clock. */
+  check(id){
+    const e = S.engagements.find(o=>o.id===id); if(!e) return;
+    const before = structuredClone(e);
+    e.checkedAt = now(); e.updatedAt = now();
+    log(`Checked in on <b>${esc(e.name||'work')}</b>`, e.id,
+        {c:'engagements', id:e.id, before});
+    save(); App.render();
+    toast('Checked in — next due ' + (e.cadence !== 'none'
+      ? onDate(now() + CADENCE_DAYS[e.cadence]*DAY) : 'whenever you like'));
+  },
+
+  stage(id,st){ const e=S.engagements.find(o=>o.id===id); if(!e||e.stage===st) return;
+    const from = STAGE_T[e.stage];
+    App.patch(e,{stage:st}, `<b>${esc(e.name||'work')}</b> moved ${from} → ${STAGE_T[st]}`,
+      'engagements');
+    toast(st === 'running' && e.cadence === 'none'
+      ? 'Now running — set a check-in cadence so it does not go unwatched'
+      : 'Moved to ' + STAGE_T[st]) },
+
+  none:()=>'',
+
+  client(c){
+    if (!c) return '';
+    const ps = projOf(c.id);
+    const hist = S.activity.filter(a=>a.refId===c.id||ps.some(p=>p.id===a.refId)).slice(0,8);
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">Client</span>
+          ${quiet(c)?`<span class="kind">Gone quiet</span>`:''}
+          <div class="side-x">
+            <button class="act tip" data-tip="More" aria-label="More actions"
+              onclick="Menu.forRow(event,'clients','${c.id}')">${I.more}</button>${closeBtn}</div>
+        </div>
+        <input class="side-title" value="${esc(c.name)}" placeholder="Client name"
+          aria-label="Client name" onchange="Side.set('${c.id}','name',this.value)"/>
+        <div class="side-sub">${who(c.owner)}<span>${esc(memName(c.owner)||'Unassigned')}</span>
+          <span>·</span><span>${openOf(c.id).length} active · ${money(acctVal(c.id))}</span></div>
+      </div>
+      <div class="side-b">
+        <div class="sec"><div class="sec-h">Details</div>
+          ${kv('Owner', memSel(c.owner, `Side.set('${c.id}','owner',this.value||null)`))}
+          ${kv('Industry', inp(c.industry, `Side.set('${c.id}','industry',this.value)`, 'e.g. Logistics'))}
+          ${kv('Tags', inp((c.tags||[]).join(', '), `Side.tags('${c.id}',this.value)`, 'comma separated'))}
+        </div>
+        ${(()=>{ const r = risksFor(c.id); return r.length ? `<div class="sec">
+          <div class="sec-h">Needs attention</div>
+          <div class="mini">${r.map(x=>`
+            <div class="mini-r" style="cursor:pointer" onclick="App.goTo('${x.to[0]}','${x.to[1]}')">
+              <div class="mini-m ${r.length>=AT_RISK?'':''}">${esc(x.t)}</div>
+              <span class="quiet">${I.go}</span>
+            </div>`).join('')}</div>
+          ${r.length>=AT_RISK ? `<p class="blurb" style="margin-top:10px">Several at once usually means a client on the way out. Worth a call before it is a renewal conversation.</p>` : ''}
+        </div>` : '' })()}
+        <div class="sec">
+          <div class="sec-h"><span>Contacts</span>
+            <button class="btn btn-sm" onclick="Side.addContact('${c.id}')">${I.plus} Add</button></div>
+          <div class="mini">${(c.contacts||[]).length ? c.contacts.map(p=>`
+            <div class="mini-r"><div class="mini-m" style="flex-direction:column;align-items:stretch">
+              <input class="field" value="${esc(p.name)}" placeholder="Full name" aria-label="Contact name"
+                onchange="Side.contact('${c.id}','${p.id}','name',this.value)"/>
+              <input class="field" value="${esc(p.email||'')}" placeholder="email@company.com" aria-label="Contact email"
+                onchange="Side.contact('${c.id}','${p.id}','email',this.value)"/>
+            </div><button class="mini-x tip" data-tip="Remove" aria-label="Remove contact"
+              onclick="Side.delContact('${c.id}','${p.id}')">${I.bin}</button></div>`).join('')
+            : nilBox('No contacts yet — add the person you actually talk to.')}</div>
+        </div>
+        <div class="sec">
+          <div class="sec-h"><span>Work · ${ps.length}</span>
+            <button class="btn btn-sm" onclick="Side.newWork('${c.id}')">${I.plus} New</button></div>
+          <div class="mini">${ps.length ? ps.map(e=>`
+            <div class="mini-r" onclick="App.goTo('work','${e.id}')" style="cursor:pointer">
+              <div class="mini-m">${esc(e.name||'Untitled')} ${stageTrack(e)}</div>
+              <span class="mono">${RECUR.has(e.type)?money(e.mrr)+'/mo':(num(e.budget)?money(e.budget):'—')}</span>
+            </div>`).join('') : nilBox('No work yet.')}</div>
+        </div>
+        <div class="sec"><div class="sec-h">Notes</div>
+          <textarea class="area" aria-label="Account notes" placeholder="How you met, what they care about, procurement quirks…"
+            oninput="Side.note('${c.id}','notes',this.value)">${esc(c.notes||'')}</textarea></div>
+        <div class="sec"><div class="sec-h">History</div>
+          ${hist.length ? hist.map(a=>`<div class="log"><span>${a.label}</span>
+            <span class="mono quiet">${ago(a.t)}</span></div>`).join('') : nilBox('Nothing recorded yet.')}</div>
+      </div>
+      ${foot(`<button class="btn" onclick="Side.newWork('${c.id}')">${I.plus} Start work</button>
+        <button class="btn btn-alert" onclick="App.del('clients','${c.id}')">${I.bin} Delete</button>`)}`;
+  },
+  tags(id,v){ this.set(id,'tags', v.split(',').map(x=>x.trim()).filter(Boolean)) },
+  addContact(id){ const c=acct(id); if(!c) return;
+    c.contacts=c.contacts||[]; c.contacts.push({id:uid(),name:'',role:'',email:'',phone:''});
+    App.patch(c,{}) },
+  contact(a,p,k,v){ const c=acct(a); if(!c) return;
+    const x=(c.contacts||[]).find(y=>y.id===p); if(!x) return; x[k]=v; App.patch(c,{}) },
+  delContact(a,p){ const c=acct(a); if(!c) return;
+    c.contacts=(c.contacts||[]).filter(x=>x.id!==p); App.patch(c,{}) },
+  newProject(id){ const e=V.work.make(); e.clientId=id; save();
+    App.goTo('work', e.id);
+    requestAnimationFrame(()=>{ const t=$('#sideIn .side-title'); if(t) t.focus() });
+    toast('Work started — give it a name') },
+
+  work(e){
+    if (!e) return '';
+    const a = acct(e.clientId), t = e.tasks||[], d = t.filter(x=>x.done).length;
+    const rec = RECUR.has(e.type);
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">${e.kind==='internal'?'Our own work':'Client work'}</span>
+          ${stageTrack(e)}
+          <div class="side-x">
+            <button class="act tip" data-tip="More" aria-label="More actions"
+              onclick="Menu.forRow(event,'work','${e.id}')">${I.more}</button>${closeBtn}</div>
+        </div>
+        <input class="side-title" value="${esc(e.name)}" placeholder="What are we solving?"
+          aria-label="Work name" onchange="Side.set('${e.id}','name',this.value)"/>
+        <div class="side-sub">${who(e.lead)}<span>${esc(memName(e.lead)||'No lead')}</span>
+          <span>·</span><span>${esc(a?a.name:(e.kind==='internal'?'Ours':'No client yet'))}</span>
+          ${stalled(e)?`<span>·</span><span class="late">${days(e.updatedAt)}d quiet</span>`:''}</div>
+      </div>
+      <div class="side-b">
+        <div class="sec"><div class="sec-h">Details</div>
+          ${kv('Stage', sel(e.stage, STAGES.map(x=>[x,STAGE_T[x]]), `Side.stage('${e.id}',this.value)`),
+            esc(STAGE_WHY[e.stage]))}
+          ${kv('Type', sel(e.kind, KINDS.map(x=>[x,KIND_T[x]]), `Side.set('${e.id}','kind',this.value)`),
+            'Our own work is a product, a tool or an internal system. It needs no client.')}
+          ${e.kind==='client' ? kv('Client', sel(e.clientId||'', [['','— none yet —'],...S.clients.map(c=>[c.id,c.name||'Untitled'])],
+            `Side.set('${e.id}','clientId',this.value||null)`)) : ''}
+          ${kv('Led by', memSel(e.lead, `Side.set('${e.id}','lead',this.value||null)`))}
+        </div>
+        ${e.stage==='running' ? `<div class="sec">
+          <div class="sec-h"><span>Keeping it alive</span>
+            <button class="btn btn-sm" onclick="Side.check('${e.id}')">${I.tick} Log a check-in</button></div>
+          ${kv('Check every', sel(e.cadence, CADENCE.map(x=>[x,CADENCE_T[x]]),
+            `Side.set('${e.id}','cadence',this.value)`),
+            'Running work goes quiet when it is healthy, so a cadence is the only way to notice it has not been looked at.')}
+          ${kv('Last checked', e.checkedAt
+            ? `<span class="${checkDue(e)?'late':''}">${onDate(e.checkedAt)} · ${ago(e.checkedAt)} ago</span>`
+            : `<span class="quiet">Never</span>`)}
+          ${e.cadence!=='none' ? kv('Next due', `<span class="${checkDue(e)?'late':'quiet'}">${
+            checkDue(e) ? 'Overdue now'
+              : onDate((e.checkedAt ?? e.updatedAt) + CADENCE_DAYS[e.cadence]*DAY)}</span>`) : ''}
+        </div>` : ''}
+        <div class="sec"><div class="sec-h">Billing</div>
+          ${kv('Earns', sel(e.type, TYPES.map(x=>[x,TYPE_T[x]]), `Side.set('${e.id}','type',this.value)`))}
+          ${rec ? kv('Per month', inp(e.mrr, `Side.set('${e.id}','mrr',this.value)`, '0'))
+                + kv('Renews', dateF(e.renewalAt, `Side.setDate('${e.id}','renewalAt',this.value)`))
+                + kv('Per year', `<span class="mono strong">${money(num(e.mrr)*12)}</span>`)
+                : kv('Committed', inp(e.budget, `Side.set('${e.id}','budget',this.value)`, '0'))}
+        </div>
+        <div class="sec">
+          <div class="sec-h"><span>Tasks · ${d}/${t.length}</span>
+            <button class="btn btn-sm" onclick="Side.addTask('${e.id}')">${I.plus} Add</button></div>
+          <div class="mini">${t.length ? t.map(x=>`
+            <div class="mini-r ${x.done?'done':''}"><div class="mini-m">
+              <span class="tick ${x.done?'on':''}" role="checkbox" aria-checked="${!!x.done}"
+                aria-label="Toggle task" onclick="Side.tickTask('${e.id}','${x.id}')">${I.tick}</span>
+              <input class="field" value="${esc(x.text)}" placeholder="What needs doing?" aria-label="Task"
+                onchange="Side.task('${e.id}','${x.id}',this.value)"/>
+            </div><button class="mini-x tip" data-tip="Remove" aria-label="Remove task"
+              onclick="Side.delTask('${e.id}','${x.id}')">${I.bin}</button></div>`).join('')
+            : nilBox('No tasks yet.')}</div>
+        </div>
+        <div class="sec">
+          <div class="sec-h"><span>Links</span>
+            <button class="btn btn-sm" onclick="Side.addLink('${e.id}')">${I.plus} Add</button></div>
+          <div class="mini">${(e.links||[]).length ? e.links.map(l=>`
+            <div class="mini-r"><div class="mini-m">${I.link}
+              <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||l.url)}</a></div>
+            <button class="mini-x tip" data-tip="Remove" aria-label="Remove link"
+              onclick="Side.delLink('${e.id}','${l.id}')">${I.bin}</button></div>`).join('')
+            : nilBox('No links yet.')}</div>
+        </div>
+        <div class="sec"><div class="sec-h">Notes</div>
+          <textarea class="area" aria-label="Project notes" placeholder="Scope, decisions, blockers…"
+            oninput="Side.note('${e.id}','notes',this.value)">${esc(e.notes||'')}</textarea></div>
+      </div>
+      ${foot(`${e.stage!=='closed'?`<button class="btn" onclick="Side.stage('${e.id}','${e.stage==='run'?'closed':STAGES[STAGES.indexOf(e.stage)+1]}')">${I.go} Move to ${STAGE_T[e.stage==='run'?'closed':STAGES[STAGES.indexOf(e.stage)+1]]}</button>`:''}
+        ${a?`<button class="btn" onclick="App.goTo('clients','${a.id}')">Open client</button>`:''}
+        <button class="btn btn-alert" onclick="App.del('work','${e.id}')">${I.bin} Delete</button>`)}`;
+  },
+  addTask(id){ const e=S.engagements.find(o=>o.id===id); if(!e) return;
+    e.tasks=e.tasks||[]; e.tasks.push({id:uid(),text:'',done:false}); App.patch(e,{});
+    requestAnimationFrame(()=>{ const f=document.querySelectorAll('#sideIn .mini-r .field');
+      const l=f[f.length-1]; if(l) l.focus() }) },
+  task(id,t,v){ const e=S.engagements.find(o=>o.id===id); if(!e) return;
+    const x=(e.tasks||[]).find(y=>y.id===t); if(!x) return; x.text=v; App.patch(e,{}) },
+  tickTask(id,t){ const e=S.engagements.find(o=>o.id===id); if(!e) return;
+    const x=(e.tasks||[]).find(y=>y.id===t); if(!x) return; x.done=!x.done; App.patch(e,{}) },
+  delTask(id,t){ const e=S.engagements.find(o=>o.id===id); if(!e) return;
+    e.tasks=(e.tasks||[]).filter(x=>x.id!==t); App.patch(e,{}) },
+  addLink(id){ const e=S.engagements.find(o=>o.id===id); if(!e) return;
+    const u=prompt('Link URL (Figma, drive folder, repo…)'); if(!u) return;
+    e.links=e.links||[]; e.links.push({id:uid(),url:u,label:prompt('Label (optional)')||u});
+    App.patch(e,{}) },
+  delLink(id,l){ const e=S.engagements.find(o=>o.id===id); if(!e) return;
+    e.links=(e.links||[]).filter(x=>x.id!==l); App.patch(e,{}) },
+
+  lead(l){
+    if (!l) return '';
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">Lead</span>
+          ${signalTrack(l)}
+          <div class="side-x">
+            <button class="act tip" data-tip="More" aria-label="More actions"
+              onclick="Menu.forRow(event,'leads','${l.id}')">${I.more}</button>${closeBtn}</div>
+        </div>
+        <input class="side-title" value="${esc(l.name)}" placeholder="Who is it?" aria-label="Lead name"
+          onchange="Side.set('${l.id}','name',this.value)"/>
+        <div class="side-sub">${who(l.owner)}<span>${esc(memName(l.owner)||'Unassigned')}</span>
+          <span>·</span><span>${esc(l.source||'manual')} · ${ago(l.createdAt)}</span></div>
+      </div>
+      <div class="side-b">
+        <div class="sec"><div class="sec-h">Details</div>
+          ${kv('Warmth', sel(l.stage, LEADS.map(x=>[x,LEAD_T[x]]), `Side.set('${l.id}','stage',this.value)`))}
+          ${kv('Owner', memSel(l.owner, `Side.set('${l.id}','owner',this.value||null)`))}
+          ${kv('Company', inp(l.company, `Side.set('${l.id}','company',this.value)`))}
+          ${kv('Email', inp(l.email, `Side.set('${l.id}','email',this.value)`, 'email@company.com'))}
+          ${kv('Source', inp(l.source, `Side.set('${l.id}','source',this.value)`, 'inbound, referral, noticed…'))}
+        </div>
+        <div class="sec"><div class="sec-h">Notes</div>
+          <textarea class="area" aria-label="Lead notes" placeholder="What they asked for, budget signals…"
+            oninput="Side.note('${l.id}','note',this.value)">${esc(l.note||'')}</textarea></div>
+        <div class="sec"><div class="sec-h">Turn into work</div>
+          <p class="blurb" style="margin-bottom:12px">Adds the client if they are new, opens a job in Planning, and brings the notes across. The lead is cleared.</p>
+          <button class="btn btn-primary" onclick="Side.promote('${l.id}')">${I.go} Turn into work</button></div>
+      </div>
+      ${foot(`<button class="btn btn-alert" onclick="App.del('leads','${l.id}')">${I.bin} Delete</button>`)}`;
+  },
+  /* A signal becomes WORK, not just an org. The old model promoted a lead
+     into an account and left you to remember to create the project — the
+     step that actually mattered. Here the org is created only if it is
+     new, and you land in the work with the notes already carried over. */
+  promote(id){
+    const l = S.leads.find(x=>x.id===id); if(!l) return;
+    const orgName = (l.company || l.name || '').trim();
+    let org = orgName
+      ? S.clients.find(c => (c.name||'').toLowerCase() === orgName.toLowerCase()) : null;
+    if (!org && orgName){
+      org = { id:uid(), name:orgName, industry:'', tags:['from-lead'],
+        owner:l.owner||S.meId, notes:'',
+        contacts:(l.email||l.phone)
+          ? [{id:uid(),name:l.name||'',role:'',email:l.email||'',phone:l.phone||''}] : [],
+        createdAt:now(), updatedAt:now() };
+      S.clients.unshift(org);
+      log(`<b>${esc(org.name)}</b> added from a lead`, org.id);
+    }
+    const w = { id:uid(), name:l.name||'Untitled', clientId:org?org.id:null,
+      kind:'client', stage:'planning', type:'once', lead:l.owner||S.meId,
+      budget:'', mrr:'', renewalAt:null, notes:l.note||'', tasks:[], links:[],
+      createdAt:now(), updatedAt:now() };
+    S.engagements.unshift(w);
+    S.leads = S.leads.filter(x=>x.id!==id);
+    log(`Lead turned into work: <b>${esc(w.name)}</b>`, w.id);
+    save(); App.goTo('work', w.id);
+    toast(org ? `Planning work for ${org.name}` : 'Planning the work');
+  },
+
+  payment(m){
+    if (!m) return '';
+    const inv = S.money.invoices.includes(m);
+    const opts = inv ? [['draft','Draft'],['sent','Sent'],['paid','Paid'],['overdue','Overdue']]
+                     : [['draft','Draft'],['sent','Sent'],['accepted','Accepted'],['declined','Declined']];
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">${inv?'Invoice':'Proposal'}</span>
+          ${payTrack(m)}
+          <div class="side-x">
+            <button class="act tip" data-tip="More" aria-label="More actions"
+              onclick="Menu.forRow(event,'money','${m.id}')">${I.more}</button>${closeBtn}</div>
+        </div>
+        <input class="side-title" value="${esc(m.name)}" placeholder="Description" aria-label="Description"
+          onchange="Side.set('${m.id}','name',this.value)"/>
+        <div class="side-sub"><span class="mono strong">${money(m.amount)}</span>
+          <span>·</span><span>${esc(m.client||'No account')}</span></div>
+      </div>
+      <div class="side-b">
+        <div class="sec"><div class="sec-h">Details</div>
+          ${kv('Amount', inp(m.amount, `Side.set('${m.id}','amount',this.value)`, '0'))}
+          ${kv('Status', sel(m.status, opts, `Side.set('${m.id}','status',this.value)`))}
+          ${kv('Account', sel(m.client||'', [['','— none —'],...S.clients.map(c=>[c.name,c.name])],
+            `Side.set('${m.id}','client',this.value)`))}
+        </div>
+        ${!inv && m.status==='accepted' ? `<div class="sec"><div class="sec-h">Next step</div>
+          <button class="btn btn-primary" onclick="Side.toInvoice('${m.id}')">${I.go} Convert to invoice</button></div>` : ''}
+      </div>
+      ${foot(`${inv&&m.status!=='paid'?`<button class="btn" onclick="Side.set('${m.id}','status','paid')">${I.tick} Mark paid</button>`:''}
+        <button class="btn btn-alert" onclick="App.del('money','${m.id}')">${I.bin} Delete</button>`)}`;
+  },
+  toInvoice(id){
+    const p = S.money.proposals.find(m=>m.id===id); if(!p) return;
+    const v = { ...p, id:uid(), status:'sent', createdAt:now(), updatedAt:now() };
+    S.money.invoices.unshift(v);
+    log(`Invoice raised from proposal <b>${esc(p.name)}</b>`, v.id);
+    save(); App.go('money'); App.setTab('invoices'); App.select(v.id);
+    toast('Invoice created');
+  },
+
+  reminder(r){
+    if (!r) return '';
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">Reminder</span>
+          ${late(r)?`<span class="kind" style="color:var(--alert-txt)">${days(r.due)}d late</span>`:r.done?`<span class="kind">Done</span>`:''}
+          <div class="side-x">${closeBtn}</div>
+        </div>
+        <input class="side-title" value="${esc(r.text)}" placeholder="What needs doing?" aria-label="Reminder"
+          onchange="Side.set('${r.id}','text',this.value)"/>
+      </div>
+      <div class="side-b"><div class="sec"><div class="sec-h">Details</div>
+        ${kv('Due', dateF(r.due, `Side.setDate('${r.id}','due',this.value)`))}</div></div>
+      ${foot(`<button class="btn" onclick="App.tickRem('${r.id}')">${I.tick} ${r.done?'Reopen':'Mark done'}</button>
+        <button class="btn btn-alert" onclick="App.del('reminders','${r.id}')">${I.bin} Delete</button>`)}`;
+  },
+  note(c){
+    if (!c) return '';
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">Note</span>${c.done?`<span class="kind">Done</span>`:''}
+          <div class="side-x">${closeBtn}</div></div>
+        <input class="side-title" value="${esc(c.text)}" placeholder="Jot it down" aria-label="Note"
+          onchange="Side.set('${c.id}','text',this.value)"/>
+        <div class="side-sub">${ago(c.t)}</div>
+      </div>
+      <div class="side-b"><div class="sec">
+        <div class="sec-h">Make it real</div>
+        <p class="blurb" style="margin-bottom:12px">If this turns out to matter, start it as our own work. The note text becomes the name and the note is cleared.</p>
+        <button class="btn btn-primary" onclick="Side.noteToWork('${c.id}')">${I.go} Turn into work</button>
+      </div></div>
+      ${foot(`<button class="btn" onclick="App.tickCap('${c.id}')">${I.tick} ${c.done?'Reopen':'Mark done'}</button>
+        <button class="btn btn-alert" onclick="App.del('notes','${c.id}')">${I.bin} Delete</button>`)}`;
+  },
+  /* A lead becomes client work; a note becomes our own. Both intake paths
+     end in the same place, which is the point — an idea we had and a job we
+     were asked for are the same kind of thing once we commit to it. */
+  noteToWork(id){
+    const c = S.captures.find(x=>x.id===id); if(!c) return;
+    const w = { id:uid(), name:(c.text||'').slice(0,120), clientId:null, kind:'internal',
+      stage:'planning', type:'once', lead:S.meId, budget:'', mrr:'', renewalAt:null,
+      cadence:'none', checkedAt:null, notes:c.text||'', tasks:[], links:[],
+      createdAt:now(), updatedAt:now() };
+    S.engagements.unshift(w);
+    S.captures = S.captures.filter(x=>x.id!==id);
+    log(`Note turned into work: <b>${esc(w.name)}</b>`, w.id,
+        {c:'engagements', id:w.id, before:null});
+    save(); App.goTo('work', w.id);
+    toast('Planning it as our own work');
+  },
+
+  logEntry(a){
+    if (!a) return '';
+    return `
+      <div class="side-h">
+        <div class="side-top"><span class="eyebrow">Activity</span><div class="side-x">${closeBtn}</div></div>
+        <div class="side-title" style="padding-left:0;margin-left:0">${a.label}</div>
+        <div class="side-sub">${who(a.who)}<span>${esc(memName(a.who)||'Unknown')}</span>
+          <span>·</span><span>${onDate(a.t)}</span></div>
+      </div>
+      <div class="side-b"><div class="sec">
+        <p class="blurb">Activity is a log, so it is not editable. Remove it if it is noise.</p></div></div>
+      ${foot(`<button class="btn btn-alert" onclick="App.del('log','${a.id}')">${I.bin} Remove</button>`)}`;
+  },
+};
+
+/* ─── SETTINGS ───────────────────────────────────────────────────── */
+const Settings = {
+  html(){
+    return `<div class="page-w">
+      <div class="block">
+        <div class="block-h"><span class="block-t">Appearance</span></div>
+        <p class="block-d">A theme is about twenty CSS variables and nothing else — no component in this app contains a literal colour. That is what lets the same build ship to a client as their tool rather than a rebrand of ours.</p>
+        <div class="swatches">${Object.entries(THEMES).map(([id,t])=>`
+          <button class="swatch ${Theme.id===id?'on':''}" onclick="Theme.set('${id}')"
+            aria-label="Use ${esc(t.name)} theme">
+            <span class="swatch-p" data-raw>${t.swatch.map(c=>`<i style="background:${c}"></i>`).join('')}</span>
+            <span class="swatch-b">${esc(t.name)}${Theme.id===id?I.tick:''}</span>
+          </button>`).join('')}</div>
+        <div style="margin-top:16px">${kv('Density',
+          `<span class="tabs">${Object.entries(DENSITY).map(([id,l])=>
+            `<button class="${Theme.density===id?'on':''}" onclick="Theme.setDensity('${id}')">${esc(l)}</button>`).join('')}</span>`)}</div>
+      </div>
+
+      <div class="block">
+        <div class="block-h"><span class="block-t">Team</span>
+          <button class="btn btn-sm" onclick="Settings.addMember()">${I.plus} Add member</button></div>
+        <p class="block-d">${Settings.note()}</p>
+        <div class="mini">${S.team.map(m=>`
+          <div class="mini-r"><div class="mini-m">
+            <span class="who">${esc(initials(m.name))}</span>
+            <input class="field" value="${esc(m.name)}" aria-label="Member name"
+              onchange="Settings.rename('${m.id}',this.value)"/>
+            ${m.id===S.meId?`<span class="tag">You</span>`
+              :`<button class="btn btn-sm" onclick="Settings.be('${m.id}')">Work as</button>`}
+          </div>${S.team.length>1?`<button class="mini-x tip" data-tip="Remove" aria-label="Remove member"
+            onclick="Settings.remove('${m.id}')">${I.bin}</button>`:''}</div>`).join('')}</div>
+      </div>
+
+      <div class="block">
+        <div class="block-h"><span class="block-t">Sync</span>
+          <span style="display:flex;gap:8px">
+            <button class="btn btn-sm" onclick="Sync.pull(true)">${I.sync} Pull</button>
+            <button class="btn btn-sm" onclick="Sync.push()">Push queue</button></span></div>
+        ${kv('Status', `<span class="${Sync.state==='fail'?'late':'strong'}">${
+          Sync.state==='ok'?'Connected':Sync.state==='fail'?'Offline':'Local only'}</span>`)}
+        ${kv('Endpoint', `<span class="quiet">${esc(Sync.base)}</span>`)}
+        ${kv('Auth', Sync.sameOrigin
+          ? `<span class="strong">Cloudflare Access session</span>`
+          : `<span class="late">Shared API key in page source</span>`)}
+        ${kv('Queued', `<span class="mono">${Sync.queue.length}</span>`)}
+        ${kv('New fields', `<span class="${Sync.extendedFields?'strong':'quiet'}">${Sync.extendedFields?'Syncing':'Held on this device'}</span>`)}
+        <p class="block-d" style="margin-top:16px">Owner, project type, MRR, renewal date and contacts stay on this device until the D1 tables have columns for them — sending unknown columns fails the whole batch. Set <span class="mono">Sync.extendedFields = true</span> once the schema is migrated.</p>
+      </div>
+
+      <div class="block">
+        <div class="block-h"><span class="block-t">About</span></div>
+        ${kv('Build', `<span class="mono">${esc(BUILD)}</span>`)}
+        ${kv('Client', `<span class="quiet">Desktop. Mobile is a separate app.</span>`)}
+        ${kv('Workspace', `<button class="btn btn-sm" onclick="App.go('log')">${I.log} Counts, export and undo live in Log</button>`)}
+        ${kv('Shortcuts', `<span class="quiet"><kbd>⌘K</kbd> search · <kbd>⌘N</kbd> new · <kbd>/</kbd> filter · <kbd>↑↓</kbd> move</span>`)}
+      </div>
+    </div>`;
+  },
+  /* Say plainly which mode the workspace is in — one is verified identity,
+     the other is an honour system, and the difference matters. */
+  note() {
+    return Identity.resolved
+      ? `Signed in as <strong>${esc(Identity.resolved.email)}</strong>, verified by Cloudflare Access. Edits are credited to you automatically.`
+      : `Not behind Access, so attribution is self-declared — whoever this browser is set to gets the credit. Put the app behind Access and it becomes automatic.`;
+  },
+  addMember(){ S.team.push({id:uid(),name:'New member',email:''}); save(); App.render() },
+  rename(id,v){ const m=mem(id); if(!m) return; m.name=v; save(); App.render() },
+  be(id){ S.meId=id; save(); App.render(); toast('Now working as '+memName(id)) },
+  async remove(id){
+    if (S.team.length<=1) return;
+    if (!await Dialog.ask('Remove '+memName(id)+'?',
+      'Records they own become unassigned. Nothing else is deleted.','Remove')) return;
+    S.team = S.team.filter(m=>m.id!==id);
+    S.clients.forEach(c=>{ if(c.owner===id) c.owner=null });
+    S.engagements.forEach(e=>{ if(e.lead===id) e.lead=null });
+    S.leads.forEach(l=>{ if(l.owner===id) l.owner=null });
+    if (S.meId===id) S.meId=S.team[0].id;
+    save(); App.render();
+  },
+  async wipe(){
+    if (!await Dialog.ask('Clear local data?',
+      'This empties this browser only. Anything already synced returns on the next pull.','Clear')) return;
+    localStorage.removeItem(KEY); location.reload();
+  },
+};
+
+const BUILD = 'crm-8.2 · desktop';
+
+try { App.boot(); console.info('APTRYK ' + BUILD) }
+catch (err) {
+  console.error(err);
+  document.body.innerHTML = `<div style="padding:48px;font-family:system-ui">
+    <h1 style="font-size:22px;margin-bottom:10px">The app failed to start</h1>
+    <p style="opacity:.7;max-width:60ch;line-height:1.6">Your data is untouched in local storage.
+    Error: <code>${esc(err && err.message)}</code></p></div>`;
+}
+</script>
+</body>
+</html>
